@@ -54,6 +54,11 @@ extraEnv: []
 # - name: N8N_BASIC_AUTH_ACTIVE
 #   value: "true"
 
+# Additional sources for environment variables
+extraEnvFrom: []
+# - secretRef:
+#     name: n8n-secret
+
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
