@@ -65,6 +65,17 @@
         "additionalProperties": false
       }
     },
+    "database": {
+      "type": "object",
+      "properties": {
+        "host": { "type": "string" },
+        "port": { "type": "integer" },
+        "user": { "type": "string" },
+        "password": { "type": "string" },
+        "database": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
     "service": {
       "type": "object",
       "properties": {
