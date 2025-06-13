@@ -145,6 +145,15 @@
       },
       "additionalProperties": false
     },
+    "persistence": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "size": { "type": "string" },
+        "storageClass": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
     "volumes": { "type": "array", "items": { "type": "object" } },
     "volumeMounts": { "type": "array", "items": { "type": "object" } },
     "nodeSelector": {
