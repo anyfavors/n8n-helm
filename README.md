@@ -274,6 +274,10 @@ helm install my-n8n n8n/n8n \
   --set extraConfigMaps[0].name=my-config \
   --set extraConfigMaps[0].mountPath=/etc/config
 ```
+## Publishing
+
+Chart packages are published to the `gh-pages` branch by GitHub Actions. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory on every push to `main` and updates the repository index hosted at <https://anyfavors.github.io/n8n-helm>.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

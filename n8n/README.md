@@ -61,3 +61,8 @@ helm install my-n8n n8n/n8n \
   --set resources.limits.cpu=1 \
   --set resources.limits.memory=1Gi
 ```
+
+## Publishing
+
+This chart is packaged and released to the `gh-pages` branch by [GitHub Actions](../.github/workflows/release.yaml) when changes are pushed to `main`. Users can add <https://anyfavors.github.io/n8n-helm> as a Helm repository to install published versions.
+
