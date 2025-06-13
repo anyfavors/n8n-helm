@@ -9,3 +9,7 @@ helm install my-n8n ./n8n
 ```
 
 You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
