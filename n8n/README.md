@@ -26,6 +26,8 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
 - **extraEnv** – additional environment variables passed to the container.
+- **extraSecrets** – mount additional Secrets inside the pod.
+- **extraConfigMaps** – mount additional ConfigMaps inside the pod.
 - **resources** – CPU and memory requests/limits. Defaults are conservative and
   should be tuned for production installations.
 

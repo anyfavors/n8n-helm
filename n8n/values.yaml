@@ -160,6 +160,16 @@ volumeMounts: []
 #   mountPath: "/etc/foo"
 #   readOnly: true
 
+# Mount additional Kubernetes Secrets as volumes.
+extraSecrets: []
+# - name: my-secret
+#   mountPath: /etc/secret
+
+# Mount additional ConfigMaps as volumes.
+extraConfigMaps: []
+# - name: my-config
+#   mountPath: /etc/config
+
 nodeSelector: {}
 
 tolerations: []

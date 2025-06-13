@@ -250,6 +250,30 @@ Or set it on the command line:
 helm install my-n8n n8n/n8n \
   --set encryptionKeySecret.name=n8n-key
 ```
+
+## Mounting additional Secrets and ConfigMaps
+
+Existing Kubernetes resources can be mounted using the `extraSecrets` and
+`extraConfigMaps` values:
+
+```yaml
+extraSecrets:
+  - name: my-secret
+    mountPath: /etc/secret
+extraConfigMaps:
+  - name: my-config
+    mountPath: /etc/config
+```
+
+Install with command line flags:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set extraSecrets[0].name=my-secret \
+  --set extraSecrets[0].mountPath=/etc/secret \
+  --set extraConfigMaps[0].name=my-config \
+  --set extraConfigMaps[0].mountPath=/etc/config
+```
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

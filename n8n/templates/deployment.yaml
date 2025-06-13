@@ -101,10 +101,33 @@ spec:
             {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- range .Values.extraSecrets }}
+            - name: secret-{{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly | default true }}
+            {{- end }}
+            {{- range .Values.extraConfigMaps }}
+            - name: config-{{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly | default true }}
+            {{- end }}
           {{- else }}
-          {{- with .Values.volumeMounts }}
+          {{- $vm := .Values.volumeMounts }}
+          {{- if or (gt (len $vm) 0) (gt (len .Values.extraSecrets) 0) (gt (len .Values.extraConfigMaps) 0) }}
           volumeMounts:
+            {{- with $vm }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- range .Values.extraSecrets }}
+            - name: secret-{{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly | default true }}
+            {{- end }}
+            {{- range .Values.extraConfigMaps }}
+            - name: config-{{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly | default true }}
+            {{- end }}
           {{- end }}
           {{- end }}
       {{- if .Values.persistence.enabled }}
@@ -115,10 +138,33 @@ spec:
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        {{- range .Values.extraSecrets }}
+        - name: secret-{{ .name }}
+          secret:
+            secretName: {{ .name }}
+        {{- end }}
+        {{- range .Values.extraConfigMaps }}
+        - name: config-{{ .name }}
+          configMap:
+            name: {{ .name }}
+        {{- end }}
       {{- else }}
-      {{- with .Values.volumes }}
+      {{- $vol := .Values.volumes }}
+      {{- if or (gt (len $vol) 0) (gt (len .Values.extraSecrets) 0) (gt (len .Values.extraConfigMaps) 0) }}
       volumes:
+        {{- with $vol }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- range .Values.extraSecrets }}
+        - name: secret-{{ .name }}
+          secret:
+            secretName: {{ .name }}
+        {{- end }}
+        {{- range .Values.extraConfigMaps }}
+        - name: config-{{ .name }}
+          configMap:
+            name: {{ .name }}
+        {{- end }}
       {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}

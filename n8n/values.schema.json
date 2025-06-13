@@ -201,6 +201,32 @@
     },
     "volumes": { "type": "array", "items": { "type": "object" } },
     "volumeMounts": { "type": "array", "items": { "type": "object" } },
+    "extraSecrets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "mountPath": { "type": "string" },
+          "readOnly": { "type": "boolean" }
+        },
+        "required": ["name", "mountPath"],
+        "additionalProperties": false
+      }
+    },
+    "extraConfigMaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "mountPath": { "type": "string" },
+          "readOnly": { "type": "boolean" }
+        },
+        "required": ["name", "mountPath"],
+        "additionalProperties": false
+      }
+    },
     "nodeSelector": {
       "type": "object",
       "additionalProperties": { "type": "string" }
