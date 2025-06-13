@@ -10,8 +10,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Helm
         uses: azure/setup-helm@v3
+      - name: Install helm-unittest plugin
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest
       - name: Helm lint
         run: helm lint n8n
+      - name: Helm unit tests
+        run: helm unittest n8n
       - name: Helm template
         run: helm template n8n
 
