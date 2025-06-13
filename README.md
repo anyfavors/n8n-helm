@@ -67,6 +67,9 @@ persistence:
 ```
 
 
+The chart also includes a `values.schema.json` file that defines the allowed structure of `values.yaml`. Helm uses this schema to validate any custom values supplied during installation or upgrades.
+=======
+
 ## Connecting to an external PostgreSQL database
 
 To use an external database instead of the default SQLite storage you can
@@ -89,4 +92,3 @@ extraEnv:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
