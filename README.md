@@ -11,7 +11,7 @@ See [n8n/README.md](n8n/README.md) for a quick start guide and common configurat
 Add the chart repository and install the release:
 
 ```bash
-helm repo add n8n https://example.com/charts
+helm repo add n8n https://helm.n8n.io
 helm repo update
 
 # install the chart with the default values

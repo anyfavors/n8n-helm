@@ -7,7 +7,7 @@ This directory contains the Helm chart for deploying [n8n](https://n8n.io), an e
 Add the chart repository and install with the default values:
 
 ```bash
-helm repo add n8n https://example.com/charts
+helm repo add n8n https://helm.n8n.io
 helm repo update
 helm install my-n8n n8n/n8n
 ```
