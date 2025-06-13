@@ -1,0 +1,25 @@
+suite: rbac
+templates:
+  - templates/role.yaml
+  - templates/rolebinding.yaml
+tests:
+  - it: is not rendered when disabled
+    set:
+      rbac:
+        create: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: creates Role and RoleBinding when enabled
+    set:
+      rbac:
+        create: true
+    asserts:
+      - equal:
+          path: kind
+          value: Role
+        template: templates/role.yaml
+      - equal:
+          path: kind
+          value: RoleBinding
+        template: templates/rolebinding.yaml

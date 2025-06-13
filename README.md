@@ -136,6 +136,15 @@ networkPolicy:
   egress: []
 ```
 
+## Role-based access control
+
+Enable creation of a Role and RoleBinding for the service account by setting `rbac.create`:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set rbac.create=true
+```
+
 ## Connecting to an external PostgreSQL database
 
 To use an external PostgreSQL server instead of the built in SQLite
