@@ -24,3 +24,8 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **extraEnv** – additional environment variables passed to the container.
 
 See `values.yaml` for all available settings.
+
+## Updating n8n versions
+
+When a new n8n release is published, bump the `appVersion` field in
+`Chart.yaml` and update the default `image.tag` in `values.yaml` to match.
