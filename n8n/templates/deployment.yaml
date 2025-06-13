@@ -44,9 +44,28 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- with .Values.extraEnv }}
+          {{- $db := .Values.database }}
+          {{- if or $db.host $db.port $db.user $db.password (gt (len .Values.extraEnv) 0) }}
           env:
+            {{- if $db.host }}
+            - name: DB_POSTGRESDB_HOST
+              value: "{{ $db.host }}"
+            {{- end }}
+            {{- if $db.port }}
+            - name: DB_POSTGRESDB_PORT
+              value: "{{ $db.port }}"
+            {{- end }}
+            {{- if $db.user }}
+            - name: DB_POSTGRESDB_USER
+              value: "{{ $db.user }}"
+            {{- end }}
+            {{- if $db.password }}
+            - name: DB_POSTGRESDB_PASSWORD
+              value: "{{ $db.password }}"
+            {{- end }}
+            {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:

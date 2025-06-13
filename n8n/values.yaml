@@ -54,6 +54,14 @@ extraEnv: []
 # - name: N8N_BASIC_AUTH_ACTIVE
 #   value: "true"
 
+# Connection details for an external PostgreSQL database. Leave values empty to
+# use the built-in SQLite storage.
+database:
+  host: ""
+  port: 5432
+  user: ""
+  password: ""
+
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
