@@ -136,6 +136,19 @@ networkPolicy:
   egress: []
 ```
 
+## Pod disruption budgets
+
+Create a PodDisruptionBudget to control the number of pods that may be
+voluntarily evicted at once. Enable the budget and specify either
+`pdb.minAvailable` or `pdb.maxUnavailable`:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set pdb.enabled=true \
+  --set pdb.minAvailable=1
+```
+
+
 ## Role-based access control
 
 Enable creation of a Role and RoleBinding for the service account by setting `rbac.create`:

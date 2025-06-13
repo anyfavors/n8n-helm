@@ -1,0 +1,26 @@
+suite: pdb
+templates:
+  - templates/pdb.yaml
+tests:
+  - it: is not rendered when disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: sets minAvailable when configured
+    set:
+      pdb:
+        enabled: true
+        minAvailable: 1
+    asserts:
+      - equal:
+          path: spec.minAvailable
+          value: 1
+  - it: sets maxUnavailable when configured
+    set:
+      pdb:
+        enabled: true
+        maxUnavailable: 1
+    asserts:
+      - equal:
+          path: spec.maxUnavailable
+          value: 1
