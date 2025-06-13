@@ -25,6 +25,8 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **rbac.create** – create Role and RoleBinding resources.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
 - **extraEnv** – additional environment variables passed to the container.
+- **resources** – CPU and memory requests/limits. Defaults are conservative and
+  should be tuned for production installations.
 
 See `values.yaml` for all available settings.
 
@@ -39,3 +41,18 @@ can be adjusted if needed.
 
 When a new n8n release is published, bump the `appVersion` field in
 `Chart.yaml` and update the default `image.tag` in `values.yaml` to match.
+
+## CPU and memory settings
+
+The chart ships with minimal resource requests and limits suitable for test
+deployments. For production workloads increase the values under the
+`resources` block in your `values.yaml` file or via command line flags. For
+example:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set resources.requests.cpu=500m \
+  --set resources.requests.memory=512Mi \
+  --set resources.limits.cpu=1 \
+  --set resources.limits.memory=1Gi
+```

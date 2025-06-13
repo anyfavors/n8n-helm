@@ -158,6 +158,20 @@ helm install my-n8n n8n/n8n \
   --set rbac.create=true
 ```
 
+## CPU and memory
+
+The chart sets conservative resource requests and limits. For production
+deployments edit the values under the `resources` block in `values.yaml` or
+override them on the command line:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set resources.requests.cpu=500m \
+  --set resources.requests.memory=512Mi \
+  --set resources.limits.cpu=1 \
+  --set resources.limits.memory=1Gi
+```
+
 ## Connecting to an external PostgreSQL database
 
 To use an external PostgreSQL server instead of the built in SQLite
