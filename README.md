@@ -3,6 +3,8 @@
 
 
 This repository contains a Kubernetes Helm chart for deploying [n8n](https://github.com/n8n-io/n8n), an extendable workflow automation tool. The chart is located in the `n8n/` directory.
+See [n8n/README.md](n8n/README.md) for a quick start guide and common configuration options.
+
 
 ## Installation
 
