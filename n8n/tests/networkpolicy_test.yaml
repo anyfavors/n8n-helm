@@ -1,0 +1,22 @@
+suite: network policy
+templates:
+  - templates/networkpolicy.yaml
+tests:
+  - it: is not rendered when disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: creates policy when enabled
+    set:
+      networkPolicy:
+        enabled: true
+    asserts:
+      - equal:
+          path: kind
+          value: NetworkPolicy
+      - equal:
+          path: spec.ingress
+          value: []
+      - equal:
+          path: spec.egress
+          value: []

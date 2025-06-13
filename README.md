@@ -111,6 +111,31 @@ helm install my-n8n n8n/n8n \
 
 The chart also includes a `values.schema.json` file that defines the allowed structure of `values.yaml`. Helm uses this schema to validate any custom values supplied during installation or upgrades.
 
+## Network policies
+
+Set `networkPolicy.enabled` to `true` to create a `NetworkPolicy` resource that denies all traffic by default. Custom ingress and egress rules can be added under `networkPolicy.ingress` and `networkPolicy.egress`.
+
+Example enabling the policy from the command line:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set networkPolicy.enabled=true
+```
+
+To allow specific traffic, extend the policy in your values file:
+
+```yaml
+networkPolicy:
+  enabled: true
+  ingress:
+    - from:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 5678
+  egress: []
+```
+
 ## Connecting to an external PostgreSQL database
 
 To use an external PostgreSQL server instead of the built in SQLite
