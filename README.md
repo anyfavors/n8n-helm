@@ -1,5 +1,5 @@
 # n8n Helm Chart
-[![Lint](https://github.com/n8n-io/n8n-helm/actions/workflows/lint.yaml/badge.svg)](https://github.com/n8n-io/n8n-helm/actions/workflows/lint.yaml)
+[![Lint](https://github.com/anyfavors/n8n-helm/actions/workflows/lint.yaml/badge.svg)](https://github.com/anyfavors/n8n-helm/actions/workflows/lint.yaml)
 
 
 This repository contains a Kubernetes Helm chart for deploying [n8n](https://github.com/n8n-io/n8n), an extendable workflow automation tool. The chart is located in the `n8n/` directory.
@@ -11,7 +11,7 @@ See [n8n/README.md](n8n/README.md) for a quick start guide and common configurat
 Add the chart repository and install the release:
 
 ```bash
-helm repo add n8n https://example.com/charts
+helm repo add n8n https://anyfavors.github.io/n8n-helm
 helm repo update
 
 # install the chart with the default values
@@ -274,6 +274,10 @@ helm install my-n8n n8n/n8n \
   --set extraConfigMaps[0].name=my-config \
   --set extraConfigMaps[0].mountPath=/etc/config
 ```
+## Publishing
+
+Chart packages are published to the `gh-pages` branch by GitHub Actions. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory on every push to `main` and updates the repository index hosted at <https://anyfavors.github.io/n8n-helm>.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

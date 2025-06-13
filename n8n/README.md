@@ -4,11 +4,13 @@ This directory contains the Helm chart for deploying [n8n](https://n8n.io), an e
 
 ## Quick start
 
-Add the chart repository and install with the default values:
+Add the chart repository and install the release:
 
 ```bash
-helm repo add n8n https://example.com/charts
+helm repo add n8n https://anyfavors.github.io/n8n-helm
 helm repo update
+
+# install the chart with the default values
 helm install my-n8n n8n/n8n
 ```
 
@@ -59,3 +61,8 @@ helm install my-n8n n8n/n8n \
   --set resources.limits.cpu=1 \
   --set resources.limits.memory=1Gi
 ```
+
+## Publishing
+
+This chart is packaged and released to the `gh-pages` branch by [GitHub Actions](../.github/workflows/release.yaml) when changes are pushed to `main`. Users can add <https://anyfavors.github.io/n8n-helm> as a Helm repository to install published versions.
+
