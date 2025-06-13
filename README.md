@@ -16,7 +16,6 @@ helm repo update
 helm install my-n8n n8n/n8n
 ```
 
-
 Customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
 
 ### Example value overrides
