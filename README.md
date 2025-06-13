@@ -99,6 +99,15 @@ persistence:
   storageClass: standard
 ```
 
+Install with these settings from the command line:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set persistence.enabled=true \
+  --set persistence.size=8Gi \
+  --set persistence.storageClass=standard
+```
+
 
 The chart also includes a `values.schema.json` file that defines the allowed structure of `values.yaml`. Helm uses this schema to validate any custom values supplied during installation or upgrades.
 
