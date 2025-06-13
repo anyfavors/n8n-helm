@@ -52,8 +52,7 @@ To completely remove the deployment:
 
 ```bash
 helm uninstall my-n8n
-
-You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
+```
 
 ## Ingress
 
@@ -88,7 +87,6 @@ ingress:
       hosts:
         - n8n.example.com
 ```
-=======
 ## Persistence
 
 Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values. Data is mounted at `/home/node/.n8n` inside the pod.
@@ -102,7 +100,6 @@ persistence:
 
 
 The chart also includes a `values.schema.json` file that defines the allowed structure of `values.yaml`. Helm uses this schema to validate any custom values supplied during installation or upgrades.
-=======
 
 ## Connecting to an external PostgreSQL database
 
