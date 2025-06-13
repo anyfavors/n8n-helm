@@ -43,6 +43,13 @@
       },
       "additionalProperties": false
     },
+    "rbac": {
+      "type": "object",
+      "properties": {
+        "create": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
     "podAnnotations": {
       "type": "object",
       "additionalProperties": { "type": "string" }

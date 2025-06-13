@@ -21,6 +21,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **ingress.enabled** – expose the service using an ingress resource.
 - **persistence.enabled** – store workflows on a persistent volume.
 - **networkPolicy.enabled** – create a NetworkPolicy to restrict traffic.
+- **rbac.create** – create Role and RoleBinding resources.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
 - **extraEnv** – additional environment variables passed to the container.
 
