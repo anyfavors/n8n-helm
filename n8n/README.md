@@ -24,6 +24,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.
 - **rbac.create** – create Role and RoleBinding resources.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
+- **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
 - **extraEnv** – additional environment variables passed to the container.
 - **resources** – CPU and memory requests/limits. Defaults are conservative and
   should be tuned for production installations.

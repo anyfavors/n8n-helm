@@ -42,7 +42,8 @@ spec:
               protocol: TCP
           {{- $db := .Values.database }}
           {{- $secret := $db.passwordSecret }}
-          {{- if or $db.host $db.port $db.user $db.password $secret.name $db.database (gt (len .Values.extraEnv) 0) }}
+          {{- $enc := .Values.encryptionKeySecret }}
+          {{- if or $db.host $db.port $db.user $db.password $secret.name $db.database $enc.name (gt (len .Values.extraEnv) 0) }}
           env:
             {{- if $db.host }}
             - name: DB_POSTGRESDB_HOST
@@ -69,6 +70,13 @@ spec:
             {{- if $db.database }}
             - name: DB_POSTGRESDB_DATABASE
               value: "{{ $db.database }}"
+            {{- end }}
+            {{- if $enc.name }}
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $enc.name }}
+                  key: {{ $enc.key | default "encryptionKey" }}
             {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}

@@ -226,6 +226,30 @@ helm install my-n8n n8n/n8n \
   --set extraEnv[1].name=DB_POSTGRESDB_DATABASE \
   --set extraEnv[1].value=n8n
 ```
+
+## Credential encryption
+
+Generate a 256‑bit key and store it in a secret to encrypt credentials:
+
+```bash
+kubectl create secret generic n8n-key \
+  --from-literal=encryptionKey=$(openssl rand -hex 32)
+```
+
+Reference the secret in your values:
+
+```yaml
+encryptionKeySecret:
+  name: n8n-key
+  key: encryptionKey
+```
+
+Or set it on the command line:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set encryptionKeySecret.name=n8n-key
+```
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
