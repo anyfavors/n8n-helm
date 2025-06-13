@@ -10,6 +10,7 @@ helm install my-n8n ./n8n
 
 You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
 
+
 ## Connecting to an external PostgreSQL database
 
 To use an external database instead of the default SQLite storage you can
@@ -29,3 +30,7 @@ extraEnv:
   - name: DB_POSTGRESDB_DATABASE
     value: n8n
 ```
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
