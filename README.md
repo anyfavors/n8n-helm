@@ -12,6 +12,17 @@ helm install my-n8n ./n8n
 
 You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
 
+## Persistence
+
+Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values. Data is mounted at `/home/node/.n8n` inside the pod.
+
+```yaml
+persistence:
+  enabled: true
+  size: 8Gi
+  storageClass: standard
+```
+
 
 ## Connecting to an external PostgreSQL database
 
@@ -35,4 +46,5 @@ extraEnv:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
 
