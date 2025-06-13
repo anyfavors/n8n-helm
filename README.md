@@ -113,8 +113,22 @@ The chart also includes a `values.schema.json` file that defines the allowed str
 
 ## Connecting to an external PostgreSQL database
 
-To use an external database instead of the default SQLite storage you can
-provide the connection details in `values.yaml`:
+To use an external PostgreSQL server instead of the built in SQLite
+storage, populate the values under the `database` block. These map
+directly to the connection fields:
+
+- `database.host` – address of the database server
+- `database.port` – listening port
+- `database.user` – database user name
+- `database.password` – user password
+- `database.database` – name of the database to connect to
+
+n8n also requires the following environment variables:
+
+- `DB_TYPE=postgresdb`
+- `DB_POSTGRESDB_DATABASE` – should match `database.database`
+
+Example snippet:
 
 ```yaml
 database:
@@ -122,13 +136,28 @@ database:
   port: 5432
   user: n8n
   password: mysecret
+  database: n8n
 
-# Additional environment variables required by n8n
 extraEnv:
   - name: DB_TYPE
     value: postgresdb
   - name: DB_POSTGRESDB_DATABASE
     value: n8n
+```
+
+Or supply the settings on the command line:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set database.host=postgres.example.com \
+  --set database.port=5432 \
+  --set database.user=n8n \
+  --set database.password=mysecret \
+  --set database.database=n8n \
+  --set extraEnv[0].name=DB_TYPE \
+  --set extraEnv[0].value=postgresdb \
+  --set extraEnv[1].name=DB_POSTGRESDB_DATABASE \
+  --set extraEnv[1].value=n8n
 ```
 ## License
 
