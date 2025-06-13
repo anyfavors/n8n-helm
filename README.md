@@ -10,4 +10,29 @@ helm install my-n8n ./n8n
 
 You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
 
+
 The chart also includes a `values.schema.json` file that defines the allowed structure of `values.yaml`. Helm uses this schema to validate any custom values supplied during installation or upgrades.
+=======
+
+## Connecting to an external PostgreSQL database
+
+To use an external database instead of the default SQLite storage you can
+provide the connection details in `values.yaml`:
+
+```yaml
+database:
+  host: postgres.example.com
+  port: 5432
+  user: n8n
+  password: mysecret
+
+# Additional environment variables required by n8n
+extraEnv:
+  - name: DB_TYPE
+    value: postgresdb
+  - name: DB_POSTGRESDB_DATABASE
+    value: n8n
+```
+## License
+
+This project is licensed under the [MIT License](LICENSE).
