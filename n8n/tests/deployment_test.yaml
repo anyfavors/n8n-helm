@@ -1,0 +1,9 @@
+suite: deployment defaults
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: sets replica count to 1 by default
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 1

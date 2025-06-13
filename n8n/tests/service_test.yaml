@@ -1,0 +1,9 @@
+suite: service defaults
+templates:
+  - templates/service.yaml
+tests:
+  - it: renders a ClusterIP service by default
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
