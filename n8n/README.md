@@ -53,7 +53,7 @@ deployments. For production workloads increase the values under the
 example:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set resources.requests.cpu=500m \
   --set resources.requests.memory=512Mi \
   --set resources.limits.cpu=1 \

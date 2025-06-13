@@ -1,5 +1,5 @@
 # n8n Helm Chart
-[![Lint](https://github.com/n8n-io/n8n-helm/actions/workflows/lint.yaml/badge.svg)](https://github.com/n8n-io/n8n-helm/actions/workflows/lint.yaml)
+[![Lint](https://github.com/anyfavors/n8n-helm/actions/workflows/lint.yaml/badge.svg)](https://github.com/anyfavors/n8n-helm/actions/workflows/lint.yaml)
 
 
 This repository contains a Kubernetes Helm chart for deploying [n8n](https://github.com/n8n-io/n8n), an extendable workflow automation tool. The chart is located in the `n8n/` directory.
@@ -23,7 +23,7 @@ Customise the deployment by editing the values in `n8n/values.yaml` or by supply
 Override the replica count and image tag directly on the command line:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set replicaCount=3 \
   --set image.tag=1.0.0
 ```
@@ -33,7 +33,7 @@ helm install my-n8n n8n/n8n \
 Ingress can be enabled and host names customised using Helm values:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=n8n.example.com \
   --set ingress.hosts[0].paths[0].path=/
@@ -44,7 +44,7 @@ helm install my-n8n n8n/n8n \
 To upgrade the release when new chart versions are available:
 
 ```bash
-helm upgrade my-n8n n8n/n8n -f values.yaml
+helm upgrade my-n8n ./n8n -f values.yaml
 ```
 
 To completely remove the deployment:
@@ -100,7 +100,7 @@ persistence:
 Install with these settings from the command line:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set persistence.enabled=true \
   --set persistence.size=8Gi \
   --set persistence.storageClass=standard
@@ -116,7 +116,7 @@ Set `networkPolicy.enabled` to `true` to create a `NetworkPolicy` resource that 
 Example enabling the policy from the command line:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set networkPolicy.enabled=true
 ```
 
@@ -141,7 +141,7 @@ voluntarily evicted at once. Enable the budget and specify either
 `pdb.minAvailable` or `pdb.maxUnavailable`:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set pdb.enabled=true \
   --set pdb.minAvailable=1
 ```
@@ -152,7 +152,7 @@ helm install my-n8n n8n/n8n \
 Enable creation of a Role and RoleBinding for the service account by setting `rbac.create`:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set rbac.create=true
 ```
 
@@ -163,7 +163,7 @@ deployments edit the values under the `resources` block in `values.yaml` or
 override them on the command line:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set resources.requests.cpu=500m \
   --set resources.requests.memory=512Mi \
   --set resources.limits.cpu=1 \
@@ -212,7 +212,7 @@ extraEnv:
 Or supply the settings on the command line:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set database.host=postgres.example.com \
   --set database.port=5432 \
   --set database.user=n8n \
@@ -245,7 +245,7 @@ encryptionKeySecret:
 Or set it on the command line:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set encryptionKeySecret.name=n8n-key
 ```
 
@@ -266,7 +266,7 @@ extraConfigMaps:
 Install with command line flags:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n ./n8n \
   --set extraSecrets[0].name=my-secret \
   --set extraSecrets[0].mountPath=/etc/secret \
   --set extraConfigMaps[0].name=my-config \
