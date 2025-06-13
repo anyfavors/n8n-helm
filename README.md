@@ -9,3 +9,29 @@ helm install my-n8n ./n8n
 ```
 
 You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
+### Resource configuration
+
+You can set CPU and memory requests and limits by adjusting the `resources` section in `n8n/values.yaml`. By default it is empty (`resources: {}`). Remove the braces and specify your desired values.
+
+Low-resource example:
+```yaml
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+```
+
+Production example:
+```yaml
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+```
+
