@@ -9,3 +9,5 @@ helm install my-n8n ./n8n
 ```
 
 You can customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
+
+The chart also includes a `values.schema.json` file that defines the allowed structure of `values.yaml`. Helm uses this schema to validate any custom values supplied during installation or upgrades.
