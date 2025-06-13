@@ -121,6 +121,8 @@ directly to the connection fields:
 - `database.port` – listening port
 - `database.user` – database user name
 - `database.password` – user password
+- `database.passwordSecret.name` – name of a secret containing the password
+- `database.passwordSecret.key` – key within the secret (defaults to `password`)
 - `database.database` – name of the database to connect to
 
 n8n also requires the following environment variables:
@@ -135,7 +137,10 @@ database:
   host: postgres.example.com
   port: 5432
   user: n8n
-  password: mysecret
+  # password: mysecret
+  passwordSecret:
+    name: n8n-db
+    key: password
   database: n8n
 
 extraEnv:
@@ -152,7 +157,8 @@ helm install my-n8n n8n/n8n \
   --set database.host=postgres.example.com \
   --set database.port=5432 \
   --set database.user=n8n \
-  --set database.password=mysecret \
+  --set database.passwordSecret.name=n8n-db \
+  --set database.passwordSecret.key=password \
   --set database.database=n8n \
   --set extraEnv[0].name=DB_TYPE \
   --set extraEnv[0].value=postgresdb \
