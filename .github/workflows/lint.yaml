@@ -1,0 +1,17 @@
+name: Lint
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+      - name: Helm lint
+        run: helm lint n8n
+      - name: Helm template
+        run: helm template n8n
+
