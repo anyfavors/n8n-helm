@@ -4,12 +4,12 @@ This directory contains the Helm chart for deploying [n8n](https://n8n.io), an e
 
 ## Quick start
 
-Add the chart repository and install with the default values:
+Clone this repository and install the chart from the `n8n` directory:
 
 ```bash
-helm repo add n8n https://helm.n8n.io
-helm repo update
-helm install my-n8n n8n/n8n
+git clone https://github.com/anyfavors/n8n-helm.git
+cd n8n-helm
+helm install my-n8n ./n8n
 ```
 
 Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line.

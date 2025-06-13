@@ -8,14 +8,12 @@ See [n8n/README.md](n8n/README.md) for a quick start guide and common configurat
 
 ## Installation
 
-Add the chart repository and install the release:
+Clone this repository and install the chart from the `n8n` directory:
 
 ```bash
-helm repo add n8n https://helm.n8n.io
-helm repo update
-
-# install the chart with the default values
-helm install my-n8n n8n/n8n
+git clone https://github.com/anyfavors/n8n-helm.git
+cd n8n-helm
+helm install my-n8n ./n8n
 ```
 
 Customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
