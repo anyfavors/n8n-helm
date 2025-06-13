@@ -61,6 +61,10 @@ database:
   port: 5432
   user: ""
   password: ""
+  # Reference an existing secret for the password instead of setting it directly
+  passwordSecret:
+    name: ""
+    key: "password"
   database: ""
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
