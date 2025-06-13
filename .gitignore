@@ -1,0 +1,28 @@
+# Helm chart build output and dependencies
+charts/
+*.tgz
+Chart.lock
+
+# Kubernetes manifest secrets
+secrets.yaml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+.project
+.tmproj
+*.code-workspace
+
+# Backup and temporary files
+*.swp
+*.tmp
+*.bak
+*~
+
+# Environment files
+.env
+
