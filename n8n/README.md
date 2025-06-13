@@ -25,6 +25,13 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 
 See `values.yaml` for all available settings.
 
+## Security
+
+By default the chart runs the n8n container as a non-root user and mounts the
+root filesystem as read-only with privilege escalation disabled. These settings
+are defined in `podSecurityContext` and `securityContext` in `values.yaml` and
+can be adjusted if needed.
+
 ## Updating n8n versions
 
 When a new n8n release is published, bump the `appVersion` field in
