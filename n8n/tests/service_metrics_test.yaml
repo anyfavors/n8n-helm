@@ -1,0 +1,19 @@
+suite: metrics service
+templates:
+  - templates/service-metrics.yaml
+tests:
+  - it: is not rendered by default
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: renders service when enabled
+    set:
+      metrics:
+        enabled: true
+    asserts:
+      - equal:
+          path: kind
+          value: Service
+      - equal:
+          path: spec.ports[0].port
+          value: 5678
