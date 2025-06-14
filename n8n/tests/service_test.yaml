@@ -7,3 +7,12 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
+  - it: injects annotations when provided
+    set:
+      service:
+        annotations:
+          foo: bar
+    asserts:
+      - equal:
+          path: metadata.annotations.foo
+          value: bar
