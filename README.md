@@ -88,6 +88,66 @@ ingress:
       hosts:
         - n8n.example.com
 ```
+
+### Example using cert-manager
+
+Annotate the ingress with your issuer to have cert-manager obtain the
+certificate automatically:
+
+```yaml
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  hosts:
+    - host: n8n.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: n8n-tls
+      hosts:
+        - n8n.example.com
+```
+
+Create the ClusterIssuer itself:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    email: you@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
+```
+
+Optionally use a hook Job to apply a Certificate after installation:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: n8n-cert-provision
+  annotations:
+    helm.sh/hook: post-install
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: kubectl
+          image: bitnami/kubectl:latest
+          command: ["kubectl", "apply", "-f", "/manifests/certificate.yaml"]
+```
 ## Persistence
 
 Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values, or supply `existingClaim` to mount a pre-created PersistentVolumeClaim. Data is mounted at `/home/node/.n8n` inside the pod.
