@@ -136,6 +136,13 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+# Override the container entrypoint
+command: []
+# - n8n
+
+# Arguments to pass to the container entrypoint
+args: []
+# - start
 # Optional lifecycle hooks. See https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/
 lifecycle: {}
 # postStart:
