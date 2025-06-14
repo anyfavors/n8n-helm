@@ -44,6 +44,10 @@ root filesystem as read-only with privilege escalation disabled. These settings
 are defined in `podSecurityContext` and `securityContext` in `values.yaml` and
 can be adjusted if needed.
 
+Automatic mounting of the ServiceAccount token is disabled via
+`serviceAccount.automount` to limit access to the Kubernetes API and reduce the
+attack surface.
+
 ## Updating n8n versions
 
 When a new n8n release is published, bump the `appVersion` field in
@@ -137,7 +141,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | service.port | int | `5678` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.automount | bool | `true` |  |
+| serviceAccount.automount | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
 | tolerations | list | `[]` |  |
