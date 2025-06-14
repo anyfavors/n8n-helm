@@ -131,6 +131,7 @@
       },
       "additionalProperties": false
     },
+    "webhookUrl": { "type": "string" },
     "service": {
       "type": "object",
       "properties": {
