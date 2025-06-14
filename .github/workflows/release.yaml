@@ -27,8 +27,25 @@ jobs:
         uses: azure/setup-helm@v4
 
       - name: Run chart-releaser
+        id: cr
         uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: n8n
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign chart packages and upload signatures
+        if: steps.cr.outputs.changed_charts != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COSIGN_EXPERIMENTAL: 'true'
+        run: |
+          for pkg in .cr-release-packages/*.tgz; do
+            cosign sign-blob --yes --output-signature "$pkg.sig" "$pkg"
+            tag=$(basename "$pkg" .tgz)
+            gh release upload "$tag" "$pkg.sig" --clobber
+          done
+
