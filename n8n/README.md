@@ -79,10 +79,16 @@ When a new n8n release is published, bump the `appVersion` field in
 
 ## CPU and memory settings
 
-The chart ships with minimal resource requests and limits suitable for test
-deployments. For production workloads increase the values under the
-`resources` block in your `values.yaml` file or via command line flags. For
-example:
+The chart ships with minimal resource requests and limits suitable for small
+installations. The [official n8n docs](https://docs.n8n.io/) suggest the
+following starting points:
+
+- **Start**: 320Mi memory and 10m CPU
+- **Pro (10k executions)**: 640Mi memory and 20m CPU
+- **Pro (50k executions)**: 1280Mi memory and 80m CPU
+
+Increase the values under the `resources` block in your `values.yaml` file or
+override them on the command line for production workloads. For example:
 
 ```bash
 helm install my-n8n n8n/n8n \
