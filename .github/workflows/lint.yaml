@@ -28,13 +28,13 @@ jobs:
       - name: Helm lint
         run: helm lint n8n
       - name: Helm lint with values
-        run: helm lint --values n8n/values.yaml
+        run: helm lint n8n --values n8n/values.yaml
       - name: Helm unit tests
         run: helm unittest n8n
       - name: Helm template
         run: helm template n8n
       - name: Scan for vulnerabilities
-        uses: aquasecurity/trivy-action@v0.14.0
+        uses: aquasecurity/trivy-action@0.14.0
         with:
           scan-type: fs
           scan-ref: n8n
