@@ -1,0 +1,17 @@
+suite: statefulset
+templates:
+  - templates/statefulset.yaml
+tests:
+  - it: is not rendered when persistence disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: mounts existing pvc when configured
+    set:
+      persistence:
+        enabled: true
+        existingClaim: my-data
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[0].persistentVolumeClaim.claimName
+          value: my-data

@@ -22,7 +22,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **replicaCount** – number of pods to run.
 - **image.tag** – n8n container image tag to deploy.
 - **ingress.enabled** – expose the service using an ingress resource.
-- **persistence.enabled** – store workflows on a persistent volume.
+- **persistence.enabled** – store workflows on a persistent volume using a StatefulSet.
 - **persistence.existingClaim** – mount an existing PersistentVolumeClaim.
 - **networkPolicy.enabled** – create a NetworkPolicy to restrict traffic.
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.

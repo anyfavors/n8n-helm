@@ -11,8 +11,6 @@ tests:
     set:
       persistence:
         enabled: true
-        existingClaim: my-data
     asserts:
-      - equal:
-          path: spec.template.spec.volumes[0].persistentVolumeClaim.claimName
-          value: my-data
+      - hasDocuments:
+          count: 0

@@ -183,7 +183,7 @@ echo http://$NODE_IP:$NODE_PORT
 
 ## Persistence
 
-Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values, or supply `existingClaim` to mount a pre-created PersistentVolumeClaim. Data is mounted at `/home/node/.n8n` inside the pod.
+Set `persistence.enabled` to `true` to deploy a StatefulSet that stores workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values, or supply `existingClaim` to mount a pre-created PersistentVolumeClaim. Data is mounted at `/home/node/.n8n` inside the pod.
 
 ```yaml
 persistence:
