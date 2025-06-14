@@ -205,9 +205,24 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- $anti := .Values.podAntiAffinity }}
+      {{- $affinity := .Values.affinity }}
+      {{- if or $affinity (or (gt (len $anti.hard) 0) (gt (len $anti.soft) 0)) }}
       affinity:
+        {{- with $affinity }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if or (gt (len $anti.hard) 0) (gt (len $anti.soft) 0) }}
+        podAntiAffinity:
+          {{- with $anti.hard }}
+          requiredDuringSchedulingIgnoredDuringExecution:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $anti.soft }}
+          preferredDuringSchedulingIgnoredDuringExecution:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:

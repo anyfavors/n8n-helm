@@ -275,6 +275,14 @@
       "additionalProperties": { "type": "string" }
     },
     "tolerations": { "type": "array", "items": { "type": "object" } },
+    "podAntiAffinity": {
+      "type": "object",
+      "properties": {
+        "hard": { "type": "array", "items": { "type": "object" } },
+        "soft": { "type": "array", "items": { "type": "object" } }
+      },
+      "additionalProperties": false
+    },
     "affinity": { "type": "object" },
     "strategy": {
       "type": "object",
