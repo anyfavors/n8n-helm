@@ -287,9 +287,16 @@ helm install my-n8n n8n/n8n \
 
 ## CPU and memory
 
-The chart sets conservative resource requests and limits. For production
-deployments edit the values under the `resources` block in `values.yaml` or
-override them on the command line:
+The chart ships with minimal CPU and memory requests and limits suitable for
+small installations. According to the [official n8n documentation](https://docs.n8n.io/),
+typical starting points are:
+
+- **Start**: 320Mi memory and 10m CPU
+- **Pro (10k executions)**: 640Mi memory and 20m CPU
+- **Pro (50k executions)**: 1280Mi memory and 80m CPU
+
+Increase these values for larger workloads by editing the `resources` block in
+`values.yaml` or overriding them on the command line:
 
 ```bash
 helm install my-n8n n8n/n8n \
