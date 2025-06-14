@@ -34,7 +34,7 @@ jobs:
       - name: Helm template
         run: helm template n8n
       - name: Scan for vulnerabilities
-        uses: aquasecurity/trivy-action@v0.14.0
+        uses: aquasecurity/trivy-action@0.14.0
         with:
           scan-type: fs
           scan-ref: n8n
