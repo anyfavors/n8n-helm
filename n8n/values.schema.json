@@ -58,6 +58,15 @@
       "type": "object",
       "additionalProperties": { "type": "string" }
     },
+    "podSecurity": {
+      "type": "object",
+      "properties": {
+        "enforce": { "type": "string" },
+        "audit": { "type": "string" },
+        "warn": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
     "podSecurityContext": {
       "type": "object",
       "properties": {

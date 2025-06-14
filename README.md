@@ -253,6 +253,16 @@ metadata:
     pod-security.kubernetes.io/warn: restricted
 ```
 
+You can also have the chart manage these labels automatically by setting the
+`podSecurity` values at install time:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set podSecurity.enforce=restricted \
+  --set podSecurity.audit=restricted \
+  --set podSecurity.warn=restricted
+```
+
 ## Pod disruption budgets
 
 Create a PodDisruptionBudget to control the number of pods that may be
