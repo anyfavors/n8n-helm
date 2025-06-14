@@ -460,6 +460,16 @@ To publish a new version:
 5. Push the commit to GitHub. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory and uploads it to a GitHub release.
 6. Once the workflow completes, the repository index on the `gh-pages` branch is updated at <https://anyfavors.github.io/n8n-helm>.
 
+
+## Maintenance
+
+Automated dependency updates are handled by [Renovate](https://github.com/renovatebot/renovate).
+The configuration in [.github/renovate.json](.github/renovate.json) monitors the
+GitHub Actions used in this repository and the Helm tooling versions referenced
+in the workflows. When a new version of the `helm-docs` plugin or a GitHub
+Action becomes available, Renovate opens a pull request with the update.
+Maintainers should review these PRs and merge them once the checks pass.
+=======
 ## Verifying chart signatures
 
 Chart packages are signed using [cosign](https://docs.sigstore.dev/cosign/overview/). The corresponding `cosign.pub` public key is attached to each GitHub release.
@@ -469,6 +479,7 @@ Download `cosign.pub` from the release assets and verify a package with:
 ```bash
 cosign verify-blob --key cosign.pub --signature n8n-<version>.tgz.sig n8n-<version>.tgz
 ```
+
 
 ## License
 
