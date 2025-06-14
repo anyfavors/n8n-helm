@@ -1,0 +1,7 @@
+# CODEOWNERS for this repository
+
+# n8n Helm chart
+/n8n/ @stephanmh
+
+# GitHub Actions workflows
+/.github/workflows/ @stephanmh
