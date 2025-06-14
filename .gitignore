@@ -2,6 +2,7 @@
 charts/
 *.tgz
 Chart.lock
+.cr-release-packages/
 
 # Kubernetes manifest secrets
 secrets.yaml
