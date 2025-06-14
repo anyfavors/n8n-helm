@@ -233,6 +233,24 @@ helm install my-n8n n8n/n8n \
   --set resources.limits.memory=1Gi
 ```
 
+## Autoscaling
+
+Set `autoscaling.enabled` to `true` to create a HorizontalPodAutoscaler using
+the manifest in [n8n/templates/hpa.yaml](n8n/templates/hpa.yaml). Configure
+`minReplicas` and `maxReplicas` to control the scaling range and optionally set
+`targetCPUUtilizationPercentage` or `targetMemoryUtilizationPercentage` for
+resource based scaling.
+
+Example enabling the autoscaler:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set autoscaling.enabled=true \
+  --set autoscaling.minReplicas=2 \
+  --set autoscaling.maxReplicas=5 \
+  --set autoscaling.targetCPUUtilizationPercentage=70
+```
+
 ## Connecting to an external PostgreSQL database
 
 To use an external PostgreSQL server instead of the built in SQLite
