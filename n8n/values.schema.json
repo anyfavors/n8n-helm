@@ -62,7 +62,14 @@
       "type": "object",
       "properties": {
         "runAsUser": { "type": "integer" },
-        "fsGroup": { "type": "integer" }
+        "fsGroup": { "type": "integer" },
+        "seccompProfile": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     },
