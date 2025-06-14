@@ -23,4 +23,11 @@ jobs:
         run: helm unittest n8n
       - name: Helm template
         run: helm template n8n
+      - name: Scan for vulnerabilities
+        uses: aquasecurity/trivy-action@v0.14.0
+        with:
+          scan-type: fs
+          scan-ref: n8n
+          exit-code: 1
+          severity: HIGH
 
