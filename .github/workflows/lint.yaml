@@ -27,6 +27,8 @@ jobs:
           git diff --exit-code
       - name: Helm lint
         run: helm lint n8n
+      - name: Helm lint with values
+        run: helm lint --values n8n/values.yaml
       - name: Helm unit tests
         run: helm unittest n8n
       - name: Helm template
