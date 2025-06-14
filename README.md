@@ -56,6 +56,28 @@ To completely remove the deployment:
 helm uninstall my-n8n
 ```
 
+### Upgrade with `--install` and rollback
+
+You can upgrade an existing release while also installing it if it does not
+already exist by adding the `--install` flag:
+
+```bash
+helm upgrade my-n8n n8n/n8n -f values.yaml --install
+```
+
+Should an upgrade introduce a problem, revert to a previous revision using
+`helm rollback`. List the revision history with `helm history` and roll back to
+the desired version:
+
+```bash
+helm history my-n8n
+helm rollback my-n8n <REVISION>
+```
+
+When running with an external PostgreSQL database, ensure the database is backed
+up before performing upgrades or rollbacks so workflow data can be restored if
+needed.
+
 ## Ingress
 
 To expose n8n using a Kubernetes ingress controller, enable the `ingress` block in your values and provide host and path information:
@@ -438,6 +460,7 @@ To publish a new version:
 5. Push the commit to GitHub. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory and uploads it to a GitHub release.
 6. Once the workflow completes, the repository index on the `gh-pages` branch is updated at <https://anyfavors.github.io/n8n-helm>.
 
+
 ## Development
 
 This repository uses [pre-commit](https://pre-commit.com/) to automate checks.
@@ -460,6 +483,28 @@ Run all checks manually with:
 ```bash
 pre-commit run --all-files
 ```
+
+=======
+
+## Maintenance
+
+Automated dependency updates are handled by [Renovate](https://github.com/renovatebot/renovate).
+The configuration in [.github/renovate.json](.github/renovate.json) monitors the
+GitHub Actions used in this repository and the Helm tooling versions referenced
+in the workflows. When a new version of the `helm-docs` plugin or a GitHub
+Action becomes available, Renovate opens a pull request with the update.
+Maintainers should review these PRs and merge them once the checks pass.
+=======
+## Verifying chart signatures
+
+Chart packages are signed using [cosign](https://docs.sigstore.dev/cosign/overview/). The corresponding `cosign.pub` public key is attached to each GitHub release.
+
+Download `cosign.pub` from the release assets and verify a package with:
+
+```bash
+cosign verify-blob --key cosign.pub --signature n8n-<version>.tgz.sig n8n-<version>.tgz
+```
+
 
 ## License
 

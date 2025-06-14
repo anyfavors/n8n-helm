@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^\\.github/workflows/.*\\.ya?ml$"],
+      "matchStrings": [
+        "helm-docs/releases/download/v(?<currentValue>[0-9.]+)/helm-docs_[0-9.]+_Linux_x86_64.tar.gz"
+      ],
+      "depNameTemplate": "norwoodj/helm-docs",
+      "datasourceTemplate": "github-releases",
+      "replaceString": "helm-docs/releases/download/v{{{newValue}}}/helm-docs_{{{newValue}}}_Linux_x86_64.tar.gz"
+    }
+  ]
+}

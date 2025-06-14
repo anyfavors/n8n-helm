@@ -233,8 +233,28 @@
       "additionalProperties": false
     },
     "resources": { "type": "object" },
-    "livenessProbe": { "type": "object" },
-    "readinessProbe": { "type": "object" },
+    "livenessProbe": {
+      "type": "object",
+      "properties": {
+        "httpGet": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" }
+          }
+        }
+      }
+    },
+    "readinessProbe": {
+      "type": "object",
+      "properties": {
+        "httpGet": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" }
+          }
+        }
+      }
+    },
     "command": { "type": "array", "items": { "type": "string" } },
     "args": { "type": "array", "items": { "type": "string" } },
     "lifecycle": { "type": "object" },
