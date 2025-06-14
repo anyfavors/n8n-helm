@@ -148,6 +148,38 @@ spec:
           image: bitnami/kubectl:latest
           command: ["kubectl", "apply", "-f", "/manifests/certificate.yaml"]
 ```
+## Service types
+
+Set `service.type` to expose n8n using a Kubernetes LoadBalancer or NodePort service.
+
+Example using a LoadBalancer:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set service.type=LoadBalancer
+```
+
+Watch for the external IP to appear:
+
+```bash
+kubectl get svc --namespace default -w my-n8n
+```
+
+Example using a NodePort:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --set service.type=NodePort
+```
+
+Retrieve the address:
+
+```bash
+NODE_PORT=$(kubectl get svc --namespace default my-n8n -o jsonpath="{.spec.ports[0].nodePort}")
+NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+echo http://$NODE_IP:$NODE_PORT
+```
+
 ## Persistence
 
 Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values, or supply `existingClaim` to mount a pre-created PersistentVolumeClaim. Data is mounted at `/home/node/.n8n` inside the pod.
