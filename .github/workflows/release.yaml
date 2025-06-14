@@ -49,3 +49,17 @@ jobs:
             gh release upload "$tag" "$pkg.sig" --clobber
           done
 
+      - name: Verify signatures
+        if: steps.cr.outputs.changed_charts != ''
+        run: |
+          for pkg in .cr-release-packages/*.tgz; do
+            cosign verify-blob --key cosign.pub --signature "$pkg.sig" "$pkg"
+          done
+
+      - name: Upload chart packages
+        if: steps.cr.outputs.changed_charts != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: chart-packages
+          path: .cr-release-packages/*.tgz
+

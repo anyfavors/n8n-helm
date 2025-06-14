@@ -460,6 +460,16 @@ To publish a new version:
 5. Push the commit to GitHub. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory and uploads it to a GitHub release.
 6. Once the workflow completes, the repository index on the `gh-pages` branch is updated at <https://anyfavors.github.io/n8n-helm>.
 
+## Verifying chart signatures
+
+Chart packages are signed using [cosign](https://docs.sigstore.dev/cosign/overview/). The corresponding `cosign.pub` public key is attached to each GitHub release.
+
+Download `cosign.pub` from the release assets and verify a package with:
+
+```bash
+cosign verify-blob --key cosign.pub --signature n8n-<version>.tgz.sig n8n-<version>.tgz
+```
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
