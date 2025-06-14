@@ -1,0 +1,27 @@
+suite: podsecurity
+templates:
+  - templates/podsecurity.yaml
+tests:
+  - it: is not rendered when disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: sets namespace labels
+    set:
+      podSecurity:
+        enforce: restricted
+        audit: restricted
+        warn: restricted
+    asserts:
+      - equal:
+          path: kind
+          value: Namespace
+      - equal:
+          path: metadata.labels["pod-security.kubernetes.io/enforce"]
+          value: restricted
+      - equal:
+          path: metadata.labels["pod-security.kubernetes.io/audit"]
+          value: restricted
+      - equal:
+          path: metadata.labels["pod-security.kubernetes.io/warn"]
+          value: restricted

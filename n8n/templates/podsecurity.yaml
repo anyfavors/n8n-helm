@@ -1,0 +1,17 @@
+{{- if or .Values.podSecurity.enforce .Values.podSecurity.audit .Values.podSecurity.warn }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Release.Namespace }}
+  labels:
+    {{- if .Values.podSecurity.enforce }}
+    pod-security.kubernetes.io/enforce: {{ .Values.podSecurity.enforce | quote }}
+    {{- end }}
+    {{- if .Values.podSecurity.audit }}
+    pod-security.kubernetes.io/audit: {{ .Values.podSecurity.audit | quote }}
+    {{- end }}
+    {{- if .Values.podSecurity.warn }}
+    pod-security.kubernetes.io/warn: {{ .Values.podSecurity.warn | quote }}
+    {{- end }}
+{{- end }}
+

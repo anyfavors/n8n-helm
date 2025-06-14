@@ -62,6 +62,17 @@ Automatic mounting of the ServiceAccount token is disabled via
 `serviceAccount.automount` to limit access to the Kubernetes API and reduce the
 attack surface.
 
+The chart can also manage Pod Security Admission labels on the release
+namespace. Specify the desired levels under the `podSecurity` block:
+
+```yaml
+podSecurity:
+  enforce: restricted
+  audit: restricted
+  warn: restricted
+```
+
+
 ## Updating n8n versions
 
 When a new n8n release is published, bump the `appVersion` field in

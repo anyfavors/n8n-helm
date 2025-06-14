@@ -42,6 +42,13 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
+# Pod Security Admission labels to apply to the namespace.
+# See https://kubernetes.io/docs/concepts/security/pod-security-admission/
+podSecurity:
+  enforce: ""
+  audit: ""
+  warn: ""
+
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000

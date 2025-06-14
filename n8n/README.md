@@ -62,6 +62,16 @@ Automatic mounting of the ServiceAccount token is disabled via
 `serviceAccount.automount` to limit access to the Kubernetes API and reduce the
 attack surface.
 
+The chart can also manage Pod Security Admission labels on the release
+namespace. Specify the desired levels under the `podSecurity` block:
+
+```yaml
+podSecurity:
+  enforce: restricted
+  audit: restricted
+  warn: restricted
+```
+
 ## Updating n8n versions
 
 When a new n8n release is published, bump the `appVersion` field in
@@ -164,6 +174,9 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | podAntiAffinity.hard | list | `[]` |  |
 | podAntiAffinity.soft | list | `[]` |  |
 | podLabels | object | `{}` |  |
+| podSecurity.audit | string | `""` |  |
+| podSecurity.enforce | string | `""` |  |
+| podSecurity.warn | string | `""` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
 | podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
 | podSecurityContext.runAsGroup | int | `1000` |  |
