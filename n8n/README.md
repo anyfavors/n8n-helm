@@ -40,6 +40,8 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **command** – override the container entrypoint.
 - **args** – container arguments passed to the command.
 - **lifecycle** – container lifecycle hooks such as preStop and postStart.
+- **livenessProbe.httpGet.path** – path used for the container liveness probe.
+- **readinessProbe.httpGet.path** – path used for the container readiness probe.
 - **resources** – CPU and memory requests/limits. Defaults are conservative and
   should be tuned for production installations.
 

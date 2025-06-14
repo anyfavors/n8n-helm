@@ -111,11 +111,21 @@ spec:
           {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
+            httpGet:
+              path: {{ .httpGet.path | quote }}
+              port: {{ .httpGet.port | quote }}
+            {{- with omit . "httpGet" }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- with .Values.readinessProbe }}
           readinessProbe:
+            httpGet:
+              path: {{ .httpGet.path | quote }}
+              port: {{ .httpGet.port | quote }}
+            {{- with omit . "httpGet" }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- with .Values.lifecycle }}
           lifecycle:
