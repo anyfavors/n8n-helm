@@ -56,6 +56,28 @@ To completely remove the deployment:
 helm uninstall my-n8n
 ```
 
+### Upgrade with `--install` and rollback
+
+You can upgrade an existing release while also installing it if it does not
+already exist by adding the `--install` flag:
+
+```bash
+helm upgrade my-n8n n8n/n8n -f values.yaml --install
+```
+
+Should an upgrade introduce a problem, revert to a previous revision using
+`helm rollback`. List the revision history with `helm history` and roll back to
+the desired version:
+
+```bash
+helm history my-n8n
+helm rollback my-n8n <REVISION>
+```
+
+When running with an external PostgreSQL database, ensure the database is backed
+up before performing upgrades or rollbacks so workflow data can be restored if
+needed.
+
 ## Ingress
 
 To expose n8n using a Kubernetes ingress controller, enable the `ingress` block in your values and provide host and path information:
