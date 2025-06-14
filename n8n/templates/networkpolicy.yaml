@@ -13,16 +13,38 @@ spec:
 {{- range .Values.networkPolicy.policyTypes }}
     - {{ . }}
 {{- end }}
+  # Deny all incoming traffic by default. Add entries under
+  # `networkPolicy.ingress` in your values file to allow specific sources.
   {{- if .Values.networkPolicy.ingress }}
   ingress:
     {{- toYaml .Values.networkPolicy.ingress | nindent 4 }}
   {{- else }}
   ingress: []
+  # Example to allow traffic from a namespace:
+  # ingress:
+  #   - from:
+  #       - namespaceSelector:
+  #           matchLabels:
+  #             name: my-namespace
+  #     ports:
+  #       - protocol: TCP
+  #         port: 5678
   {{- end }}
+
+  # Deny all outgoing traffic by default. Add entries under
+  # `networkPolicy.egress` to permit destinations such as databases or APIs.
   {{- if .Values.networkPolicy.egress }}
   egress:
     {{- toYaml .Values.networkPolicy.egress | nindent 4 }}
   {{- else }}
   egress: []
+  # Example to allow egress to a CIDR block:
+  # egress:
+  #   - to:
+  #       - ipBlock:
+  #           cidr: 10.0.0.0/24
+  #     ports:
+  #       - protocol: TCP
+  #         port: 5432
   {{- end }}
 {{- end }}
