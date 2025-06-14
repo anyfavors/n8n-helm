@@ -50,6 +50,14 @@ root filesystem as read-only with privilege escalation disabled. These settings
 are defined in `podSecurityContext` and `securityContext` in `values.yaml` and
 can be adjusted if needed.
 
+Recommended security values:
+
+- `podSecurityContext.runAsUser`: `1000`
+- `podSecurityContext.runAsGroup`: `1000`
+- `podSecurityContext.fsGroup`: `1000`
+- `podSecurityContext.fsGroupChangePolicy`: `OnRootMismatch`
+- `podSecurityContext.seccompProfile.type`: `RuntimeDefault`
+
 Automatic mounting of the ServiceAccount token is disabled via
 `serviceAccount.automount` to limit access to the Kubernetes API and reduce the
 attack surface.
@@ -157,6 +165,8 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | podAntiAffinity.soft | list | `[]` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
+| podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
+| podSecurityContext.runAsGroup | int | `1000` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | rbac.create | bool | `false` |  |
