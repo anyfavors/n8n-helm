@@ -1,0 +1,39 @@
+# Changelog
+
+All notable changes to this Helm chart will be documented in this file.
+
+## [0.1.8] - 2025-06-14
+### Added
+- Support for mounting an existing PersistentVolumeClaim.
+
+## [0.1.7] - 2025-06-13
+### Added
+- Ability to mount extra Secrets and ConfigMaps.
+
+## [0.1.6] - 2025-06-13
+### Added
+- Encryption key secret configuration.
+
+## [0.1.5] - 2025-06-13
+### Added
+- PodDisruptionBudget template.
+
+## [0.1.4] - 2025-06-13
+### Added
+- Optional RBAC Role and RoleBinding resources.
+
+## [0.1.3] - 2025-06-13
+### Added
+- Configurable NetworkPolicy manifest.
+
+## [0.1.2] - 2025-06-13
+### Added
+- Reference existing Secret for database password.
+
+## [0.1.1] - 2025-06-13
+### Added
+- Values schema with Artifact Hub annotation.
+
+## [0.1.0] - 2025-06-13
+### Added
+- Initial chart version.
