@@ -175,6 +175,12 @@ extraConfigMaps: []
 # - name: my-config
 #   mountPath: /etc/config
 
+# Define init containers executed before the main n8n container starts.
+initContainers: []
+# - name: init-db
+#   image: busybox
+#   command: ["sh", "-c", "echo initializing"]
+
 nodeSelector: {}
 
 tolerations: []

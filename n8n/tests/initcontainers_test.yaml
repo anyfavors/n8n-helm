@@ -1,0 +1,21 @@
+suite: init containers
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: is not rendered when none are defined
+    asserts:
+      - notExists:
+          path: spec.template.spec.initContainers
+  - it: renders provided init containers
+    set:
+      initContainers:
+        - name: init-db
+          image: busybox
+          command: ["sh", "-c", "echo hi"]
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: init-db
+      - equal:
+          path: spec.template.spec.initContainers[0].image
+          value: busybox
