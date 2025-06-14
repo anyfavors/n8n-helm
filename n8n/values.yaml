@@ -61,6 +61,10 @@ extraEnv: []
 # - name: N8N_BASIC_AUTH_ACTIVE
 #   value: "true"
 
+# Log level for n8n. See https://docs.n8n.io/reference/environment-variables/#n8n_log_level
+# for allowed values.
+logLevel: info
+
 # Connection details for an external PostgreSQL database. Leave values empty to
 # use the built-in SQLite storage.
 database:
