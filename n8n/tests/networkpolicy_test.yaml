@@ -20,3 +20,34 @@ tests:
       - equal:
           path: spec.egress
           value: []
+  - it: renders custom ingress and egress rules
+    set:
+      networkPolicy:
+        enabled: true
+        ingress:
+          - from:
+              - ipBlock:
+                  cidr: 10.0.0.0/24
+            ports:
+              - protocol: TCP
+                port: 80
+        egress:
+          - to:
+              - ipBlock:
+                  cidr: 0.0.0.0/0
+            ports:
+              - protocol: TCP
+                port: 443
+    asserts:
+      - equal:
+          path: spec.ingress[0].from[0].ipBlock.cidr
+          value: 10.0.0.0/24
+      - equal:
+          path: spec.ingress[0].ports[0].port
+          value: 80
+      - equal:
+          path: spec.egress[0].to[0].ipBlock.cidr
+          value: 0.0.0.0/0
+      - equal:
+          path: spec.egress[0].ports[0].port
+          value: 443
