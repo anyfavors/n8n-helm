@@ -8,7 +8,8 @@ All notable changes to this Helm chart will be documented in this file.
 
 ## [0.1.8] - 2025-06-14
 ### Added
-- Support for mounting an existing PersistentVolumeClaim.
+- `persistence.existingClaim` value for mounting a pre-created PersistentVolumeClaim.
+- Deployment and PVC templates updated to use the provided claim instead of creating a new one.
 
 ## [0.1.7] - 2025-06-13
 ### Added
