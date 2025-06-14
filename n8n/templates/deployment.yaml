@@ -63,8 +63,8 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- $db := .Values.database }}
-          {{- $secret := $db.passwordSecret }}
-          {{- $enc := .Values.encryptionKeySecret }}
+          {{- $secret := ternary (dict "name" (printf "%s-db-password" (include "n8n.fullname" .)) "key" "password") $db.passwordSecret .Values.generateDatabasePassword }}
+          {{- $enc := ternary (dict "name" (printf "%s-encryption-key" (include "n8n.fullname" .)) "key" "encryptionKey") .Values.encryptionKeySecret .Values.generateEncryptionKey }}
           {{- $webhook := .Values.webhookUrl }}
           {{- if or $db.host $db.port $db.user $db.password $secret.name $db.database $enc.name $webhook (gt (len .Values.extraEnv) 0) }}
           env:

@@ -142,6 +142,8 @@
       },
       "additionalProperties": false
     },
+    "generateEncryptionKey": { "type": "boolean" },
+    "generateDatabasePassword": { "type": "boolean" },
     "webhookUrl": { "type": "string" },
     "service": {
       "type": "object",
