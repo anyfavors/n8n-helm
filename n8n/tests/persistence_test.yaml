@@ -1,0 +1,21 @@
+suite: persistence
+templates:
+  - templates/pvc.yaml
+tests:
+  - it: is not rendered when disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: sets storage class and size when enabled
+    set:
+      persistence:
+        enabled: true
+        storageClass: standard
+        size: 5Gi
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: standard
+      - equal:
+          path: spec.resources.requests.storage
+          value: 5Gi
