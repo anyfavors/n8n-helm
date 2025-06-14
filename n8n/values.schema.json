@@ -264,6 +264,7 @@
         "additionalProperties": false
       }
     },
+    "initContainers": { "type": "array", "items": { "type": "object" } },
     "nodeSelector": {
       "type": "object",
       "additionalProperties": { "type": "string" }
