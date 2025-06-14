@@ -45,7 +45,7 @@ jobs:
           version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
           echo "version=$version" >> "$GITHUB_OUTPUT"
       - name: Scan chart for vulnerabilities
-        uses: aquasecurity/trivy-action@0.14.0
+        uses: aquasecurity/trivy-action@0.31.0
         with:
           scan-type: fs
           scan-ref: n8n
