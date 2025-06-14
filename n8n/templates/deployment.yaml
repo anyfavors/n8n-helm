@@ -132,16 +132,7 @@ spec:
             {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            {{- range .Values.extraSecrets }}
-            - name: secret-{{ .name }}
-              mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly | default true }}
-            {{- end }}
-            {{- range .Values.extraConfigMaps }}
-            - name: config-{{ .name }}
-              mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly | default true }}
-            {{- end }}
+            {{- include "n8n.extraVolumeMounts" . | nindent 12 }}
           {{- else }}
           {{- $vm := .Values.volumeMounts }}
           {{- if or (gt (len $vm) 0) (gt (len .Values.extraSecrets) 0) (gt (len .Values.extraConfigMaps) 0) }}
@@ -149,16 +140,7 @@ spec:
             {{- with $vm }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            {{- range .Values.extraSecrets }}
-            - name: secret-{{ .name }}
-              mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly | default true }}
-            {{- end }}
-            {{- range .Values.extraConfigMaps }}
-            - name: config-{{ .name }}
-              mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly | default true }}
-            {{- end }}
+            {{- include "n8n.extraVolumeMounts" . | nindent 12 }}
           {{- end }}
           {{- end }}
         {{- with .Values.extraContainers }}
@@ -172,16 +154,7 @@ spec:
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        {{- range .Values.extraSecrets }}
-        - name: secret-{{ .name }}
-          secret:
-            secretName: {{ .name }}
-        {{- end }}
-        {{- range .Values.extraConfigMaps }}
-        - name: config-{{ .name }}
-          configMap:
-            name: {{ .name }}
-        {{- end }}
+        {{- include "n8n.extraVolumes" . | nindent 8 }}
       {{- else }}
       {{- $vol := .Values.volumes }}
       {{- if or (gt (len $vol) 0) (gt (len .Values.extraSecrets) 0) (gt (len .Values.extraConfigMaps) 0) }}
@@ -189,16 +162,7 @@ spec:
         {{- with $vol }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        {{- range .Values.extraSecrets }}
-        - name: secret-{{ .name }}
-          secret:
-            secretName: {{ .name }}
-        {{- end }}
-        {{- range .Values.extraConfigMaps }}
-        - name: config-{{ .name }}
-          configMap:
-            name: {{ .name }}
-        {{- end }}
+        {{- include "n8n.extraVolumes" . | nindent 8 }}
       {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
