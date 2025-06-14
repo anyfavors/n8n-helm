@@ -1,0 +1,27 @@
+suite: ingress
+templates:
+  - templates/ingress.yaml
+tests:
+  - it: is not rendered when disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: renders host and path when enabled
+    set:
+      ingress:
+        enabled: true
+        hosts:
+          - host: example.com
+            paths:
+              - path: /
+                pathType: Prefix
+    asserts:
+      - equal:
+          path: spec.rules[0].host
+          value: example.com
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
