@@ -11,7 +11,7 @@
       ],
       "depNameTemplate": "norwoodj/helm-docs",
       "datasourceTemplate": "github-releases",
-      "replaceString": "helm-docs/releases/download/v{{{newValue}}}/helm-docs_{{{newValue}}}_Linux_x86_64.tar.gz"
+      "autoReplaceStringTemplate": "helm-docs/releases/download/v{{{newValue}}}/helm-docs_{{{newValue}}}_Linux_x86_64.tar.gz"
     }
   ]
 }
