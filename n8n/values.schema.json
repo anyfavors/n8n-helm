@@ -206,6 +206,7 @@
     "resources": { "type": "object" },
     "livenessProbe": { "type": "object" },
     "readinessProbe": { "type": "object" },
+    "lifecycle": { "type": "object" },
     "autoscaling": {
       "type": "object",
       "properties": {
