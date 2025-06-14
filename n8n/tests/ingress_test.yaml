@@ -25,3 +25,23 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].pathType
           value: Prefix
+  - it: renders tls configuration
+    set:
+      ingress:
+        enabled: true
+        hosts:
+          - host: tls.example.com
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: n8n-tls
+            hosts:
+              - tls.example.com
+    asserts:
+      - equal:
+          path: spec.tls[0].secretName
+          value: n8n-tls
+      - equal:
+          path: spec.tls[0].hosts[0]
+          value: tls.example.com
