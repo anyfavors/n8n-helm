@@ -230,6 +230,33 @@ networkPolicy:
   egress: []
 ```
 
+## Pod Security Standards
+
+The chart runs n8n with a non-root user, drops all capabilities and mounts the
+root filesystem read-only. These defaults align with the "restricted" Pod
+Security Standard. To enforce this profile on your namespace add the
+`pod-security.kubernetes.io/*` labels:
+
+```bash
+kubectl label --overwrite namespace my-n8n \
+  pod-security.kubernetes.io/enforce=restricted \
+  pod-security.kubernetes.io/audit=restricted \
+  pod-security.kubernetes.io/warn=restricted
+```
+
+Alternatively, apply the labels via a manifest:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-n8n
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+```
+
 ## Pod disruption budgets
 
 Create a PodDisruptionBudget to control the number of pods that may be
