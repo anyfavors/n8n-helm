@@ -189,6 +189,12 @@ initContainers: []
 #   image: busybox
 #   command: ["sh", "-c", "echo initializing"]
 
+# Additional sidecar containers running alongside n8n.
+extraContainers: []
+# - name: sidecar
+#   image: busybox
+#   command: ["sh", "-c", "echo sidecar"]
+
 nodeSelector: {}
 
 tolerations: []
