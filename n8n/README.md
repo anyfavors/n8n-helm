@@ -33,6 +33,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **extraSecrets** – mount additional Secrets inside the pod.
 - **extraConfigMaps** – mount additional ConfigMaps inside the pod.
 - **initContainers** – additional init containers executed before the main pod.
+- **lifecycle** – container lifecycle hooks such as preStop and postStart.
 - **resources** – CPU and memory requests/limits. Defaults are conservative and
   should be tuned for production installations.
 
@@ -109,6 +110,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
 | initContainers | list | `[]` |  |
+| lifecycle | object | `{}` |  |
 | livenessProbe.httpGet.path | string | `"/"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
 | nameOverride | string | `""` |  |

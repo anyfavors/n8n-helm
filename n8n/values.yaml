@@ -132,6 +132,14 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+# Optional lifecycle hooks. See https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/
+lifecycle: {}
+# postStart:
+#   exec:
+#     command: ["sh", "-c", "echo started"]
+# preStop:
+#   exec:
+#     command: ["sh", "-c", "echo stopping"]
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
