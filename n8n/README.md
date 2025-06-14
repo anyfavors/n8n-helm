@@ -64,5 +64,7 @@ helm install my-n8n n8n/n8n \
 
 ## Publishing
 
-This chart is packaged and released to the `gh-pages` branch by [GitHub Actions](../.github/workflows/release.yaml) when changes are pushed to `main`. Users can add <https://anyfavors.github.io/n8n-helm> as a Helm repository to install published versions.
+Chart packages are created automatically using [chart-releaser](https://github.com/helm/chart-releaser) when commits land on `main`.
+To cut a release, bump the version in `Chart.yaml` and push the change. The [`release.yaml`](../.github/workflows/release.yaml) workflow will upload the packaged chart to GitHub and update the index on `gh-pages`.
+Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository to install published versions.
 

@@ -276,7 +276,13 @@ helm install my-n8n n8n/n8n \
 ```
 ## Publishing
 
-Chart packages are published to the `gh-pages` branch by GitHub Actions. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory on every push to `main` and updates the repository index hosted at <https://anyfavors.github.io/n8n-helm>.
+Chart releases are handled automatically by [chart-releaser](https://github.com/helm/chart-releaser).
+To publish a new version:
+
+1. Update the `version` (and optionally `appVersion`) fields in `n8n/Chart.yaml`.
+2. Commit the change to the `main` branch.
+3. Push the commit to GitHub. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory and uploads it to a GitHub release.
+4. Once the workflow completes, the repository index on the `gh-pages` branch is updated at <https://anyfavors.github.io/n8n-helm>.
 
 ## License
 
