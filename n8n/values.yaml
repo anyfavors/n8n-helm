@@ -101,6 +101,14 @@ service:
   # Annotations to add to the service
   annotations: {}
 
+# Expose Prometheus metrics on a dedicated service
+metrics:
+  enabled: false
+  # Port for the metrics service
+  port: 5678
+  serviceMonitor:
+    enabled: false
+
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false

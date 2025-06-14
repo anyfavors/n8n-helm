@@ -1,0 +1,21 @@
+suite: service monitor
+templates:
+  - templates/servicemonitor.yaml
+tests:
+  - it: not rendered by default
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: renders ServiceMonitor when enabled
+    set:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    asserts:
+      - equal:
+          path: kind
+          value: ServiceMonitor
+      - equal:
+          path: spec.endpoints[0].port
+          value: metrics
