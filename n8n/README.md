@@ -94,6 +94,7 @@ extraContainers:
 ## Publishing
 
 Chart packages are created automatically using [chart-releaser](https://github.com/helm/chart-releaser) when commits land on `main`.
+Before the first release, create a `gh-pages` branch in the repository and configure GitHub Pages to serve from it (the branch can start with an empty `index.yaml`).
 To cut a release, bump the version in `Chart.yaml` and push the change. The [`release.yaml`](../.github/workflows/release.yaml) workflow will upload the packaged chart to GitHub and update the index on `gh-pages`.
 Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository to install published versions.
 
