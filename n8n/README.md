@@ -153,6 +153,8 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | persistence.size | string | `"8Gi"` |  |
 | persistence.storageClass | string | `""` |  |
 | podAnnotations | object | `{}` |  |
+| podAntiAffinity.hard | list | `[]` |  |
+| podAntiAffinity.soft | list | `[]` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |

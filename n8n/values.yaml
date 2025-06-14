@@ -210,6 +210,29 @@ nodeSelector: {}
 
 tolerations: []
 
+# Pod anti-affinity rules. Soft rules are expressed as
+# preferredDuringSchedulingIgnoredDuringExecution and hard rules as
+# requiredDuringSchedulingIgnoredDuringExecution.
+podAntiAffinity:
+  hard: []
+  # - labelSelector:
+  #     matchExpressions:
+  #       - key: app.kubernetes.io/name
+  #         operator: In
+  #         values:
+  #           - n8n
+  #   topologyKey: kubernetes.io/hostname
+  soft: []
+  # - weight: 100
+  #   podAffinityTerm:
+  #     labelSelector:
+  #       matchExpressions:
+  #         - key: app.kubernetes.io/name
+  #           operator: In
+  #           values:
+  #             - n8n
+  #     topologyKey: kubernetes.io/hostname
+
 affinity: {}
 
 # Deployment strategy configuration.
