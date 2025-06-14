@@ -1,0 +1,20 @@
+suite: strategy
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: sets custom rolling update values
+    set:
+      strategy:
+        type: RollingUpdate
+        maxSurge: 2
+        maxUnavailable: 0
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate
+      - equal:
+          path: spec.strategy.rollingUpdate.maxSurge
+          value: 2
+      - equal:
+          path: spec.strategy.rollingUpdate.maxUnavailable
+          value: 0

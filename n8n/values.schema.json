@@ -272,7 +272,16 @@
       "additionalProperties": { "type": "string" }
     },
     "tolerations": { "type": "array", "items": { "type": "object" } },
-    "affinity": { "type": "object" }
+    "affinity": { "type": "object" },
+    "strategy": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "maxSurge": { "type": ["integer", "string"] },
+        "maxUnavailable": { "type": ["integer", "string"] }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

@@ -162,6 +162,9 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | serviceAccount.automount | bool | `false` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
+| strategy.maxSurge | string | `"25%"` |  |
+| strategy.maxUnavailable | string | `"25%"` |  |
+| strategy.type | string | `"RollingUpdate"` |  |
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` |  |
 | volumes | list | `[]` |  |
