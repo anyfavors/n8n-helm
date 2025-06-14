@@ -60,3 +60,34 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+{{/*
+Extra volume mounts for secret and configmap additions.
+*/}}
+{{- define "n8n.extraVolumeMounts" -}}
+{{- range .Values.extraSecrets }}
+- name: secret-{{ .name }}
+  mountPath: {{ .mountPath }}
+  readOnly: {{ .readOnly | default true }}
+{{- end }}
+{{- range .Values.extraConfigMaps }}
+- name: config-{{ .name }}
+  mountPath: {{ .mountPath }}
+  readOnly: {{ .readOnly | default true }}
+{{- end }}
+{{- end }}
+
+{{/*
+Extra volumes for secret and configmap additions.
+*/}}
+{{- define "n8n.extraVolumes" -}}
+{{- range .Values.extraSecrets }}
+- name: secret-{{ .name }}
+  secret:
+    secretName: {{ .name }}
+{{- end }}
+{{- range .Values.extraConfigMaps }}
+- name: config-{{ .name }}
+  configMap:
+    name: {{ .name }}
+{{- end }}
+{{- end }}
