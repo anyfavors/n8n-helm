@@ -33,6 +33,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **extraSecrets** – mount additional Secrets inside the pod.
 - **extraConfigMaps** – mount additional ConfigMaps inside the pod.
 - **initContainers** – additional init containers executed before the main pod.
+- **extraContainers** – additional containers running alongside the main pod.
 - **lifecycle** – container lifecycle hooks such as preStop and postStart.
 - **resources** – CPU and memory requests/limits. Defaults are conservative and
   should be tuned for production installations.
@@ -70,6 +71,17 @@ helm install my-n8n n8n/n8n \
   --set resources.limits.memory=1Gi
 ```
 
+## Extra containers example
+
+Additional sidecars can be defined via `extraContainers`:
+
+```yaml
+extraContainers:
+  - name: sidecar
+    image: busybox
+    command: ["sh", "-c", "echo sidecar"]
+```
+
 ## Publishing
 
 Chart packages are created automatically using [chart-releaser](https://github.com/helm/chart-releaser) when commits land on `main`.
@@ -95,6 +107,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | encryptionKeySecret.key | string | `"encryptionKey"` |  |
 | encryptionKeySecret.name | string | `""` |  |
 | extraConfigMaps | list | `[]` |  |
+| extraContainers | list | `[]` |  |
 | extraEnv | list | `[]` |  |
 | extraSecrets | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
