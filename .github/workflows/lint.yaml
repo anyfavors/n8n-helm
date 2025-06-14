@@ -39,13 +39,22 @@ jobs:
         run: |
           helm schema-gen n8n/values.yaml > generated-values.schema.json
           diff -u n8n/values.schema.json generated-values.schema.json
-      - name: Scan for vulnerabilities
+      - name: Get chart version
+        id: chart
+        run: |
+          version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Scan chart for vulnerabilities
         uses: aquasecurity/trivy-action@0.14.0
         with:
           scan-type: fs
           scan-ref: n8n
           exit-code: 1
           severity: HIGH
+      - name: Scan container image for vulnerabilities
+        run: |
+          trivy image n8nio/n8n:${{ steps.chart.outputs.version }} \
+            --severity HIGH,CRITICAL --exit-code 1
 
   install:
     runs-on: ubuntu-latest
