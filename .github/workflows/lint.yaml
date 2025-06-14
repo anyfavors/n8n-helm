@@ -41,3 +41,22 @@ jobs:
           exit-code: 1
           severity: HIGH
 
+  install:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.8.0
+        with:
+          wait: 120s
+      - name: Install chart
+        run: helm install my-n8n ./n8n --wait --timeout 300s
+      - name: Wait for pods
+        run: kubectl wait --namespace default --for=condition=ready pod -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" --timeout=300s
+      - name: Get pods
+        run: kubectl get pods -n default
+      - name: Delete release
+        run: helm uninstall my-n8n
