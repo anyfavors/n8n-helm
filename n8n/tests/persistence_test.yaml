@@ -27,3 +27,12 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: ignores storageClass when existing claim used
+    set:
+      persistence:
+        enabled: true
+        storageClass: fast
+        existingClaim: my-data
+    asserts:
+      - hasDocuments:
+          count: 0
