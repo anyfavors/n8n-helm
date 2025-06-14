@@ -16,3 +16,21 @@ tests:
       - equal:
           path: metadata.annotations.foo
           value: bar
+  - it: renders a NodePort service when configured
+    set:
+      service:
+        type: NodePort
+    asserts:
+      - equal:
+          path: spec.type
+          value: NodePort
+      - notExists:
+          path: spec.ports[0].nodePort
+  - it: renders a LoadBalancer service when configured
+    set:
+      service:
+        type: LoadBalancer
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
