@@ -29,6 +29,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **rbac.create** – create Role and RoleBinding resources.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
+- **logLevel** – set the verbosity of n8n logs.
 - **extraEnv** – additional environment variables passed to the container.
 - **extraSecrets** – mount additional Secrets inside the pod.
 - **extraConfigMaps** – mount additional ConfigMaps inside the pod.
@@ -113,6 +114,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | lifecycle | object | `{}` |  |
 | livenessProbe.httpGet.path | string | `"/"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
+| logLevel | string | `"info"` |  |
 | nameOverride | string | `""` |  |
 | networkPolicy.egress | list | `[]` |  |
 | networkPolicy.enabled | bool | `false` |  |

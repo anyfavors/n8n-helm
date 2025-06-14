@@ -104,6 +104,10 @@
         "additionalProperties": false
       }
     },
+    "logLevel": {
+      "type": "string",
+      "enum": ["error", "warn", "info", "debug", "silent"]
+    },
     "database": {
       "type": "object",
       "properties": {

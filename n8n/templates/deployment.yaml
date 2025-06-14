@@ -47,8 +47,10 @@ spec:
           {{- $db := .Values.database }}
           {{- $secret := $db.passwordSecret }}
           {{- $enc := .Values.encryptionKeySecret }}
-          {{- if or $db.host $db.port $db.user $db.password $secret.name $db.database $enc.name (gt (len .Values.extraEnv) 0) }}
+          {{- if or $db.host $db.port $db.user $db.password $secret.name $db.database $enc.name (gt (len .Values.extraEnv) 0) .Values.logLevel }}
           env:
+            - name: N8N_LOG_LEVEL
+              value: "{{ .Values.logLevel }}"
             {{- if $db.host }}
             - name: DB_POSTGRESDB_HOST
               value: "{{ $db.host }}"
