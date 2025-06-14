@@ -438,6 +438,29 @@ To publish a new version:
 5. Push the commit to GitHub. The [`release.yaml`](.github/workflows/release.yaml) workflow packages the chart from the `n8n` directory and uploads it to a GitHub release.
 6. Once the workflow completes, the repository index on the `gh-pages` branch is updated at <https://anyfavors.github.io/n8n-helm>.
 
+## Development
+
+This repository uses [pre-commit](https://pre-commit.com/) to automate checks.
+Install the tool and set up the Git hooks:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+The configured hook runs `helm-docs` and fails if documentation files change.
+Download the `helm-docs` binary and ensure it is available in your `PATH`:
+
+```bash
+curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz | tar -xz -C /usr/local/bin helm-docs
+```
+
+Run all checks manually with:
+
+```bash
+pre-commit run --all-files
+```
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
