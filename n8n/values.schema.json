@@ -220,7 +220,8 @@
       "properties": {
         "enabled": { "type": "boolean" },
         "size": { "type": "string" },
-        "storageClass": { "type": "string" }
+        "storageClass": { "type": "string" },
+        "existingClaim": { "type": "string" }
       },
       "additionalProperties": false
     },

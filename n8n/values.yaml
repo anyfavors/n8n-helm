@@ -146,6 +146,7 @@ persistence:
   enabled: false
   size: 8Gi
   storageClass: ""
+  existingClaim: ""
 
 # Additional volumes on the output Deployment definition.
 volumes: []

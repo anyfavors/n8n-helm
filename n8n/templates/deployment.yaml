@@ -134,7 +134,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "n8n.fullname" . }}-data
+            claimName: {{ default (printf "%s-data" (include "n8n.fullname" .)) .Values.persistence.existingClaim }}
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

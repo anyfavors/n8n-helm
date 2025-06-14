@@ -90,13 +90,14 @@ ingress:
 ```
 ## Persistence
 
-Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values. Data is mounted at `/home/node/.n8n` inside the pod.
+Set `persistence.enabled` to `true` to store workflows and other n8n data on a persistent volume. The claim size and storage class can be adjusted with the `size` and `storageClass` values, or supply `existingClaim` to mount a pre-created PersistentVolumeClaim. Data is mounted at `/home/node/.n8n` inside the pod.
 
 ```yaml
 persistence:
   enabled: true
   size: 8Gi
   storageClass: standard
+  existingClaim: my-data
 ```
 
 Install with these settings from the command line:
