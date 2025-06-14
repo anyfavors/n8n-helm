@@ -35,6 +35,8 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **extraConfigMaps** – mount additional ConfigMaps inside the pod.
 - **initContainers** – additional init containers executed before the main pod.
 - **extraContainers** – additional containers running alongside the main pod.
+- **command** – override the container entrypoint.
+- **args** – container arguments passed to the command.
 - **lifecycle** – container lifecycle hooks such as preStop and postStart.
 - **resources** – CPU and memory requests/limits. Defaults are conservative and
   should be tuned for production installations.
