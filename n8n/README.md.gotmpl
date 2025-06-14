@@ -44,6 +44,10 @@ root filesystem as read-only with privilege escalation disabled. These settings
 are defined in `podSecurityContext` and `securityContext` in `values.yaml` and
 can be adjusted if needed.
 
+Automatic mounting of the ServiceAccount token is disabled via
+`serviceAccount.automount` to limit access to the Kubernetes API and reduce the
+attack surface.
+
 ## Updating n8n versions
 
 When a new n8n release is published, bump the `appVersion` field in
