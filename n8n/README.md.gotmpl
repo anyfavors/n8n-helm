@@ -1,6 +1,7 @@
 # n8n Helm Chart
 
 This directory contains the Helm chart for deploying [n8n](https://n8n.io), an extendable workflow automation tool.
+Refer to the [changelog](../CHANGELOG.md) for release notes.
 
 ## Quick start
 
