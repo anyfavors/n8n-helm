@@ -448,10 +448,32 @@
             "type": "array"
         },
         "volumeMounts": {
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "mountPath": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
         },
         "volumes": {
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "emptyDir": {
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
         },
         "webhookUrl": {
             "type": "string"
