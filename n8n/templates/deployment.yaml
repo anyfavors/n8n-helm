@@ -64,6 +64,8 @@ spec:
           {{- end }}
           {{- $db := .Values.database }}
           {{- $pg := .Values.postgresql }}
+          {{- $pgAuth := $pg.auth | default dict }}
+          {{- $pgSecretKeys := $pgAuth.secretKeys | default dict }}
           {{- $secret := ternary (dict "name" (printf "%s-db-password" (include "n8n.fullname" .)) "key" "password") $db.passwordSecret .Values.generateDatabasePassword }}
           {{- $enc := ternary (dict "name" (printf "%s-encryption-key" (include "n8n.fullname" .)) "key" "encryptionKey") .Values.encryptionKeySecret .Values.generateEncryptionKey }}
           {{- $webhook := .Values.webhookUrl }}
@@ -83,7 +85,7 @@ spec:
             {{- end }}
             {{- if or $db.user $pg.enabled }}
             - name: DB_POSTGRESDB_USER
-              value: "{{ default $pg.auth.username $db.user }}"
+              value: "{{ default $pgAuth.username $db.user }}"
             {{- end }}
             {{- if $db.password }}
             - name: DB_POSTGRESDB_PASSWORD
@@ -98,8 +100,8 @@ spec:
             - name: DB_POSTGRESDB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ default (include "n8n.postgresql.fullname" .) $pg.auth.existingSecret }}
-                  key: {{ $pg.auth.secretKeys.userPasswordKey | default "password" }}
+                  name: {{ default (include "n8n.postgresql.fullname" .) $pgAuth.existingSecret }}
+                  key: {{ default "password" $pgSecretKeys.userPasswordKey }}
             {{- else if $secret.name }}
             - name: DB_POSTGRESDB_PASSWORD
               valueFrom:
