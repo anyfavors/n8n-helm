@@ -31,6 +31,8 @@ jobs:
         run: |
           helm-docs
           git diff --exit-code
+      - name: Build chart dependencies
+        run: helm dependency build n8n
       - name: Helm lint
         run: helm lint n8n
       - name: Helm lint with values
@@ -82,6 +84,8 @@ jobs:
           wait: 120s
       - name: Check cluster readiness
         run: kubectl get nodes && kubectl get pods --all-namespaces
+      - name: Build chart dependencies
+        run: helm dependency build ./n8n
       - name: Install chart
         run: helm install my-n8n ./n8n --wait --timeout 300s
       - name: Debug Helm installation
