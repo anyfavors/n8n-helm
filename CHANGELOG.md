@@ -12,6 +12,10 @@ All notable changes to this Helm chart will be documented in this file.
 ### Fixed
 - Safely access PostgreSQL secret keys to avoid nil pointer errors.
 
+## [0.1.18] - 2025-06-15
+### Fixed
+- Mount writable cache directory when running with a read-only root filesystem.
+
 ## [0.1.15] - 2025-06-15
 ### Fixed
 - Mount an emptyDir volume when persistence is disabled so pods start with a read-only filesystem.
