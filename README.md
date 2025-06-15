@@ -408,11 +408,16 @@ chart provisions a PostgreSQL instance using the Bitnami subchart and
 automatically configures the application to connect to it:
 
 ```bash
+helm dependency build n8n
 helm install my-n8n n8n/n8n \
   --set postgresql.enabled=true \
   --set extraEnv[0].name=DB_TYPE \
   --set extraEnv[0].value=postgresdb
 ```
+
+If you skip the `helm dependency build` step the install will fail with a
+missing chart error because the PostgreSQL subchart is not committed to the
+repository.
 
 ## Credential encryption
 
