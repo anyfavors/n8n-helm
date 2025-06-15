@@ -27,3 +27,7 @@ Thumbs.db
 # Environment files
 .env
 
+
+# Generated files
+generated-values.schema.json
+get_helm.sh

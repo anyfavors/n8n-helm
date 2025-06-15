@@ -6,8 +6,8 @@ tests:
     set:
       strategy:
         type: RollingUpdate
-        maxSurge: 2
-        maxUnavailable: 0
+    values:
+      - ./strategy_values.yaml
     asserts:
       - equal:
           path: spec.strategy.type

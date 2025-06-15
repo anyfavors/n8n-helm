@@ -152,7 +152,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | extraSecrets | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | generateDatabasePassword | bool | `false` |  |
-| generateEncryptionKey | bool | `false` |  |
+| generateEncryptionKey | bool | `true` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"n8nio/n8n"` |  |
 | image.tag | string | `""` |  |
