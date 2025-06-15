@@ -1,0 +1,4 @@
+strategy:
+  type: RollingUpdate
+  maxSurge: "2"
+  maxUnavailable: "0"

@@ -412,10 +412,10 @@
             "type": "object",
             "properties": {
                 "maxSurge": {
-                    "type": ["integer", "string"]
+                    "type": "string"
                 },
                 "maxUnavailable": {
-                    "type": ["integer", "string"]
+                    "type": "string"
                 },
                 "type": {
                     "type": "string"
