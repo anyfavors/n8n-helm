@@ -16,6 +16,7 @@ helm repo add n8n https://anyfavors.github.io/n8n-helm
 helm repo update
 
 # install the chart with the default values
+helm dependency build n8n
 helm install my-n8n n8n/n8n
 ```
 

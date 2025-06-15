@@ -15,6 +15,8 @@ All notable changes to this Helm chart will be documented in this file.
 ## [0.1.18] - 2025-06-15
 ### Fixed
 - Mount writable cache directory when running with a read-only root filesystem.
+- Fetch chart dependencies during CI lint workflow.
+- Document running `helm dependency build` before installing the chart.
 
 ## [0.1.15] - 2025-06-15
 ### Fixed

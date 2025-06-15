@@ -17,6 +17,8 @@ jobs:
         uses: azure/setup-helm@v3
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Build chart dependencies
+        run: helm dependency build n8n
       - name: Install helm-docs
         run: |
           curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz \
