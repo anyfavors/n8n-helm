@@ -1,0 +1,13 @@
+suite: webhook
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: sets webhook env when value provided
+    set:
+      webhookUrl: http://example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: N8N_WEBHOOK_URL
+            value: http://example.com
