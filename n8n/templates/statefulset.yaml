@@ -47,30 +47,43 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           {{- $db := .Values.database }}
+          {{- $pg := .Values.postgresql }}
           {{- $secret := ternary (dict "name" (printf "%s-db-password" (include "n8n.fullname" .)) "key" "password") $db.passwordSecret .Values.generateDatabasePassword }}
           {{- $enc := ternary (dict "name" (printf "%s-encryption-key" (include "n8n.fullname" .)) "key" "encryptionKey") .Values.encryptionKeySecret .Values.generateEncryptionKey }}
           {{- $webhook := .Values.webhookUrl }}
-          {{- if or $db.host $db.port $db.user $db.password $secret.name $db.database $enc.name $webhook (gt (len .Values.extraEnv) 0) }}
+          {{- if or $db.host $db.port $db.user $db.password $db.passwordSecret.name $secret.name $db.database $pg.enabled $enc.name $webhook (gt (len .Values.extraEnv) 0) }}
           env:
             {{- if $webhook }}
             - name: N8N_WEBHOOK_URL
               value: "{{ $webhook }}"
             {{- end }}
-            {{- if $db.host }}
+            {{- if or $db.host $pg.enabled }}
             - name: DB_POSTGRESDB_HOST
-              value: "{{ $db.host }}"
+              value: "{{ default (include "n8n.postgresql.fullname" .) $db.host }}"
             {{- end }}
-            {{- if $db.port }}
+            {{- if or $db.port $pg.enabled }}
             - name: DB_POSTGRESDB_PORT
-              value: "{{ $db.port }}"
+              value: "{{ default 5432 $db.port }}"
             {{- end }}
-            {{- if $db.user }}
+            {{- if or $db.user $pg.enabled }}
             - name: DB_POSTGRESDB_USER
-              value: "{{ $db.user }}"
+              value: "{{ default $pg.auth.username $db.user }}"
             {{- end }}
             {{- if $db.password }}
             - name: DB_POSTGRESDB_PASSWORD
               value: "{{ $db.password }}"
+            {{- else if $db.passwordSecret.name }}
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $db.passwordSecret.name }}
+                  key: {{ $db.passwordSecret.key | default "password" }}
+            {{- else if $pg.enabled }}
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "n8n.postgresql.fullname" .) $pg.auth.existingSecret }}
+                  key: {{ $pg.auth.secretKeys.userPasswordKey | default "password" }}
             {{- else if $secret.name }}
             - name: DB_POSTGRESDB_PASSWORD
               valueFrom:
@@ -78,9 +91,9 @@ spec:
                   name: {{ $secret.name }}
                   key: {{ $secret.key | default "password" }}
             {{- end }}
-            {{- if $db.database }}
+            {{- if or $db.database $pg.enabled }}
             - name: DB_POSTGRESDB_DATABASE
-              value: "{{ $db.database }}"
+              value: "{{ default $pg.auth.database $db.database }}"
             {{- end }}
             {{- if $enc.name }}
             - name: N8N_ENCRYPTION_KEY

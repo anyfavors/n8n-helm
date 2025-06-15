@@ -28,6 +28,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.
 - **rbac.create** – create Role and RoleBinding resources.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
+- **postgresql.enabled** – deploy a PostgreSQL database as part of the release.
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
 - **generateEncryptionKey** – automatically create a secret with a random encryption key.
 - **generateDatabasePassword** – automatically create a secret with a random database password.
@@ -195,6 +196,10 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | podSecurityContext.runAsGroup | int | `1000` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| postgresql.auth.database | string | `"n8n"` |  |
+| postgresql.auth.existingSecret | string | `""` |  |
+| postgresql.auth.username | string | `"n8n"` |  |
+| postgresql.enabled | bool | `false` |  |
 | rbac.create | bool | `false` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
