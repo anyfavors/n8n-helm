@@ -155,7 +155,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | generateEncryptionKey | bool | `false` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"n8nio/n8n"` |  |
-| image.tag | string | `""` |  |
+| image.tag | string | `"1.98.1"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
