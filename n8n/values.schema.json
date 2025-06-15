@@ -59,26 +59,6 @@
                 }
             }
         },
-        "postgresql": {
-            "type": "object",
-            "properties": {
-                "enabled": { "type": "boolean" },
-                "auth": {
-                    "type": "object",
-                    "properties": {
-                        "username": { "type": "string" },
-                        "database": { "type": "string" },
-                        "existingSecret": { "type": "string" },
-                        "secretKeys": {
-                            "type": "object",
-                            "properties": {
-                                "userPasswordKey": { "type": "string" }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "encryptionKeySecret": {
             "type": "object",
             "properties": {
@@ -315,6 +295,28 @@
                             "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "postgresql": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "string"
+                        },
+                        "existingSecret": {
+                            "type": "string"
+                        },
+                        "username": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "enabled": {
+                    "type": "boolean"
                 }
             }
         },
