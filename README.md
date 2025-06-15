@@ -401,6 +401,24 @@ helm install my-n8n n8n/n8n \
   --set extraEnv[1].value=n8n
 ```
 
+## Using the bundled PostgreSQL database
+
+Enable the `postgresql` block to deploy an internal database alongside n8n. The
+chart provisions a PostgreSQL instance using the Bitnami subchart and
+automatically configures the application to connect to it:
+
+```bash
+helm dependency build n8n
+helm install my-n8n n8n/n8n \
+  --set postgresql.enabled=true \
+  --set extraEnv[0].name=DB_TYPE \
+  --set extraEnv[0].value=postgresdb
+```
+
+If you skip the `helm dependency build` step the install will fail with a
+missing chart error because the PostgreSQL subchart is not committed to the
+repository.
+
 ## Credential encryption
 
 Generate a 256‑bit key and store it in a secret to encrypt credentials:

@@ -2,6 +2,16 @@
 
 All notable changes to this Helm chart will be documented in this file.
 
+## [0.1.17] - 2025-06-15
+### Added
+- Optional PostgreSQL database deployed via the Bitnami subchart.
+### Changed
+- Documented that `helm dependency build` must be run before enabling the
+  bundled database.
+
+### Fixed
+- Safely access PostgreSQL secret keys to avoid nil pointer errors.
+
 ## [0.1.15] - 2025-06-15
 ### Fixed
 - Mount an emptyDir volume when persistence is disabled so pods start with a read-only filesystem.

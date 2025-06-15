@@ -1,0 +1,15 @@
+suite: postgresql
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: enables bundled database
+    set:
+      postgresql:
+        enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DB_POSTGRESDB_HOST
+            value: RELEASE-NAME-n8n-postgresql
+
