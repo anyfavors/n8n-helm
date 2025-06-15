@@ -53,6 +53,13 @@ jobs:
           scan-ref: n8n
           exit-code: 1
           severity: HIGH
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -qO- https://github.com/aquasecurity/trivy/releases/download/v0.50.2/trivy_0.50.2_Linux-64bit.deb > trivy.deb
+          sudo dpkg -i trivy.deb
+          rm trivy.deb
       - name: Scan container image for vulnerabilities
         run: |
           trivy image n8nio/n8n:${{ steps.chart.outputs.version }} \
