@@ -2,6 +2,10 @@
 
 All notable changes to this Helm chart will be documented in this file.
 
+## [0.1.14] - 2025-06-15
+### Fixed
+- Generate encryption key by default so fresh installs succeed without persistence.
+
 ## [0.1.9] - 2025-06-14
 ### Added
 - Lifecycle hooks configuration.
