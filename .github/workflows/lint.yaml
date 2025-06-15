@@ -78,8 +78,15 @@ jobs:
         uses: helm/kind-action@v1.8.0
         with:
           wait: 120s
+      - name: Check cluster readiness
+        run: kubectl get nodes && kubectl get pods --all-namespaces
       - name: Install chart
         run: helm install my-n8n ./n8n --wait --timeout 300s
+      - name: Debug Helm installation
+        if: failure()
+        run: |
+          kubectl describe pods -n default || true
+          kubectl logs -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" -n default || true
       - name: Wait for pods
         run: kubectl wait --namespace default --for=condition=ready pod -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" --timeout=300s
       - name: Get pods
