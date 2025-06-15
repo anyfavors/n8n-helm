@@ -489,6 +489,12 @@ pip install pre-commit
 pre-commit install
 ```
 
+When working with the chart from source make sure subchart dependencies are present:
+
+```bash
+helm dependency build n8n
+```
+
 The configured hook runs `helm-docs` and fails if documentation files change.
 Download the `helm-docs` binary and ensure it is available in your `PATH`:
 

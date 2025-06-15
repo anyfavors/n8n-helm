@@ -29,6 +29,8 @@ jobs:
         run: |
           helm-docs
           git diff --exit-code
+      - name: Build chart dependencies
+        run: helm dependency build n8n
       - name: Helm lint
         run: helm lint n8n
       - name: Helm lint with values
