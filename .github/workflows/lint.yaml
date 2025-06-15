@@ -17,6 +17,8 @@ jobs:
         uses: azure/setup-helm@v4
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Add Helm repository
+        run: helm repo add bitnami https://charts.bitnami.com/bitnami
       - name: Build chart dependencies
         run: helm dependency build n8n
       - name: Install helm-docs
@@ -84,6 +86,8 @@ jobs:
           wait: 120s
       - name: Check cluster readiness
         run: kubectl get nodes && kubectl get pods --all-namespaces
+      - name: Add Helm repository
+        run: helm repo add bitnami https://charts.bitnami.com/bitnami
       - name: Build chart dependencies
         run: helm dependency build ./n8n
       - name: Install chart
