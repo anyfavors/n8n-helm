@@ -2,6 +2,10 @@
 
 All notable changes to this Helm chart will be documented in this file.
 
+## [0.1.15] - 2025-06-15
+### Fixed
+- Mount an emptyDir volume when persistence is disabled so pods start with a read-only filesystem.
+
 ## [0.1.14] - 2025-06-15
 ### Fixed
 - Generate encryption key by default so fresh installs succeed without persistence.

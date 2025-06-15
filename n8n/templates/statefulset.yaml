@@ -137,10 +137,10 @@ spec:
               readOnly: {{ .readOnly | default true }}
             {{- end }}
           {{- else }}
-          {{- $vm := .Values.volumeMounts }}
-          {{- if or (gt (len $vm) 0) (gt (len .Values.extraSecrets) 0) (gt (len .Values.extraConfigMaps) 0) }}
           volumeMounts:
-            {{- with $vm }}
+            - name: data
+              mountPath: /home/node/.n8n
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
             {{- range .Values.extraSecrets }}
@@ -153,7 +153,6 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly | default true }}
             {{- end }}
-          {{- end }}
           {{- end }}
         {{- with .Values.extraContainers }}
         {{- toYaml . | nindent 8 }}
@@ -177,10 +176,10 @@ spec:
             name: {{ .name }}
         {{- end }}
       {{- else }}
-      {{- $vol := .Values.volumes }}
-      {{- if or (gt (len $vol) 0) (gt (len .Values.extraSecrets) 0) (gt (len .Values.extraConfigMaps) 0) }}
       volumes:
-        {{- with $vol }}
+        - name: data
+          emptyDir: {}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- range .Values.extraSecrets }}
@@ -193,7 +192,6 @@ spec:
           configMap:
             name: {{ .name }}
         {{- end }}
-      {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
