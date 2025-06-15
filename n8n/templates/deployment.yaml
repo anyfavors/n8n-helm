@@ -154,6 +154,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /home/node/.n8n
+            - name: cache
+              mountPath: /home/node/.cache
             {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -162,6 +164,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /home/node/.n8n
+            - name: cache
+              mountPath: /home/node/.cache
             {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -175,6 +179,8 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: {{ default (printf "%s-data" (include "n8n.fullname" .)) .Values.persistence.existingClaim }}
+        - name: cache
+          emptyDir: {}
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -182,6 +188,8 @@ spec:
       {{- else }}
       volumes:
         - name: data
+          emptyDir: {}
+        - name: cache
           emptyDir: {}
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
