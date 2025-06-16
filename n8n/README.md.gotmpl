@@ -32,6 +32,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
 - **generateEncryptionKey** – automatically create a secret with a random encryption key.
 - **generateDatabasePassword** – automatically create a secret with a random database password.
+- **runners.enabled** – enable task runners to process executions.
 - **webhookUrl** – external URL for webhook callbacks.
 - **extraEnv** – additional environment variables passed to the container.
 - **extraSecrets** – mount additional Secrets inside the pod.
