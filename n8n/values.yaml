@@ -69,6 +69,8 @@ securityContext:
 extraEnv: []
 # - name: N8N_BASIC_AUTH_ACTIVE
 #   value: "true"
+# - name: N8N_RUNNERS_ENABLED
+#   value: "true"  # enable task runners
 
 # Connection details for an external PostgreSQL database. Leave values empty to
 # use the built-in SQLite storage.
