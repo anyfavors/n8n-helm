@@ -212,18 +212,14 @@ persistence:
   existingClaim: ""
 
 # Additional volumes on the output Deployment definition.
-volumes:
-  - name: cache
-    emptyDir: {}
+volumes: []
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-  - name: cache
-    mountPath: /home/node/.cache
+volumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true

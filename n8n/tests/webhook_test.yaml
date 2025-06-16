@@ -11,3 +11,7 @@ tests:
           content:
             name: N8N_WEBHOOK_URL
             value: http://example.com
+  - it: does not set webhook env when value empty
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].env[?(@.name=="N8N_WEBHOOK_URL")]

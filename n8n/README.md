@@ -223,10 +223,8 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | strategy.maxUnavailable | string | `"25%"` |  |
 | strategy.type | string | `"RollingUpdate"` |  |
 | tolerations | list | `[]` |  |
-| volumeMounts[0].mountPath | string | `"/home/node/.cache"` |  |
-| volumeMounts[0].name | string | `"cache"` |  |
-| volumes[0].emptyDir | object | `{}` |  |
-| volumes[0].name | string | `"cache"` |  |
+| volumeMounts | list | `[]` |  |
+| volumes | list | `[]` |  |
 | webhookUrl | string | `""` |  |
 
 ----------------------------------------------
