@@ -374,6 +374,14 @@
                 }
             }
         },
+        "runners": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                }
+            }
+        },
         "securityContext": {
             "type": "object",
             "properties": {

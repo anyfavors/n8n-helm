@@ -32,6 +32,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
 - **generateEncryptionKey** – automatically create a secret with a random encryption key.
 - **generateDatabasePassword** – automatically create a secret with a random database password.
+- **runners.enabled** – enable task runners to process executions.
 - **webhookUrl** – external URL for webhook callbacks.
 - **extraEnv** – additional environment variables passed to the container.
 - **extraSecrets** – mount additional Secrets inside the pod.
@@ -208,6 +209,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | resources.limits.memory | string | `"512Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"256Mi"` |  |
+| runners.enabled | bool | `true` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |

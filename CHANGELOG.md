@@ -2,6 +2,16 @@
 
 All notable changes to this Helm chart will be documented in this file.
 
+## [0.1.19] - 2025-06-16
+### Added
+- Support for task runners via the `runners.enabled` value. Sets the `N8N_RUNNERS_ENABLED` environment variable.
+
+## [0.1.18] - 2025-06-15
+### Fixed
+- Mount writable cache directory when running with a read-only root filesystem.
+- Fetch chart dependencies during CI lint workflow.
+- Document running `helm dependency build` before installing the chart.
+
 ## [0.1.17] - 2025-06-15
 ### Added
 - Optional PostgreSQL database deployed via the Bitnami subchart.
@@ -11,12 +21,6 @@ All notable changes to this Helm chart will be documented in this file.
 
 ### Fixed
 - Safely access PostgreSQL secret keys to avoid nil pointer errors.
-
-## [0.1.18] - 2025-06-15
-### Fixed
-- Mount writable cache directory when running with a read-only root filesystem.
-- Fetch chart dependencies during CI lint workflow.
-- Document running `helm dependency build` before installing the chart.
 
 ## [0.1.15] - 2025-06-15
 ### Fixed

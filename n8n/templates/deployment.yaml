@@ -69,7 +69,8 @@ spec:
           {{- $secret := ternary (dict "name" (printf "%s-db-password" (include "n8n.fullname" .)) "key" "password") $db.passwordSecret .Values.generateDatabasePassword }}
           {{- $enc := ternary (dict "name" (printf "%s-encryption-key" (include "n8n.fullname" .)) "key" "encryptionKey") .Values.encryptionKeySecret .Values.generateEncryptionKey }}
           {{- $webhook := .Values.webhookUrl }}
-          {{- if or $db.host $db.port $db.user $db.password $db.passwordSecret.name $secret.name $db.database $pg.enabled $enc.name $webhook (gt (len .Values.extraEnv) 0) }}
+          {{- $runners := .Values.runners }}
+          {{- if or $db.host $db.port $db.user $db.password $db.passwordSecret.name $secret.name $db.database $pg.enabled $enc.name $webhook $runners.enabled (gt (len .Values.extraEnv) 0) }}
           env:
             {{- if $webhook }}
             - name: N8N_WEBHOOK_URL
@@ -119,6 +120,10 @@ spec:
                 secretKeyRef:
                   name: {{ $enc.name }}
                   key: {{ $enc.key | default "encryptionKey" }}
+            {{- end }}
+            {{- if $runners.enabled }}
+            - name: N8N_RUNNERS_ENABLED
+              value: "{{ $runners.enabled }}"
             {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
