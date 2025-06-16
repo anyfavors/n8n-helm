@@ -497,7 +497,6 @@ helm plugin install https://github.com/helm-unittest/helm-unittest
 helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git
 ```
 
-
 When working with the chart from source make sure subchart dependencies are present:
 
 ```bash
