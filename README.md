@@ -444,6 +444,19 @@ helm install my-n8n n8n/n8n \
   --set encryptionKeySecret.name=n8n-key
 ```
 
+## Settings file permissions
+
+n8n warns if the settings file has overly permissive permissions. The chart
+sets `N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true` by default to automatically
+correct the permissions at startup. Disable this check by overriding the
+environment variable:
+
+```yaml
+extraEnv:
+  - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+    value: "false"
+```
+
 ## Mounting additional Secrets and ConfigMaps
 
 Existing Kubernetes resources can be mounted using the `extraSecrets` and
