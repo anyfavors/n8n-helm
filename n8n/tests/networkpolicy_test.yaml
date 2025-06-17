@@ -23,6 +23,12 @@ tests:
       - equal:
           path: spec.egress
           value: []
+      - equal:
+          path: spec.policyTypes[0]
+          value: Ingress
+      - equal:
+          path: spec.policyTypes[1]
+          value: Egress
   - it: renders custom ingress and egress rules
     set:
       networkPolicy:
