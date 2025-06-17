@@ -1,10 +1,11 @@
+---
 apiVersion: v2
 name: n8n
 description: A Helm chart for deploying n8n, the extendable workflow automation tool
 home: https://n8n.io
 maintainers:
   - name: vo.rs
-    email: 
+    email: helm@vo.rs
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
