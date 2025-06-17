@@ -150,7 +150,8 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | encryptionKeySecret.name | string | `""` |  |
 | extraConfigMaps | list | `[]` |  |
 | extraContainers | list | `[]` |  |
-| extraEnv | list | `[]` |  |
+| extraEnv[0].name | string | `"N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS"` |  |
+| extraEnv[0].value | string | `"true"` |  |
 | extraSecrets | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | generateDatabasePassword | bool | `false` |  |

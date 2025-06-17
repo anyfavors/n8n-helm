@@ -444,6 +444,19 @@ helm install my-n8n n8n/n8n \
   --set encryptionKeySecret.name=n8n-key
 ```
 
+## Settings file permissions
+
+n8n warns if the settings file has overly permissive permissions. The chart
+sets `N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true` by default to automatically
+correct the permissions at startup. Disable this check by overriding the
+environment variable:
+
+```yaml
+extraEnv:
+  - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+    value: "false"
+```
+
 ## Mounting additional Secrets and ConfigMaps
 
 Existing Kubernetes resources can be mounted using the `extraSecrets` and
@@ -489,6 +502,13 @@ Install the tool and set up the Git hooks:
 pip install pre-commit
 pre-commit install
 ```
+Install [Helm](https://helm.sh) and the plugins used by the CI workflow:
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+helm plugin install https://github.com/helm-unittest/helm-unittest
+helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git
+```
 
 When working with the chart from source make sure subchart dependencies are present:
 
@@ -502,6 +522,14 @@ Download the `helm-docs` binary and ensure it is available in your `PATH`:
 ```bash
 curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz | tar -xz -C /usr/local/bin helm-docs
 ```
+Verify the chart locally with the same commands used in CI:
+
+```bash
+helm dependency build n8n
+helm lint n8n
+helm unittest n8n
+```
+
 
 Run all checks manually with:
 
