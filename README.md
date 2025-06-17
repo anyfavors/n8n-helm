@@ -2,7 +2,7 @@
 [![Lint](https://github.com/anyfavors/n8n-helm/actions/workflows/lint.yaml/badge.svg)](https://github.com/anyfavors/n8n-helm/actions/workflows/lint.yaml)
 
 
-This repository contains a Kubernetes Helm chart for deploying [n8n](https://github.com/n8n-io/n8n), an extendable workflow automation tool. The chart is located in the `n8n/` directory.
+This repository contains a Kubernetes Helm chart for deploying [n8n](https://github.com/n8n-io/n8n), an extensible workflow automation tool. The chart is located in the `n8n/` directory.
 See [n8n/README.md](n8n/README.md) for a quick start guide and common configuration options.
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
