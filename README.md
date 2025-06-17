@@ -298,6 +298,9 @@ helm install my-n8n n8n/n8n \
   --set pdb.minAvailable=1
 ```
 
+Only one of `pdb.minAvailable` or `pdb.maxUnavailable` should be set. If both
+are configured neither will be applied.
+
 
 ## Role-based access control
 
