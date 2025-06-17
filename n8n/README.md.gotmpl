@@ -34,7 +34,8 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **generateDatabasePassword** – automatically create a secret with a random database password.
 - **runners.enabled** – enable task runners to process executions.
 - **webhookUrl** – external URL for webhook callbacks.
-- **extraEnv** – additional environment variables passed to the container.
+- **extraEnv** – additional environment variables passed to the container. Set
+  `N8N_RUNNERS_ENABLED=true` to enable task runners as recommended by n8n.
 - **extraSecrets** – mount additional Secrets inside the pod.
 - **extraConfigMaps** – mount additional ConfigMaps inside the pod.
 - **initContainers** – additional init containers executed before the main pod.
