@@ -99,7 +99,7 @@ encryptionKeySecret:
   key: encryptionKey
 
 # Generate a secret containing a random N8N_ENCRYPTION_KEY
-generateEncryptionKey: true
+generateEncryptionKey: false
 
 # Generate a secret containing a random database password
 generateDatabasePassword: false
