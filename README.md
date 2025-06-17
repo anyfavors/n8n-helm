@@ -528,12 +528,12 @@ curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-d
 The pre-commit hooks also verify that `values.schema.json` matches the schema
 generated from `values.yaml`. Install the `helm-schema-gen` plugin so the check
 can run locally.
-Verify the chart locally with the same commands used in CI:
+Verify the chart locally with the same commands used in CI. The provided
+`scripts/run-tests.sh` helper installs missing dependencies, builds the chart
+dependencies and runs the lint and unit tests:
 
 ```bash
-helm dependency build n8n
-helm lint n8n
-helm unittest n8n
+./scripts/run-tests.sh
 ```
 
 
