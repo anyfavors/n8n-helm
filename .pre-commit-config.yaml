@@ -6,3 +6,8 @@ repos:
         entry: bash -c 'helm-docs && git diff --exit-code'
         language: system
         pass_filenames: false
+      - id: helm-schema
+        name: helm-values-schema
+        entry: bash -c 'helm schema-gen n8n/values.yaml > generated-values.schema.json && diff -u n8n/values.schema.json generated-values.schema.json'
+        language: system
+        pass_filenames: false

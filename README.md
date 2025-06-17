@@ -525,6 +525,9 @@ Download the `helm-docs` binary and ensure it is available in your `PATH`:
 ```bash
 curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz | tar -xz -C /usr/local/bin helm-docs
 ```
+The pre-commit hooks also verify that `values.schema.json` matches the schema
+generated from `values.yaml`. Install the `helm-schema-gen` plugin so the check
+can run locally.
 Verify the chart locally with the same commands used in CI:
 
 ```bash
