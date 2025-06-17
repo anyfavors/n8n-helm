@@ -2,6 +2,10 @@
 
 All notable changes to this Helm chart will be documented in this file.
 
+## [0.1.20] - 2025-06-17
+### Added
+- Chart icon in `Chart.yaml` for improved metadata.
+
 ## [0.1.19] - 2025-06-16
 ### Added
 - Support for task runners via the `runners.enabled` value. Sets the `N8N_RUNNERS_ENABLED` environment variable.
