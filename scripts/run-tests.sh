@@ -30,8 +30,10 @@ helm unittest "$CHART_DIR"
 
 # Validate schema is up to date
 if helm plugin list | grep -q '^schema-gen'; then
-  helm schema-gen "$CHART_DIR"/values.yaml > /tmp/generated-values.schema.json
-  diff -u "$CHART_DIR"/values.schema.json /tmp/generated-values.schema.json
+  temp_schema=$(mktemp) || { echo "Failed to create temporary file" >&2; exit 1; }
+  helm schema-gen "$CHART_DIR"/values.yaml > "$temp_schema"
+  diff -u "$CHART_DIR"/values.schema.json "$temp_schema"
+  rm -f "$temp_schema"
 fi
 
 # Render templates to ensure they compile
