@@ -505,10 +505,15 @@ Install the tool and set up the Git hooks:
 pip install pre-commit
 pre-commit install
 ```
-Install [Helm](https://helm.sh) and the plugins used by the CI workflow:
+Install [Helm](https://helm.sh) first:
 
 ```bash
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+Then install the plugins used by the CI workflow:
+
+```bash
 helm plugin install https://github.com/helm-unittest/helm-unittest
 helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git
 ```
