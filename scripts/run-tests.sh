@@ -29,7 +29,7 @@ helm lint --strict "$CHART_DIR"
 helm unittest "$CHART_DIR"
 
 # Validate schema is up to date
-if helm plugin list | grep -q helm-schema; then
+if helm plugin list | grep -q '^schema-gen'; then
   helm schema-gen "$CHART_DIR"/values.yaml > /tmp/generated-values.schema.json
   diff -u "$CHART_DIR"/values.schema.json /tmp/generated-values.schema.json
 fi
