@@ -230,10 +230,9 @@ The chart also includes a `values.schema.json` file that defines the allowed str
 
 ## Network policies
 
-`networkPolicy.enabled` defaults to `true`, creating a `NetworkPolicy` that
-denies all ingress and egress traffic. Extend the policy under
+`networkPolicy.enabled` defaults to `false`. Enable it to create a `NetworkPolicy`
+that denies all ingress and egress traffic. Extend the policy under
 `networkPolicy.ingress` and `networkPolicy.egress` to permit connections.
-Disable the policy entirely by setting `networkPolicy.enabled=false`.
 
 To allow specific traffic, extend the policy in your values file:
 

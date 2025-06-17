@@ -147,7 +147,7 @@ ingress:
   #      - chart-example.local
 
 networkPolicy:
-  enabled: true
+  enabled: false
   policyTypes:
     - Ingress
     - Egress
