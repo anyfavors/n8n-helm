@@ -24,7 +24,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **ingress.enabled** – expose the service using an ingress resource.
 - **persistence.enabled** – store workflows on a persistent volume using a StatefulSet.
 - **persistence.existingClaim** – mount an existing PersistentVolumeClaim.
-- **networkPolicy.enabled** – create a NetworkPolicy to restrict traffic (enabled by default).
+- **networkPolicy.enabled** – create a NetworkPolicy to restrict traffic (disabled by default).
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.
 - **rbac.create** – create Role and RoleBinding resources.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
@@ -121,6 +121,24 @@ extraContainers:
     command: ["sh", "-c", "echo sidecar"]
 ```
 
+## Network policy example
+
+Enable `networkPolicy` to restrict traffic and define ingress/egress rules:
+
+```yaml
+networkPolicy:
+  enabled: true
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: my-namespace
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+```
+
 ## Publishing
 
 Chart packages are created automatically using [chart-releaser](https://github.com/helm/chart-releaser) when commits land on `main`.
@@ -176,7 +194,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | metrics.serviceMonitor.enabled | bool | `false` |  |
 | nameOverride | string | `""` |  |
 | networkPolicy.egress | list | `[]` |  |
-| networkPolicy.enabled | bool | `true` |  |
+| networkPolicy.enabled | bool | `false` |  |
 | networkPolicy.ingress | list | `[]` |  |
 | networkPolicy.policyTypes[0] | string | `"Ingress"` |  |
 | networkPolicy.policyTypes[1] | string | `"Egress"` |  |
