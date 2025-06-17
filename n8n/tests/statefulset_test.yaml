@@ -6,6 +6,13 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: renders one statefulset when persistence enabled
+    set:
+      persistence:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
   - it: mounts existing pvc when configured
     set:
       persistence:
