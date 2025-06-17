@@ -1,18 +1,28 @@
 {{- if or .Values.podSecurity.enforce .Values.podSecurity.audit .Values.podSecurity.warn }}
 ---
-apiVersion: v1
-kind: Namespace
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: {{ .Release.Namespace }}
+  name: {{ include "n8n.fullname" . }}-podsecurity
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
-    {{- if .Values.podSecurity.enforce }}
-    pod-security.kubernetes.io/enforce: {{ .Values.podSecurity.enforce | quote }}
-    {{- end }}
-    {{- if .Values.podSecurity.audit }}
-    pod-security.kubernetes.io/audit: {{ .Values.podSecurity.audit | quote }}
-    {{- end }}
-    {{- if .Values.podSecurity.warn }}
-    pod-security.kubernetes.io/warn: {{ .Values.podSecurity.warn | quote }}
-    {{- end }}
+    {{- include "n8n.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "n8n.serviceAccountName" . }}
+      containers:
+        - name: kubectl
+          image: bitnami/kubectl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - >-
+              kubectl label --overwrite namespace {{ .Release.Namespace }}
+              {{- if .Values.podSecurity.enforce }} pod-security.kubernetes.io/enforce={{ .Values.podSecurity.enforce }}{{- end }}
+              {{- if .Values.podSecurity.audit }} pod-security.kubernetes.io/audit={{ .Values.podSecurity.audit }}{{- end }}
+              {{- if .Values.podSecurity.warn }} pod-security.kubernetes.io/warn={{ .Values.podSecurity.warn }}{{- end }}
 {{- end }}
 
