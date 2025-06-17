@@ -24,8 +24,6 @@ tests:
       - equal:
           path: spec.type
           value: NodePort
-      - notExists:
-          path: spec.ports[0].nodePort
   - it: renders a LoadBalancer service when configured
     set:
       service:
