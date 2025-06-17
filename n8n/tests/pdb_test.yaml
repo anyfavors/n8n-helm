@@ -15,6 +15,8 @@ tests:
       - equal:
           path: spec.minAvailable
           value: 1
+      - notExists:
+          path: spec.maxUnavailable
   - it: sets maxUnavailable when configured
     set:
       pdb:
@@ -24,3 +26,16 @@ tests:
       - equal:
           path: spec.maxUnavailable
           value: 1
+      - notExists:
+          path: spec.minAvailable
+  - it: does not render when both are configured
+    set:
+      pdb:
+        enabled: true
+        minAvailable: 1
+        maxUnavailable: 1
+    asserts:
+      - notExists:
+          path: spec.minAvailable
+      - notExists:
+          path: spec.maxUnavailable
