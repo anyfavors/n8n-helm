@@ -543,7 +543,7 @@ Run all checks manually with:
 pre-commit run --all-files
 ```
 
-=======
+---
 
 ## Maintenance
 
@@ -553,7 +553,7 @@ GitHub Actions used in this repository and the Helm tooling versions referenced
 in the workflows. When a new version of the `helm-docs` plugin or a GitHub
 Action becomes available, Renovate opens a pull request with the update.
 Maintainers should review these PRs and merge them once the checks pass.
-=======
+---
 ## Verifying chart signatures
 
 Chart packages are signed using [cosign](https://docs.sigstore.dev/cosign/overview/). The corresponding `cosign.pub` public key is attached to each GitHub release.
