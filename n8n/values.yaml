@@ -224,6 +224,9 @@ persistence:
   size: 8Gi
   storageClass: ""
   existingClaim: ""
+  # Access modes for the persistent volume claim
+  accessModes:
+    - ReadWriteOnce
 
 # Additional volumes on the output Deployment definition.
 volumes: []
