@@ -192,6 +192,9 @@
                 "port": {
                     "type": "integer"
                 },
+                "path": {
+                    "type": "string"
+                },
                 "serviceMonitor": {
                     "type": "object",
                     "properties": {

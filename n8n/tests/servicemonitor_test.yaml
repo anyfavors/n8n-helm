@@ -19,3 +19,6 @@ tests:
       - equal:
           path: spec.endpoints[0].port
           value: metrics
+      - equal:
+          path: spec.endpoints[0].path
+          value: /metrics

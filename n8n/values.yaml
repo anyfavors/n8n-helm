@@ -126,6 +126,8 @@ metrics:
   enabled: false
   # Port for the metrics service
   port: 5678
+  # HTTP path to scrape metrics
+  path: /metrics
   serviceMonitor:
     enabled: false
 
