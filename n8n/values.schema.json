@@ -148,7 +148,12 @@
                                             "type": "string"
                                         },
                                         "pathType": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "enum": [
+                                                "ImplementationSpecific",
+                                                "Prefix",
+                                                "Exact"
+                                            ]
                                         }
                                     }
                                 }

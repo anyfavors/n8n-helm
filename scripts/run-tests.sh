@@ -36,6 +36,8 @@ helm unittest "$CHART_DIR"
 if helm plugin list | grep -qw schema-gen; then
   temp_schema=$(mktemp) || { echo "Failed to create temporary file" >&2; exit 1; }
   helm schema-gen "$CHART_DIR"/values.yaml > "$temp_schema"
+  jq --indent 4 '.properties.ingress.properties.hosts.items.properties.paths.items.properties.pathType += {"enum": ["ImplementationSpecific", "Prefix", "Exact"]}' "$temp_schema" > "${temp_schema}.tmp"
+  mv "${temp_schema}.tmp" "$temp_schema"
   diff -u "$CHART_DIR"/values.schema.json "$temp_schema"
   rm -f "$temp_schema"
 fi
