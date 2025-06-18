@@ -3,11 +3,11 @@ repos:
     hooks:
       - id: helm-docs
         name: helm-docs
-        entry: bash -c 'helm-docs && git diff --exit-code'
+        entry: bash scripts/pre-commit-helm-docs.sh
         language: system
         pass_filenames: false
       - id: helm-schema
         name: helm-values-schema
-        entry: bash -c 'helm schema-gen n8n/values.yaml > generated-values.schema.json && diff -u n8n/values.schema.json generated-values.schema.json'
+        entry: bash scripts/pre-commit-helm-schema.sh
         language: system
         pass_filenames: false
