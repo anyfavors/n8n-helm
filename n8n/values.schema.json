@@ -186,14 +186,17 @@
         "metrics": {
             "type": "object",
             "properties": {
+                "annotations": {
+                    "type": "object"
+                },
                 "enabled": {
                     "type": "boolean"
                 },
-                "port": {
-                    "type": "integer"
-                },
                 "path": {
                     "type": "string"
+                },
+                "port": {
+                    "type": "integer"
                 },
                 "serviceMonitor": {
                     "type": "object",
