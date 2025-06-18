@@ -252,8 +252,19 @@ networkPolicy:
       ports:
         - protocol: TCP
           port: 5678
-  egress: []
+  egress:
+    # allow the application to connect to the PostgreSQL service
+    - to:
+        - podSelector:
+            matchLabels:
+              app: postgres
+      ports:
+        - protocol: TCP
+          port: 5432
 ```
+
+Egress rules are required because enabling the policy blocks all outbound
+traffic. Without them the pod cannot reach external services like the database.
 
 ## Pod Security Standards
 

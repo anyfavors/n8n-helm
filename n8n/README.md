@@ -136,10 +136,19 @@ networkPolicy:
             matchLabels:
               name: my-namespace
   egress:
+    # allow connections to the PostgreSQL database service
     - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
+        - podSelector:
+            matchLabels:
+              app: postgres
+      ports:
+        - protocol: TCP
+          port: 5432
 ```
+
+When network policies are enabled all outbound traffic is denied. Define egress
+rules for any external services—such as your database—so the application can
+reach them.
 
 ## Publishing
 
