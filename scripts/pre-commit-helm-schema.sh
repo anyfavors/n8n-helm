@@ -10,7 +10,7 @@ if ! command -v helm >/dev/null 2>&1; then
 fi
 
 # Check for schema-gen plugin
-if ! helm plugin list | grep -q '^schema-gen'; then
+if ! helm plugin list | grep -qw schema-gen; then
   echo "Error: helm schema-gen plugin not installed." >&2
   echo "Install with: helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git" >&2
   exit 1
