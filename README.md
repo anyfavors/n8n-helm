@@ -537,7 +537,8 @@ Install [Helm](https://helm.sh) first:
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ```
 
-Then install the plugins used by the CI workflow:
+Then install the plugins used by the CI workflow. Both are required locally to run the
+unit tests and `pre-commit` checks:
 
 ```bash
 helm plugin install https://github.com/helm-unittest/helm-unittest
@@ -557,8 +558,8 @@ Download the `helm-docs` binary and ensure it is available in your `PATH`:
 curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz | tar -xz -C /usr/local/bin helm-docs
 ```
 The pre-commit hooks also verify that `values.schema.json` matches the schema
-generated from `values.yaml`. Install the `helm-schema-gen` plugin so the check
-can run locally.
+generated from `values.yaml`. Install the `helm-schema-gen` plugin as shown
+above so the check can run locally.
 Verify the chart locally with the same commands used in CI. The provided
 `scripts/run-tests.sh` helper installs missing dependencies, builds the chart
 dependencies and runs the lint and unit tests:
