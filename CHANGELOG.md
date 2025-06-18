@@ -2,6 +2,10 @@
 
 All notable changes to this Helm chart will be documented in this file.
 
+## [0.1.22] - 2025-06-19
+### Changed
+- Generate encryption key secret by default.
+
 ## [0.1.21] - 2025-06-18
 ### Added
 - Specify supported Kubernetes versions in `Chart.yaml`.
