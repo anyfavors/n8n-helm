@@ -46,6 +46,8 @@ jobs:
       - name: Validate values schema
         run: |
           helm schema-gen n8n/values.yaml > generated-values.schema.json
+          jq --indent 4 '.properties.ingress.properties.hosts.items.properties.paths.items.properties.pathType += {"enum": ["ImplementationSpecific", "Prefix", "Exact"]}' generated-values.schema.json > tmp.json
+          mv tmp.json generated-values.schema.json
           diff -u n8n/values.schema.json generated-values.schema.json
       - name: Get chart version
         id: chart

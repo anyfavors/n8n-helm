@@ -17,4 +17,9 @@ if ! helm plugin list | grep -qw schema-gen; then
 fi
 
 helm schema-gen "$CHART_DIR/values.yaml" > "$SCHEMA_FILE"
+
+# Restrict allowed values for ingress.pathType
+jq --indent 4 '.properties.ingress.properties.hosts.items.properties.paths.items.properties.pathType += {"enum": ["ImplementationSpecific", "Prefix", "Exact"]}' "$SCHEMA_FILE" > "${SCHEMA_FILE}.tmp"
+mv "${SCHEMA_FILE}.tmp" "$SCHEMA_FILE"
+
 diff -u "$CHART_DIR/values.schema.json" "$SCHEMA_FILE"
