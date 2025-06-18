@@ -13,7 +13,7 @@ if ! command -v helm >/dev/null; then
 fi
 
 # Install helm-unittest plugin if missing
-if helm plugin list | grep -q '^unittest'; then
+if helm plugin list | grep -qw unittest; then
   helm plugin update unittest >/dev/null || true
 else
   echo "Installing helm-unittest plugin" >&2
@@ -33,7 +33,7 @@ helm unittest "$CHART_DIR"
 
 # Validate schema is up to date
 # The generated schema file is removed on exit by the trap above.
-if helm plugin list | grep -q '^schema-gen'; then
+if helm plugin list | grep -qw schema-gen; then
   temp_schema=$(mktemp) || { echo "Failed to create temporary file" >&2; exit 1; }
   helm schema-gen "$CHART_DIR"/values.yaml > "$temp_schema"
   diff -u "$CHART_DIR"/values.schema.json "$temp_schema"
