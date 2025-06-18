@@ -449,7 +449,9 @@ repository.
 
 ## Credential encryption
 
-Generate a 256‑bit key and store it in a secret to encrypt credentials:
+The chart now generates a secret containing a random encryption key by default.
+Disable this behaviour by setting `generateEncryptionKey=false`.
+To supply your own key, create a secret containing a 256‑bit value:
 
 ```bash
 kubectl create secret generic n8n-key \
