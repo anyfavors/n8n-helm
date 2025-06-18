@@ -84,6 +84,8 @@ database:
     name: ""
     key: "password"
   database: ""
+# DB_TYPE is automatically set to "postgresdb" when a database host is specified
+# or when the bundled PostgreSQL chart is enabled.
 
 # Deploy a PostgreSQL database as a subchart
 postgresql:

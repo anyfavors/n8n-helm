@@ -386,10 +386,12 @@ directly to the connection fields:
 - `database.passwordSecret.key` – key within the secret (defaults to `password`)
 - `database.database` – name of the database to connect to
 
-n8n also requires the following environment variables:
+n8n requires a couple of additional environment variables when connecting to
+PostgreSQL. The chart populates them automatically when an external database is
+configured or the bundled PostgreSQL subchart is enabled:
 
 - `DB_TYPE=postgresdb`
-- `DB_POSTGRESDB_DATABASE` – should match `database.database`
+- `DB_POSTGRESDB_DATABASE` – matches `database.database`
 
 Example snippet:
 
@@ -403,12 +405,6 @@ database:
     name: n8n-db
     key: password
   database: n8n
-
-extraEnv:
-  - name: DB_TYPE
-    value: postgresdb
-  - name: DB_POSTGRESDB_DATABASE
-    value: n8n
 ```
 
 Or supply the settings on the command line:
@@ -421,11 +417,7 @@ helm install my-n8n n8n/n8n \
   --set database.user=n8n \
   --set database.passwordSecret.name=n8n-db \
   --set database.passwordSecret.key=password \
-  --set database.database=n8n \
-  --set extraEnv[0].name=DB_TYPE \
-  --set extraEnv[0].value=postgresdb \
-  --set extraEnv[1].name=DB_POSTGRESDB_DATABASE \
-  --set extraEnv[1].value=n8n
+  --set database.database=n8n
 ```
 
 ## Using the bundled PostgreSQL database
@@ -438,9 +430,7 @@ automatically configures the application to connect to it:
 helm dependency build n8n
 helm install my-n8n n8n/n8n \
   --namespace my-n8n --create-namespace \
-  --set postgresql.enabled=true \
-  --set extraEnv[0].name=DB_TYPE \
-  --set extraEnv[0].value=postgresdb
+  --set postgresql.enabled=true
 ```
 
 If you skip the `helm dependency build` step the install will fail with a
