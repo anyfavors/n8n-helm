@@ -130,6 +130,8 @@ metrics:
   port: 5678
   # HTTP path to scrape metrics
   path: /metrics
+  # Annotations to add to the metrics service
+  annotations: {}
   serviceMonitor:
     enabled: false
 

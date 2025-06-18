@@ -17,3 +17,13 @@ tests:
       - equal:
           path: spec.ports[0].port
           value: 5678
+  - it: injects annotations when provided
+    set:
+      metrics:
+        enabled: true
+        annotations:
+          scrape: yes
+    asserts:
+      - equal:
+          path: metadata.annotations.scrape
+          value: "yes"
