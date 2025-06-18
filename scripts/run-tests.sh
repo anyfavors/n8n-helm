@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Remove any previously generated schema file when the script exits
+trap 'rm -f /tmp/generated-values.schema.json' EXIT
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CHART_DIR="$SCRIPT_DIR/../n8n"
 
@@ -29,6 +32,7 @@ helm lint --strict "$CHART_DIR"
 helm unittest "$CHART_DIR"
 
 # Validate schema is up to date
+# The generated schema file is removed on exit by the trap above.
 if helm plugin list | grep -q '^schema-gen'; then
   temp_schema=$(mktemp) || { echo "Failed to create temporary file" >&2; exit 1; }
   helm schema-gen "$CHART_DIR"/values.yaml > "$temp_schema"
