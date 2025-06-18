@@ -16,7 +16,7 @@ helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace
 ```
 All examples install into the `my-n8n` namespace which you can change as needed.
 
-Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line.
+Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line. See the [Pod Security](#pod-security) section to label the namespace.
 
 ## Common configuration options
 
@@ -70,14 +70,27 @@ Automatic mounting of the ServiceAccount token is disabled via
 `serviceAccount.automount` to limit access to the Kubernetes API and reduce the
 attack surface.
 
-The chart can also manage Pod Security Admission labels on the release
-namespace. Specify the desired levels under the `podSecurity` block:
+### Pod Security
 
-```yaml
-podSecurity:
-  enforce: restricted
-  audit: restricted
-  warn: restricted
+Kubernetes namespaces should be labelled to enforce the
+"restricted" Pod Security profile. Label the namespace manually:
+
+```bash
+kubectl label --overwrite namespace my-n8n \
+  pod-security.kubernetes.io/enforce=restricted \
+  pod-security.kubernetes.io/audit=restricted \
+  pod-security.kubernetes.io/warn=restricted
+```
+
+The chart can also manage these labels when installed. Set the desired
+levels under the `podSecurity` block or pass them on the command line:
+
+```bash
+helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
+  --set podSecurity.enforce=restricted \
+  --set podSecurity.audit=restricted \
+  --set podSecurity.warn=restricted
 ```
 
 ## Updating n8n versions
