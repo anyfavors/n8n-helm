@@ -22,3 +22,16 @@ tests:
       - equal:
           path: spec.template.spec.volumes[0].persistentVolumeClaim.claimName
           value: my-data
+
+  - it: sets DB_TYPE when postgres enabled
+    set:
+      persistence:
+        enabled: true
+      postgresql:
+        enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DB_TYPE
+            value: postgresdb

@@ -78,6 +78,8 @@ spec:
               value: "{{ $webhook }}"
             {{- end }}
             {{- if or $db.host $pg.enabled }}
+            - name: DB_TYPE
+              value: postgresdb
             - name: DB_POSTGRESDB_HOST
               value: "{{ default (include "n8n.postgresql.fullname" .) $db.host }}"
             {{- end }}

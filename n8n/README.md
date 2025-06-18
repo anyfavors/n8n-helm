@@ -16,7 +16,6 @@ helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace
 ```
 All examples install into the `my-n8n` namespace which you can change as needed.
 
-
 Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line.
 
 ## Common configuration options
@@ -136,19 +135,10 @@ networkPolicy:
             matchLabels:
               name: my-namespace
   egress:
-    # allow connections to the PostgreSQL database service
     - to:
-        - podSelector:
-            matchLabels:
-              app: postgres
-      ports:
-        - protocol: TCP
-          port: 5432
+        - ipBlock:
+            cidr: 0.0.0.0/0
 ```
-
-When network policies are enabled all outbound traffic is denied. Define egress
-rules for any external services—such as your database—so the application can
-reach them.
 
 ## Publishing
 
@@ -201,8 +191,8 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | livenessProbe.httpGet.path | string | `"/"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
 | metrics.enabled | bool | `false` |  |
-| metrics.port | int | `5678` |  |
 | metrics.path | string | `"/metrics"` |  |
+| metrics.port | int | `5678` |  |
 | metrics.serviceMonitor.enabled | bool | `false` |  |
 | nameOverride | string | `""` |  |
 | networkPolicy.egress | list | `[]` |  |

@@ -12,4 +12,20 @@ tests:
           content:
             name: DB_POSTGRESDB_HOST
             value: RELEASE-NAME-n8n-postgresql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DB_TYPE
+            value: postgresdb
+
+  - it: sets DB_TYPE when external database configured
+    set:
+      database:
+        host: db.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DB_TYPE
+            value: postgresdb
 
