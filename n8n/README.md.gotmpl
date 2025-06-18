@@ -12,8 +12,10 @@ helm repo add n8n https://anyfavors.github.io/n8n-helm
 helm repo update
 
 # install the chart with the default values
-helm install my-n8n n8n/n8n
+helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace
 ```
+All examples install into the `my-n8n` namespace which you can change as needed.
+
 
 Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line.
 
@@ -96,7 +98,7 @@ Increase the values under the `resources` block in your `values.yaml` file or
 override them on the command line for production workloads. For example:
 
 ```bash
-helm install my-n8n n8n/n8n \
+helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace \
   --set resources.requests.cpu=500m \
   --set resources.requests.memory=512Mi \
   --set resources.limits.cpu=1 \

@@ -17,8 +17,10 @@ helm repo update
 
 # install the chart with the default values
 helm dependency build n8n
-helm install my-n8n n8n/n8n
+helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace
 ```
+All examples install into the `my-n8n` namespace which you can change as needed.
+
 
 Customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
 
@@ -28,6 +30,7 @@ Override the replica count and image tag directly on the command line:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set replicaCount=3 \
   --set image.tag=1.0.0
 ```
@@ -38,6 +41,7 @@ Ingress can be enabled and host names customised using Helm values:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=n8n.example.com \
   --set ingress.hosts[0].paths[0].path=/
@@ -180,6 +184,7 @@ Example using a LoadBalancer:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set service.type=LoadBalancer
 ```
 
@@ -193,6 +198,7 @@ Example using a NodePort:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set service.type=NodePort
 ```
 
@@ -220,6 +226,7 @@ Install with these settings from the command line:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set persistence.enabled=true \
   --set persistence.size=8Gi \
   --set persistence.storageClass=standard
@@ -280,6 +287,7 @@ You can also have the chart manage these labels automatically by setting the
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set podSecurity.enforce=restricted \
   --set podSecurity.audit=restricted \
   --set podSecurity.warn=restricted
@@ -293,6 +301,7 @@ voluntarily evicted at once. Enable the budget and specify either
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set pdb.enabled=true \
   --set pdb.minAvailable=1
 ```
@@ -307,6 +316,7 @@ Enable creation of a Role and RoleBinding for the service account by setting `rb
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set rbac.create=true
 ```
 
@@ -325,6 +335,7 @@ Increase these values for larger workloads by editing the `resources` block in
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set resources.requests.cpu=500m \
   --set resources.requests.memory=512Mi \
   --set resources.limits.cpu=1 \
@@ -343,6 +354,7 @@ Example enabling the autoscaler:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set autoscaling.enabled=true \
   --set autoscaling.minReplicas=2 \
   --set autoscaling.maxReplicas=5 \
@@ -392,6 +404,7 @@ Or supply the settings on the command line:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set database.host=postgres.example.com \
   --set database.port=5432 \
   --set database.user=n8n \
@@ -413,6 +426,7 @@ automatically configures the application to connect to it:
 ```bash
 helm dependency build n8n
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set postgresql.enabled=true \
   --set extraEnv[0].name=DB_TYPE \
   --set extraEnv[0].value=postgresdb
@@ -443,6 +457,7 @@ Or set it on the command line:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set encryptionKeySecret.name=n8n-key
 ```
 
@@ -477,6 +492,7 @@ Install with command line flags:
 
 ```bash
 helm install my-n8n n8n/n8n \
+  --namespace my-n8n --create-namespace \
   --set extraSecrets[0].name=my-secret \
   --set extraSecrets[0].mountPath=/etc/secret \
   --set extraConfigMaps[0].name=my-config \
