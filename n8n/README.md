@@ -29,6 +29,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.
 - **rbac.create** – create Role and RoleBinding resources.
 - **serviceAccount.create** – create a ServiceAccount when `rbac.create` is enabled.
+- **service.sessionAffinity** – session affinity policy for the service.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
 - **postgresql.enabled** – deploy a PostgreSQL database as part of the release.
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
@@ -239,6 +240,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | securityContext.runAsNonRoot | bool | `true` |  |
 | service.annotations | object | `{}` |  |
 | service.port | int | `5678` |  |
+| service.sessionAffinity | string | `"None"` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automount | bool | `false` |  |

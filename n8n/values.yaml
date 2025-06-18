@@ -122,6 +122,8 @@ service:
   port: 5678
   # Annotations to add to the service
   annotations: {}
+  # Session affinity for the service
+  sessionAffinity: None
 
 # Expose Prometheus metrics on a dedicated service
 metrics:

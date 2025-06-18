@@ -7,6 +7,9 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
+      - equal:
+          path: spec.sessionAffinity
+          value: None
   - it: injects annotations when provided
     set:
       service:
@@ -32,3 +35,18 @@ tests:
       - equal:
           path: spec.type
           value: LoadBalancer
+  - it: renders custom session affinity when configured
+    set:
+      service:
+        sessionAffinity: ClientIP
+    asserts:
+      - equal:
+          path: spec.sessionAffinity
+          value: ClientIP
+  - it: omits session affinity when blank
+    set:
+      service:
+        sessionAffinity: ""
+    asserts:
+      - notExists:
+          path: spec.sessionAffinity

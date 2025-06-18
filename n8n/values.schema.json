@@ -433,6 +433,9 @@
                 "port": {
                     "type": "integer"
                 },
+                "sessionAffinity": {
+                    "type": "string"
+                },
                 "type": {
                     "type": "string"
                 }
