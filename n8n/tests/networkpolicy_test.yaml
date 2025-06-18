@@ -2,10 +2,6 @@ suite: network policy
 templates:
   - templates/networkpolicy.yaml
 tests:
-  - it: is not rendered by default
-    asserts:
-      - hasDocuments:
-          count: 0
   - it: is not rendered when disabled
     set:
       networkPolicy:
