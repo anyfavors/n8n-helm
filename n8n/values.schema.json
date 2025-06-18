@@ -245,6 +245,12 @@
         "persistence": {
             "type": "object",
             "properties": {
+                "accessModes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "enabled": {
                     "type": "boolean"
                 },

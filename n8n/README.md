@@ -25,6 +25,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **ingress.enabled** – expose the service using an ingress resource.
 - **persistence.enabled** – store workflows on a persistent volume using a StatefulSet.
 - **persistence.existingClaim** – mount an existing PersistentVolumeClaim.
+- **persistence.accessModes** – list of access modes for the persistent volume claim.
 - **networkPolicy.enabled** – create a NetworkPolicy to restrict traffic (disabled by default).
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.
 - **rbac.create** – create Role and RoleBinding resources.
@@ -205,6 +206,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | networkPolicy.policyTypes[1] | string | `"Egress"` |  |
 | nodeSelector | object | `{}` |  |
 | pdb.enabled | bool | `false` |  |
+| persistence.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | persistence.enabled | bool | `false` |  |
 | persistence.existingClaim | string | `""` |  |
 | persistence.size | string | `"8Gi"` |  |
