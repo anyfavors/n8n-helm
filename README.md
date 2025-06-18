@@ -323,7 +323,8 @@ are configured neither will be applied.
 
 ## Role-based access control
 
-Enable creation of a Role and RoleBinding for the service account by setting `rbac.create`:
+Enable creation of a Role and RoleBinding for the service account by setting `rbac.create`.
+The chart will only create the ServiceAccount when both `rbac.create` and `serviceAccount.create` are enabled:
 
 ```bash
 helm install my-n8n n8n/n8n \

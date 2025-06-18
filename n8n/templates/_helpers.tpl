@@ -61,7 +61,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "n8n.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
+{{- if and .Values.serviceAccount.create .Values.rbac.create }}
 {{- default (include "n8n.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}

@@ -29,6 +29,7 @@ Customise the deployment by supplying your own `values.yaml` or overriding setti
 - **networkPolicy.enabled** – create a NetworkPolicy to restrict traffic (disabled by default).
 - **pdb.enabled** – create a PodDisruptionBudget for the deployment.
 - **rbac.create** – create Role and RoleBinding resources.
+- **serviceAccount.create** – create a ServiceAccount when `rbac.create` is enabled.
 - **database.host** – connect to an external PostgreSQL database instead of the built in SQLite storage.
 - **postgresql.enabled** – deploy a PostgreSQL database as part of the release.
 - **encryptionKeySecret.name** – Kubernetes secret providing `N8N_ENCRYPTION_KEY`.
