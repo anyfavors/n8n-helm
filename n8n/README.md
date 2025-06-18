@@ -191,6 +191,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | livenessProbe.httpGet.port | string | `"http"` |  |
 | metrics.enabled | bool | `false` |  |
 | metrics.port | int | `5678` |  |
+| metrics.path | string | `"/metrics"` |  |
 | metrics.serviceMonitor.enabled | bool | `false` |  |
 | nameOverride | string | `""` |  |
 | networkPolicy.egress | list | `[]` |  |

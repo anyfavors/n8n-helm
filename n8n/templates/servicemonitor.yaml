@@ -12,4 +12,5 @@ spec:
       {{- include "n8n.selectorLabels" . | nindent 6 }}
   endpoints:
     - port: metrics
+      path: {{ .Values.metrics.path }}
 {{- end }}
