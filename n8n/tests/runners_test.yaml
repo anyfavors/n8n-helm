@@ -1,0 +1,15 @@
+suite: runners env
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: sets N8N_RUNNERS_ENABLED when enabled
+    set:
+      runners:
+        enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: N8N_RUNNERS_ENABLED
+            value: "true"
+
