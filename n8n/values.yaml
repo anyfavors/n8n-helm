@@ -79,7 +79,8 @@ database:
   port: 5432
   user: ""
   password: ""
-  # Reference an existing secret for the password instead of setting it directly
+  # Reference an existing secret for the password instead of setting it directly.
+  # The secret must include the key defined below (defaults to "password").
   passwordSecret:
     name: ""
     key: "password"

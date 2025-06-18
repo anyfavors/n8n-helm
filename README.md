@@ -387,6 +387,9 @@ directly to the connection fields:
 - `database.passwordSecret.key` – key within the secret (defaults to `password`)
 - `database.database` – name of the database to connect to
 
+When referencing a secret for the database password, ensure the secret includes
+the key specified by `database.passwordSecret.key` (default `password`).
+
 n8n requires a couple of additional environment variables when connecting to
 PostgreSQL. The chart populates them automatically when an external database is
 configured or the bundled PostgreSQL subchart is enabled:
