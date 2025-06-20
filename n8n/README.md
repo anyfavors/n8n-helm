@@ -16,7 +16,7 @@ helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace
 ```
 All examples install into the `my-n8n` namespace which you can change as needed.
 
-Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line. See the [Pod Security](#pod-security) section to label the namespace.
+Customise the deployment by supplying your own `values.yaml` or overriding settings on the command line.
 
 ## Common configuration options
 
@@ -70,27 +70,14 @@ Automatic mounting of the ServiceAccount token is disabled via
 `serviceAccount.automount` to limit access to the Kubernetes API and reduce the
 attack surface.
 
-### Pod Security
+The chart can also manage Pod Security Admission labels on the release
+namespace. Specify the desired levels under the `podSecurity` block:
 
-Kubernetes namespaces should be labelled to enforce the
-"restricted" Pod Security profile. Label the namespace manually:
-
-```bash
-kubectl label --overwrite namespace my-n8n \
-  pod-security.kubernetes.io/enforce=restricted \
-  pod-security.kubernetes.io/audit=restricted \
-  pod-security.kubernetes.io/warn=restricted
-```
-
-The chart can also manage these labels when installed. Set the desired
-levels under the `podSecurity` block or pass them on the command line:
-
-```bash
-helm install my-n8n n8n/n8n \
-  --namespace my-n8n --create-namespace \
-  --set podSecurity.enforce=restricted \
-  --set podSecurity.audit=restricted \
-  --set podSecurity.warn=restricted
+```yaml
+podSecurity:
+  enforce: restricted
+  audit: restricted
+  warn: restricted
 ```
 
 ## Updating n8n versions
@@ -193,7 +180,7 @@ Users can then add <https://anyfavors.github.io/n8n-helm> as a Helm repository t
 | generateEncryptionKey | bool | `true` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"n8nio/n8n"` |  |
-| image.tag | string | `"1.99.0"` |  |
+| image.tag | string | `"1.99.1"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
