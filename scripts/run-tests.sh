@@ -12,6 +12,12 @@ if ! command -v helm >/dev/null; then
   exit 1
 fi
 
+required_helm=$(cat "$SCRIPT_DIR/../.github/helm-version.txt")
+current_helm=$(helm version --short --client 2>/dev/null | cut -d'+' -f1)
+if [ "$current_helm" != "$required_helm" ]; then
+  echo "Warning: Helm $required_helm expected but $current_helm found" >&2
+fi
+
 # Install helm-unittest plugin if missing
 if helm plugin list | grep -qw unittest; then
   helm plugin update unittest >/dev/null || true

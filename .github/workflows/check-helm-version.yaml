@@ -1,0 +1,43 @@
+name: Check Helm Version
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get latest Helm version
+        id: latest
+        run: |
+          latest=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+      - name: Get current Helm version
+        id: current
+        run: |
+          current=$(cat .github/helm-version.txt)
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+      - name: Update files
+        if: steps.latest.outputs.latest != steps.current.outputs.current
+        run: |
+          echo "${{ steps.latest.outputs.latest }}" > .github/helm-version.txt
+      - name: Create Pull Request
+        if: steps.latest.outputs.latest != steps.current.outputs.current
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: update Helm to ${{ steps.latest.outputs.latest }}"
+          title: "chore: update Helm to ${{ steps.latest.outputs.latest }}"
+          body: "Automated update of Helm CLI version to ${{ steps.latest.outputs.latest }}."
+          branch: "update-helm-${{ steps.latest.outputs.latest }}"
+          delete-branch: true
+          labels: automated
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
