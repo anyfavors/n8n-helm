@@ -21,6 +21,18 @@ helm install my-n8n n8n/n8n --namespace my-n8n --create-namespace
 ```
 All examples install into the `my-n8n` namespace which you can change as needed.
 
+### Pulling from the OCI registry
+
+Chart packages are also published to the GitHub Container Registry.
+Authenticate with Helm and pull a specific version:
+
+```bash
+helm registry login ghcr.io -u <username> -p <token>
+helm pull oci://ghcr.io/<owner>/charts/n8n --version <version>
+```
+
+Replace `<version>` with the desired chart version.
+
 
 Customise the deployment by editing the values in `n8n/values.yaml` or by supplying your own values file.
 

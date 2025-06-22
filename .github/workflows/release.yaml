@@ -36,6 +36,18 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install helm-push plugin
+        run: helm plugin install https://github.com/chartmuseum/helm-push.git
+
+      - name: Push chart package to OCI registry
+        if: steps.cr.outputs.changed_charts != ''
+        env:
+          OCI_REPO: ghcr.io/${{ github.repository_owner }}/charts
+        run: |
+          helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          chart=$(ls .cr-release-packages/n8n-*.tgz | head -n 1)
+          helm push "$chart" "oci://$OCI_REPO"
+
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
 
