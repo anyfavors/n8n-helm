@@ -4,8 +4,11 @@ ARG HELM_VERSION=v3.18.3
 ARG HELM_DOCS_VERSION=v1.14.2
 
 RUN apt-get update && \
-    apt-get install -y curl git ca-certificates jq && \
+    apt-get install -y curl git ca-certificates jq python3 python3-pip && \
     rm -rf /var/lib/apt/lists/*
+
+# Install pre-commit for linting
+RUN pip3 install --no-cache-dir pre-commit
 
 # Install Helm
 RUN curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar -xz && \
