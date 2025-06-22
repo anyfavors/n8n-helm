@@ -47,6 +47,11 @@ jobs:
             git commit -m "chore: update CHANGELOG" && git push
           fi
 
+      - name: Draft release notes
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run chart-releaser
         id: cr
         uses: helm/chart-releaser-action@v1.7.0
