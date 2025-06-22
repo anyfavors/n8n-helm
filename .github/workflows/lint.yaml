@@ -80,13 +80,19 @@ jobs:
         run: helm template n8n
       - name: Verify values schema
         run: |
-          if ! bash scripts/pre-commit-helm-schema.sh; then
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            mv generated-values.schema.json n8n/values.schema.json
-            git add n8n/values.schema.json
-            git commit -m "ci: Update Helm values schema"
-          fi
+            if ! bash scripts/pre-commit-helm-schema.sh; then
+              git config user.name "GitHub Actions"
+              git config user.email "actions@github.com"
+              mv generated-values.schema.json n8n/values.schema.json
+              git add n8n/values.schema.json
+              git commit -m "ci: Update Helm values schema"
+            fi
+
+  scan:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
       - name: Get chart version
         id: chart
         run: |
@@ -111,7 +117,6 @@ jobs:
         run: |
           trivy image n8nio/n8n:${{ steps.chart.outputs.version }} \
             --severity HIGH,CRITICAL --exit-code 1 --ignorefile .trivyignore
-
   install:
     runs-on: ubuntu-latest
     needs: lint
