@@ -14,7 +14,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository_owner }}/helm-tools:latest
+      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v1
     steps:
       - uses: actions/checkout@v4
       - name: Set Helm version
@@ -24,10 +24,6 @@ jobs:
         with:
           path: ${{ env.HOME }}/.local/share/helm/plugins/helm-unittest
           key: helm-unittest-${{ env.HELM_VERSION }}
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
         with:
