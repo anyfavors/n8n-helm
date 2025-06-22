@@ -28,7 +28,6 @@ fi
 
 # Add bitnami repo for postgresql dependency
 helm repo add bitnami https://charts.bitnami.com/bitnami >/dev/null 2>&1 || true
-helm repo update >/dev/null || true
 
 # Build chart dependencies
 helm dependency build "$CHART_DIR" >/dev/null
