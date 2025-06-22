@@ -6,6 +6,17 @@
   "automerge": true,
   "automergeType": "pr",
   "deleteBranchAfterMerge": true,
+  "packageRules": [
+    {
+      "matchManagers": ["helm"],
+      "matchPackageNames": ["postgresql"],
+      "groupName": "bitnami/postgresql"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions"
+    }
+  ],
   "regexManagers": [
     {
       "fileMatch": ["^\\.github/workflows/.*\\.ya?ml$"],
