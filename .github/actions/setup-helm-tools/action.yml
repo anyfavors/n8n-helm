@@ -2,14 +2,6 @@ name: Setup Helm Tools
 runs:
   using: composite
   steps:
-    - name: Set Helm version
-      run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
-    - name: Setup Helm
-      uses: azure/setup-helm@v4
-      with:
-        version: ${{ env.HELM_VERSION }}
-      env:
-        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
     - name: Cache chart dependencies
       id: charts-cache
       uses: actions/cache@v3
@@ -19,18 +11,3 @@ runs:
     - name: Build chart dependencies
       if: steps.charts-cache.outputs.cache-hit != 'true'
       run: helm dependency build n8n
-    - name: Install helm-docs
-      run: |
-        if [ ! -f /usr/local/bin/helm-docs ]; then
-          curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz | tar -xz -C /usr/local/bin helm-docs
-        fi
-    - name: Install helm-unittest plugin
-      run: |
-        if [ ! -d "$HOME/.local/share/helm/plugins/helm-unittest" ]; then
-          helm plugin install https://github.com/helm-unittest/helm-unittest
-        fi
-    - name: Install helm-schema-gen plugin
-      run: |
-        if [ ! -d "$HOME/.local/share/helm/plugins/helm-schema-gen" ]; then
-          helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git
-        fi
