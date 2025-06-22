@@ -541,11 +541,11 @@ pre-commit install
 ```
 If you prefer not to install the tooling locally, a Docker image with the
 required Helm utilities is available at
-`ghcr.io/anyfavors/helm-tools`.
+`ghcr.io/anyfavors/helm-tools:v1`.
 For example, run the test script inside the container with:
 
 ```bash
-docker run --rm -it -v $(pwd):/charts ghcr.io/anyfavors/helm-tools ./scripts/run-tests.sh
+docker run --rm -it -v $(pwd):/charts ghcr.io/anyfavors/helm-tools:v1 ./scripts/run-tests.sh
 ```
 
 Install [Helm](https://helm.sh) first:
