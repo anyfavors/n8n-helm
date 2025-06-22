@@ -15,6 +15,7 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    container: ghcr.io/anyfavors/helm-tools:latest
     strategy:
       matrix:
         k8s:
@@ -42,10 +43,6 @@ jobs:
             ${{ env.HOME }}/.local/share/helm/plugins
             /usr/local/bin/helm-docs
           key: helm-plugins-${{ env.HELM_VERSION }}
-      - name: Setup Helm tools
-        uses: ./.github/actions/setup-helm-tools
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Check for chart changes
         id: filter
         uses: dorny/paths-filter@v2
@@ -106,6 +103,7 @@ jobs:
 
   install:
     runs-on: ubuntu-latest
+    container: ghcr.io/anyfavors/helm-tools:latest
     needs: lint
     strategy:
       matrix:
@@ -115,10 +113,6 @@ jobs:
           - v1.28.15
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Helm tools
-        uses: ./.github/actions/setup-helm-tools
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Create kind cluster
         uses: helm/kind-action@v1.12.0
         with:
