@@ -28,18 +28,33 @@ jobs:
         uses: azure/setup-helm@v4
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Cache Helm plugins and helm-docs
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.HOME }}/.local/share/helm/plugins
+            /usr/local/bin/helm-docs
+          key: ${{ runner.os }}-helm-plugins-v1
       - name: Add Helm repository
         run: helm repo add bitnami https://charts.bitnami.com/bitnami
       - name: Build chart dependencies
         run: helm dependency build n8n
       - name: Install helm-docs
         run: |
-          curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz \
-            | tar -xz -C /usr/local/bin helm-docs
+          if [ ! -f /usr/local/bin/helm-docs ]; then
+            curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz \
+              | tar -xz -C /usr/local/bin helm-docs
+          fi
       - name: Install helm-unittest plugin
-        run: helm plugin install https://github.com/helm-unittest/helm-unittest
+        run: |
+          if [ ! -d "$HOME/.local/share/helm/plugins/helm-unittest" ]; then
+            helm plugin install https://github.com/helm-unittest/helm-unittest
+          fi
       - name: Install helm-schema-gen plugin
-        run: helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git
+        run: |
+          if [ ! -d "$HOME/.local/share/helm/plugins/helm-schema-gen" ]; then
+            helm plugin install https://github.com/karuppiah7890/helm-schema-gen.git
+          fi
       - name: Verify chart documentation
         run: |
           helm-docs
