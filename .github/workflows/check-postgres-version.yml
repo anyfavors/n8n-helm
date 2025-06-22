@@ -10,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set Helm version
+        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+      - name: Cache Helm plugins and helm-docs
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.HOME }}/.local/share/helm/plugins
+            /usr/local/bin/helm-docs
+          key: helm-plugins-${{ env.HELM_VERSION }}
       - name: Setup Helm
         uses: azure/setup-helm@v4
         env:
@@ -31,8 +40,10 @@ jobs:
       - name: Install helm-docs
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: |
-          curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz \
-            | tar -xz -C /usr/local/bin helm-docs
+          if [ ! -f /usr/local/bin/helm-docs ]; then
+            curl -sSL https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz \
+              | tar -xz -C /usr/local/bin helm-docs
+          fi
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: |
