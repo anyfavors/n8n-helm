@@ -46,3 +46,5 @@ jobs:
           key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --files $(if [ -n "${{ github.event.pull_request.base.sha }}" ]; then git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }}; else git ls-files; fi)
