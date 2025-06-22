@@ -2,8 +2,12 @@ name: Setup Helm Tools
 runs:
   using: composite
   steps:
+    - name: Set Helm version
+      run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
     - name: Setup Helm
       uses: azure/setup-helm@v4
+      with:
+        version: ${{ env.HELM_VERSION }}
       env:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
     - name: Add Bitnami repo
