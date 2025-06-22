@@ -15,6 +15,8 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/helm-tools:latest
     strategy:
       matrix:
         k8s:
@@ -28,13 +30,15 @@ jobs:
           - v1.28.15
     steps:
       - uses: actions/checkout@v4
+      - name: Set Helm version
+        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
         with:
           path: |
             ${{ env.HOME }}/.local/share/helm/plugins
             /usr/local/bin/helm-docs
-          key: ${{ runner.os }}-helm-plugins-v1
+          key: ${{ runner.os }}-helm-plugins-${{ env.HELM_VERSION }}-v1
       - name: Setup Helm tools
         uses: ./.github/actions/setup-helm-tools
         env:
