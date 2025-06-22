@@ -28,7 +28,7 @@ version: 0.1.21
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 # NOTE: bump this value and the default image.tag in values.yaml when updating to a new n8n release.
-appVersion: "1.99.0"
+appVersion: "1.99.1"
 annotations:
   artifacthub.io/values-schema: values.schema.json
 dependencies:
