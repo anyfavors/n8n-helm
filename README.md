@@ -558,7 +558,8 @@ generated from `values.yaml`. Install the `helm-schema-gen` plugin as shown
 above so the check can run locally.
 Verify the chart locally with the same commands used in CI. The provided
 `scripts/run-tests.sh` helper installs missing dependencies, builds the chart
-dependencies and runs the lint and unit tests:
+dependencies, checks that the documentation is up to date and then runs the
+lint and unit tests:
 
 ```bash
 ./scripts/run-tests.sh

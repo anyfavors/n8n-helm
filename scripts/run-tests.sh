@@ -27,6 +27,14 @@ helm repo update >/dev/null || true
 # Build chart dependencies
 helm dependency build "$CHART_DIR" >/dev/null
 
+# Verify documentation is up to date
+if command -v helm-docs >/dev/null; then
+  helm-docs >/dev/null
+  git diff --exit-code
+else
+  echo "helm-docs not installed; skipping documentation check" >&2
+fi
+
 # Lint and unit test chart
 helm lint --strict "$CHART_DIR"
 helm unittest "$CHART_DIR"
