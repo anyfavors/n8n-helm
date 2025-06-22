@@ -8,6 +8,8 @@ runs:
       with:
         path: n8n/charts
         key: charts-${{ hashFiles('n8n/Chart.lock', 'n8n/Chart.yaml') }}
+        restore-keys: |
+          charts-
     - name: Build chart dependencies
       if: steps.charts-cache.outputs.cache-hit != 'true'
       run: helm dependency build n8n

@@ -22,6 +22,8 @@ jobs:
         with:
           path: ${{ env.HOME }}/.local/share/helm/plugins/helm-unittest
           key: helm-unittest-${{ env.HELM_VERSION }}
+          restore-keys: |
+            helm-unittest-
       - name: Render chart
         id: render
         run: |

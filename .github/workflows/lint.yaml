@@ -46,6 +46,8 @@ jobs:
         with:
           path: ${{ env.HOME }}/.local/share/helm/plugins/helm-unittest
           key: helm-unittest-${{ env.HELM_VERSION }}
+          restore-keys: |
+            helm-unittest-
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
         with:
@@ -53,6 +55,8 @@ jobs:
             ${{ env.HOME }}/.local/share/helm/plugins
             /usr/local/bin/helm-docs
           key: helm-plugins-${{ env.HELM_VERSION }}
+          restore-keys: |
+            helm-plugins-
       - name: Verify chart documentation
         if: needs.filter.outputs.n8n == 'true'
         run: |
@@ -69,6 +73,8 @@ jobs:
         with:
           path: n8n/charts
           key: charts-${{ hashFiles('n8n/Chart.lock', 'n8n/Chart.yaml') }}
+          restore-keys: |
+            charts-
       - name: Build chart dependencies
         if: steps.charts-cache.outputs.cache-hit != 'true'
         run: helm dependency build n8n
@@ -140,6 +146,8 @@ jobs:
         with:
           path: ${{ env.HOME }}/kind-node-${{ matrix.k8s }}.tar
           key: kind-node-${{ matrix.k8s }}
+          restore-keys: |
+            kind-node-
       - name: Load node image from cache
         if: steps.kind-cache.outputs.cache-hit == 'true'
         run: docker load -i $HOME/kind-node-${{ matrix.k8s }}.tar

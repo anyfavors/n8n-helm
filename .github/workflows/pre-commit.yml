@@ -25,6 +25,8 @@ jobs:
         with:
           path: ${{ env.HOME }}/.local/share/helm/plugins/helm-unittest
           key: helm-unittest-${{ env.HELM_VERSION }}
+          restore-keys: |
+            helm-unittest-
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
         with:
@@ -32,11 +34,15 @@ jobs:
             ${{ env.HOME }}/.local/share/helm/plugins
             /usr/local/bin/helm-docs
           key: helm-plugins-${{ env.HELM_VERSION }}
+          restore-keys: |
+            helm-plugins-
       - name: Cache pre-commit
         uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit
           key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pre-commit-
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
         with:
