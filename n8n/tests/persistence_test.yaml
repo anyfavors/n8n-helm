@@ -53,3 +53,13 @@ tests:
       - equal:
           path: spec.accessModes[1]
           value: ReadOnlyMany
+  - it: renders custom access mode
+    set:
+      persistence:
+        enabled: true
+        accessModes:
+          - ReadWriteMany
+    asserts:
+      - equal:
+          path: spec.accessModes[0]
+          value: ReadWriteMany

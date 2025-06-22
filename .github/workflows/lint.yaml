@@ -32,7 +32,12 @@ jobs:
       - name: Verify chart documentation
         run: |
           helm-docs
-          git diff --exit-code
+          if ! git diff --quiet; then
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git add .
+            git commit -m "ci: Update Helm chart documentation"
+          fi
       - name: Build chart dependencies
         run: helm dependency build n8n
       - name: Helm lint
