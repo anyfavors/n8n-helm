@@ -3,6 +3,9 @@
   "extends": [
     "config:recommended"
   ],
+  "automerge": true,
+  "automergeType": "pr",
+  "deleteBranchAfterMerge": true,
   "regexManagers": [
     {
       "fileMatch": ["^\\.github/workflows/.*\\.ya?ml$"],

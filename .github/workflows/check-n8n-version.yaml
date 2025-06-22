@@ -37,6 +37,7 @@ jobs:
           helm-docs
       - name: Create Pull Request
         if: steps.latest.outputs.latest != steps.current.outputs.current
+        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "chore: update n8n version to ${{ steps.latest.outputs.latest }}"
@@ -45,3 +46,10 @@ jobs:
           branch: "update-n8n-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash

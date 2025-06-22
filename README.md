@@ -581,7 +581,7 @@ The configuration in [.github/renovate.json](.github/renovate.json) monitors the
 GitHub Actions used in this repository and the Helm tooling versions referenced
 in the workflows. When a new version of the `helm-docs` plugin or a GitHub
 Action becomes available, Renovate opens a pull request with the update.
-Maintainers should review these PRs and merge them once the checks pass.
+These pull requests are automatically merged once all checks succeed.
 ---
 ## Verifying chart signatures
 
