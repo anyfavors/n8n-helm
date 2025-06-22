@@ -59,12 +59,15 @@ jobs:
         run: helm unittest n8n
       - name: Helm template
         run: helm template n8n
-      - name: Validate values schema
+      - name: Verify values schema
         run: |
-          helm schema-gen n8n/values.yaml > generated-values.schema.json
-          jq --indent 4 '.properties.ingress.properties.hosts.items.properties.paths.items.properties.pathType += {"enum": ["ImplementationSpecific", "Prefix", "Exact"]}' generated-values.schema.json > tmp.json
-          mv tmp.json generated-values.schema.json
-          diff -u n8n/values.schema.json generated-values.schema.json
+          if ! bash scripts/pre-commit-helm-schema.sh; then
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            mv generated-values.schema.json n8n/values.schema.json
+            git add n8n/values.schema.json
+            git commit -m "ci: Update Helm values schema"
+          fi
       - name: Get chart version
         id: chart
         run: |
