@@ -28,6 +28,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Install git-chglog
+        uses: craicoverflow/install-git-chglog@v1
+
+      - name: Generate changelog
+        run: git-chglog -o CHANGELOG.md
+
+      - name: Commit changelog
+        run: |
+          git add CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "No changelog updates"
+          else
+            git commit -m "chore: update CHANGELOG" && git push
+          fi
+
       - name: Run chart-releaser
         id: cr
         uses: helm/chart-releaser-action@v1.7.0
