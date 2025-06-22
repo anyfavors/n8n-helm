@@ -78,9 +78,17 @@ jobs:
               git config user.name "GitHub Actions"
               git config user.email "actions@github.com"
               mv generated-values.schema.json n8n/values.schema.json
-              git add n8n/values.schema.json
-              git commit -m "ci: Update Helm values schema"
-            fi
+            git add n8n/values.schema.json
+            git commit -m "ci: Update Helm values schema"
+          fi
+
+  scan:
+    runs-on: ubuntu-latest
+    container: ghcr.io/anyfavors/helm-tools:latest
+    needs: [filter, lint]
+    if: needs.filter.outputs.n8n == "true"
+    steps:
+      - uses: actions/checkout@v4
       - name: Get chart version
         id: chart
         run: |
