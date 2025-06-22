@@ -13,6 +13,7 @@ concurrency:
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
+    # Use a tagged image to avoid pulling the floating `latest`
     container:
       image: ghcr.io/${{ github.repository_owner }}/helm-tools:v1
     steps:
