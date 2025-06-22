@@ -124,6 +124,15 @@ jobs:
           - v1.28.15
     steps:
       - uses: actions/checkout@v4
+      - name: Cache kind node image
+        id: kind-cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.HOME }}/kind-node-${{ matrix.k8s }}.tar
+          key: kind-node-${{ matrix.k8s }}
+      - name: Load node image from cache
+        if: steps.kind-cache.outputs.cache-hit == 'true'
+        run: docker load -i $HOME/kind-node-${{ matrix.k8s }}.tar
       - name: Create kind cluster
         uses: helm/kind-action@v1.12.0
         with:
@@ -144,3 +153,6 @@ jobs:
         run: kubectl get pods -n default
       - name: Delete release
         run: helm uninstall my-n8n
+      - name: Save node image to cache
+        run: |
+          docker save kindest/node:${{ matrix.k8s }} -o $HOME/kind-node-${{ matrix.k8s }}.tar
