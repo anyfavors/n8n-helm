@@ -12,6 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set Helm version
+        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+      - name: Cache helm-unittest plugin
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.HOME }}/.local/share/helm/plugins/helm-unittest
+          key: helm-unittest-${{ env.HELM_VERSION }}
       - name: Setup Helm tools
         uses: ./.github/actions/setup-helm-tools
         env:
