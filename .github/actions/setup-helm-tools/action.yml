@@ -12,7 +12,14 @@ runs:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
     - name: Add Bitnami repo
       run: helm repo add bitnami https://charts.bitnami.com/bitnami
+    - name: Cache chart dependencies
+      id: charts-cache
+      uses: actions/cache@v3
+      with:
+        path: n8n/charts
+        key: charts-${{ hashFiles('n8n/Chart.lock', 'n8n/Chart.yaml') }}
     - name: Build chart dependencies
+      if: steps.charts-cache.outputs.cache-hit != 'true'
       run: helm dependency build n8n
     - name: Install helm-docs
       run: |
