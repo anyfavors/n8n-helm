@@ -16,6 +16,9 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Use tagged release-tools image
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/release-tools:v1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,13 +30,7 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v4
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Install git-chglog
-        uses: craicoverflow/install-git-chglog@v1
+      # Helm and git-chglog are pre-installed in the container
 
       - name: Generate changelog
         run: git-chglog -o CHANGELOG.md
@@ -60,8 +57,7 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install helm-push plugin
-        run: helm plugin install https://github.com/chartmuseum/helm-push.git
+      # helm-push plugin is available in the container
 
       - name: Push chart package to OCI registry
         if: steps.cr.outputs.changed_charts != ''
@@ -72,8 +68,7 @@ jobs:
           chart=$(ls .cr-release-packages/n8n-*.tgz | head -n 1)
           helm push "$chart" "oci://$OCI_REPO"
 
-      - name: Install cosign
-        uses: sigstore/cosign-installer@v3
+      # cosign is available in the container
 
       - name: Sign chart packages and upload signatures
         if: steps.cr.outputs.changed_charts != ''
