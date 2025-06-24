@@ -53,17 +53,8 @@ jobs:
             git add .
             git commit -m "ci: Update Helm chart documentation"
           fi
-      - name: Cache chart dependencies
-        id: charts-cache
-        uses: actions/cache@v3
-        with:
-          path: n8n/charts
-          key: charts-${{ hashFiles('n8n/Chart.lock', 'n8n/Chart.yaml') }}
-          restore-keys: |
-            charts-
-      - name: Build chart dependencies
-        if: steps.charts-cache.outputs.cache-hit != 'true'
-        run: helm dependency build n8n
+      - name: Setup Helm tools
+        uses: ./.github/actions/setup-helm-tools
       - name: Helm lint
         run: helm lint n8n
       - name: Helm lint with values
