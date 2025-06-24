@@ -60,7 +60,7 @@ jobs:
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker build -t "$IMAGE" -f repo/.github/docker/helm-tools.Dockerfile repo
+            docker build -t "$IMAGE" -f .github/docker/helm-tools.Dockerfile .
             docker push "$IMAGE"
           else
             echo "$IMAGE already exists"
