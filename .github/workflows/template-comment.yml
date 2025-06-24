@@ -10,11 +10,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repo
+          path: ${{ github.workspace }}
+
   render:
     runs-on: ubuntu-latest
     container: ghcr.io/anyfavors/helm-tools:v2
+    needs: prepare
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs

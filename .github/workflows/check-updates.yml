@@ -6,10 +6,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  helm:
+  prepare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repo
+          path: ${{ github.workspace }}
+
+  helm:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Get latest Helm version
         id: latest
         run: |
@@ -43,8 +57,11 @@ jobs:
 
   n8n:
     runs-on: ubuntu-latest
+    needs: prepare
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
@@ -100,8 +117,11 @@ jobs:
 
   postgres:
     runs-on: ubuntu-latest
+    needs: prepare
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
