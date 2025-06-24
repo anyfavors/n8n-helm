@@ -19,7 +19,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: repo
-          path: ${{ github.workspace }}
+          path: |
+            ${{ github.workspace }}
+            ${{ github.workspace }}/.github
 
   helm-tools:
     runs-on: ubuntu-latest
