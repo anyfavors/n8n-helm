@@ -43,6 +43,13 @@ jobs:
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Setup Helm tools
         uses: ./.github/actions/setup-helm-tools
+      - name: Cache pre-commit env
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.HOME }}/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            pre-commit-${{ runner.os }}-
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
         with:
