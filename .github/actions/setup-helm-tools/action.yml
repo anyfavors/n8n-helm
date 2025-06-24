@@ -2,6 +2,16 @@ name: Setup Helm Tools
 runs:
   using: composite
   steps:
+    - name: Cache Helm plugins and helm-docs
+      id: plugins-cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ env.HOME }}/.local/share/helm/plugins
+          /usr/local/bin/helm-docs
+        key: helm-plugins-${{ env.HELM_VERSION }}
+        restore-keys: |
+          helm-plugins-
     - name: Cache chart dependencies
       id: charts-cache
       uses: actions/cache@v3
