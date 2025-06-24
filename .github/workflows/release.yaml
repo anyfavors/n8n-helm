@@ -24,7 +24,7 @@ jobs:
         with:
           name: repo
           path: |
-            ${{ github.workspace }}
+            ${{ github.workspace }}/*
             ${{ github.workspace }}/.github
 
   release:
