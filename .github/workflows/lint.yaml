@@ -25,6 +25,7 @@ jobs:
           filters: |
             n8n:
               - 'n8n/**'
+              - '!n8n/README.md*'
   lint:
     runs-on: ubuntu-latest
     needs: filter
