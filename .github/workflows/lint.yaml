@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v1
-    needs: [filter, lint]
+    needs: filter
     if: needs.filter.outputs.n8n == "true"
     env:
       TRIVY_CACHE_DIR: ${{ env.HOME }}/.cache/trivy
