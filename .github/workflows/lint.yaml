@@ -13,13 +13,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repo
+          path: ${{ github.workspace }}
+
   filter:
     runs-on: ubuntu-latest
+    needs: prepare
     outputs:
       n8n: ${{ steps.filter.outputs.n8n }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - id: filter
         uses: dorny/paths-filter@v2
         with:
@@ -32,12 +46,14 @@ jobs:
               - 'n8n/values.yaml'
   lint:
     runs-on: ubuntu-latest
-    needs: filter
+    needs: [prepare, filter]
     if: needs.filter.outputs.n8n == "true"
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Verify chart documentation
@@ -72,12 +88,14 @@ jobs:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v2
-    needs: filter
+    needs: [prepare, filter]
     if: needs.filter.outputs.n8n == "true"
     env:
       TRIVY_CACHE_DIR: ${{ env.HOME }}/.cache/trivy
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Get chart version
         id: chart
         run: |
@@ -112,14 +130,16 @@ jobs:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v2
-    needs: [filter, lint]
+    needs: [prepare, filter, lint]
     if: needs.filter.outputs.n8n == "true"
     strategy:
       matrix:
         k8s:
           - v1.28.15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
       - name: Load node image
         run: docker load -i /kind-images/kind-node-${{ matrix.k8s }}.tar
       - name: Create kind cluster
