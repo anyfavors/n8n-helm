@@ -92,7 +92,6 @@ jobs:
           fi
       - name: Setup Helm tools
         uses: ./repo/.github/actions/setup-helm-tools
-        working-directory: repo
       - name: Helm lint
         run: helm lint n8n --values n8n/values.yaml
       - name: Helm unit tests
@@ -129,7 +128,6 @@ jobs:
         run: |
           version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
           echo "version=$version" >> "$GITHUB_OUTPUT"
-        working-directory: repo
       - name: Cache Trivy data
         id: trivy-cache
         uses: actions/cache@v3
@@ -146,7 +144,6 @@ jobs:
           exit-code: 1
           severity: HIGH
           args: --ignorefile .trivyignore
-        working-directory: repo
       - name: Scan container image for vulnerabilities
         uses: aquasecurity/trivy-action@0.31.0
         with:
@@ -155,7 +152,6 @@ jobs:
           exit-code: 1
           severity: HIGH,CRITICAL
           args: --ignorefile .trivyignore
-        working-directory: repo
 
   install:
     runs-on: ubuntu-latest

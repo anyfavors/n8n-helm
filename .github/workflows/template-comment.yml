@@ -57,7 +57,6 @@ jobs:
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
-        working-directory: repo
         with:
           path: |
             ${{ env.HOME }}/.local/share/helm/plugins
@@ -79,7 +78,6 @@ jobs:
           path: template.txt
       - name: Comment with template
         uses: actions/github-script@v7
-        working-directory: repo
         with:
           script: |
             const fs = require('fs');
