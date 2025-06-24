@@ -2,9 +2,10 @@ FROM ubuntu:22.04
 
 ARG HELM_VERSION=v3.18.3
 ARG HELM_DOCS_VERSION=v1.14.2
+ARG KIND_NODE_IMAGES="v1.26.15 v1.27.16 v1.28.15"
 
 RUN apt-get update && \
-    apt-get install -y curl git ca-certificates jq python3 python3-pip && \
+    apt-get install -y curl git ca-certificates jq python3 python3-pip skopeo && \
     rm -rf /var/lib/apt/lists/*
 
 # Install pre-commit for linting
@@ -25,6 +26,12 @@ RUN helm plugin install https://github.com/helm-unittest/helm-unittest && \
 
 # Add Bitnami repo for dependencies
 RUN helm repo add bitnami https://charts.bitnami.com/bitnami && helm repo update
+
+# Pre-download common kind node images
+RUN mkdir -p /kind-images && \
+    for version in $KIND_NODE_IMAGES; do \
+        skopeo copy docker://kindest/node:${version} docker-archive:/kind-images/kind-node-${version}.tar:kindest/node:${version}; \
+    done
 
 WORKDIR /charts
 
