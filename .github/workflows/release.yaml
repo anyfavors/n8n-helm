@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     # Use tagged release-tools image
     container:
-      image: ghcr.io/${{ github.repository_owner }}/release-tools:v1
+      image: ghcr.io/anyfavors/release-tools:v1
     needs: prepare
     steps:
       - uses: actions/download-artifact@v4
