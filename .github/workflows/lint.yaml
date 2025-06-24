@@ -37,6 +37,7 @@ jobs:
           - v1.26.15
           - v1.27.16
           - v1.28.15
+      max-parallel: 1
     steps:
       - uses: actions/checkout@v4
       - name: Set Helm version
@@ -148,6 +149,19 @@ jobs:
           key: kind-node-${{ matrix.k8s }}
           restore-keys: |
             kind-node-
+      - name: Download node image artifact
+        if: steps.kind-cache.outputs.cache-hit != 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: kind-node-${{ matrix.k8s }}
+          path: ${{ env.HOME }}
+        continue-on-error: true
+      - name: Load node image from artifact
+        if: steps.kind-cache.outputs.cache-hit != 'true'
+        run: |
+          if [ -f "$HOME/kind-node-${{ matrix.k8s }}.tar" ]; then
+            docker load -i "$HOME/kind-node-${{ matrix.k8s }}.tar"
+          fi
       - name: Load node image from cache
         if: steps.kind-cache.outputs.cache-hit == 'true'
         run: docker load -i $HOME/kind-node-${{ matrix.k8s }}.tar
@@ -174,3 +188,10 @@ jobs:
       - name: Save node image to cache
         run: |
           docker save kindest/node:${{ matrix.k8s }} -o $HOME/kind-node-${{ matrix.k8s }}.tar
+      - name: Upload node image artifact
+        if: steps.kind-cache.outputs.cache-hit != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kind-node-${{ matrix.k8s }}
+          path: ${{ env.HOME }}/kind-node-${{ matrix.k8s }}.tar
+          if-no-files-found: ignore
