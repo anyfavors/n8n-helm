@@ -32,6 +32,9 @@ jobs:
     # Use tagged release-tools image
     container:
       image: ghcr.io/anyfavors/release-tools:v1
+    defaults:
+      run:
+        working-directory: repo
     needs: prepare
     steps:
       - uses: actions/download-artifact@v4
@@ -58,6 +61,7 @@ jobs:
 
       - name: Draft release notes
         uses: release-drafter/release-drafter@v6
+        working-directory: repo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -68,6 +72,7 @@ jobs:
           charts_dir: n8n
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: repo
 
       # helm-push plugin is available in the container
 
@@ -104,6 +109,7 @@ jobs:
       - name: Upload chart packages
         if: steps.cr.outputs.changed_charts != ''
         uses: actions/upload-artifact@v4
+        working-directory: repo
         with:
           name: chart-packages
           path: .cr-release-packages/*.tgz
