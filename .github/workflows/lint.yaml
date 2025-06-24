@@ -125,6 +125,8 @@ jobs:
           - v1.28.15
     steps:
       - uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Cache kind node image
         id: kind-cache
         uses: actions/cache@v3
@@ -145,6 +147,8 @@ jobs:
         run: |
           if [ -f "$HOME/kind-node-${{ matrix.k8s }}.tar" ]; then
             docker load -i "$HOME/kind-node-${{ matrix.k8s }}.tar"
+          else
+            docker pull ghcr.io/${{ github.repository_owner }}/kind-node:${{ matrix.k8s }}
           fi
       - name: Load node image from cache
         if: steps.kind-cache.outputs.cache-hit == 'true'
@@ -172,6 +176,11 @@ jobs:
       - name: Save node image to cache
         run: |
           docker save kindest/node:${{ matrix.k8s }} -o $HOME/kind-node-${{ matrix.k8s }}.tar
+      - name: Push node image to registry
+        if: steps.kind-cache.outputs.cache-hit != 'true'
+        run: |
+          docker tag kindest/node:${{ matrix.k8s }} ghcr.io/${{ github.repository_owner }}/kind-node:${{ matrix.k8s }}
+          docker push ghcr.io/${{ github.repository_owner }}/kind-node:${{ matrix.k8s }}
       - name: Upload node image artifact
         if: steps.kind-cache.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v4
