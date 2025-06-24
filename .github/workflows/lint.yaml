@@ -88,6 +88,8 @@ jobs:
     container: ghcr.io/anyfavors/helm-tools:v1
     needs: [filter, lint]
     if: needs.filter.outputs.n8n == "true"
+    env:
+      TRIVY_CACHE_DIR: ${{ env.HOME }}/.cache/trivy
     steps:
       - uses: actions/checkout@v4
       - name: Get chart version
@@ -95,6 +97,14 @@ jobs:
         run: |
           version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
           echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Cache Trivy data
+        id: trivy-cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.TRIVY_CACHE_DIR }}
+          key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
+          restore-keys: |
+            trivy-${{ runner.os }}-
       - name: Scan chart for vulnerabilities
         uses: aquasecurity/trivy-action@0.31.0
         with:
