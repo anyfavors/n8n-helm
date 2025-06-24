@@ -11,8 +11,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      n8n: ${{ steps.filter.outputs.n8n }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            n8n:
+              - 'n8n/**'
+
   pre-commit:
     runs-on: ubuntu-latest
+    needs: filter
+    if: needs.filter.outputs.n8n == 'true'
     # Use a tagged image to avoid pulling the floating `latest`
     container:
       image: ghcr.io/${{ github.repository_owner }}/helm-tools:v1
