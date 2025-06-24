@@ -36,13 +36,6 @@ jobs:
     if: needs.filter.outputs.n8n == "true"
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v1
-    strategy:
-      matrix:
-        k8s:
-          - v1.26.15
-          - v1.27.16
-          - v1.28.15
-      max-parallel: 1
     steps:
       - uses: actions/checkout@v4
       - name: Set Helm version
