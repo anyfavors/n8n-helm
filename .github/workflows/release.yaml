@@ -41,9 +41,6 @@ jobs:
     # Use tagged release-tools image
     container:
       image: ghcr.io/anyfavors/release-tools:v1
-    defaults:
-      run:
-        working-directory: repo
     needs: prepare
     steps:
       - uses: actions/download-artifact@v4
@@ -62,15 +59,18 @@ jobs:
             exit 1
           fi
           ls -al repo
+        working-directory: repo
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+        working-directory: repo
 
       # Helm and git-chglog are pre-installed in the container
 
       - name: Generate changelog
         run: git-chglog -o CHANGELOG.md
+        working-directory: repo
 
       - name: Commit changelog
         run: |
@@ -80,6 +80,7 @@ jobs:
           else
             git commit -m "chore: update CHANGELOG" && git push
           fi
+        working-directory: repo
 
       - name: Draft release notes
         uses: release-drafter/release-drafter@v6
@@ -104,6 +105,7 @@ jobs:
           helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
           chart=$(ls .cr-release-packages/n8n-*.tgz | head -n 1)
           helm push "$chart" "oci://$OCI_REPO"
+        working-directory: repo
 
       # cosign is available in the container
 
@@ -118,6 +120,7 @@ jobs:
             tag=$(basename "$pkg" .tgz)
             gh release upload "$tag" "$pkg.sig" --clobber
           done
+        working-directory: repo
 
       - name: Verify signatures
         if: steps.cr.outputs.changed_charts != ''
@@ -125,6 +128,7 @@ jobs:
           for pkg in .cr-release-packages/*.tgz; do
             cosign verify-blob --key cosign.pub --signature "$pkg.sig" "$pkg"
           done
+        working-directory: repo
 
       - name: Upload chart packages
         if: steps.cr.outputs.changed_charts != ''

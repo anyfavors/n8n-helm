@@ -99,9 +99,6 @@ jobs:
     if: needs.filter.outputs.n8n == "true"
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v2
-    defaults:
-      run:
-        working-directory: repo
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -112,28 +109,34 @@ jobs:
           mkdir repo
           tar -xzf repo.tar.gz -C repo
           ls -al repo
-      - name: Set Helm version
-        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
-      - name: Verify chart documentation
-        if: needs.filter.outputs.docs == 'true'
-        run: |
-          helm-docs
-          if ! git diff --quiet; then
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            git add .
-            git commit -m "ci: Update Helm chart documentation"
-          fi
-      - name: Setup Helm tools
-        uses: ./repo/.github/actions/setup-helm-tools
-      - name: Helm lint
-        run: helm lint n8n --values n8n/values.yaml
-      - name: Helm unit tests
-        run: helm unittest n8n
-      - name: Helm template
-        run: helm template n8n
-      - name: Verify values schema
-        run: |
+        - name: Set Helm version
+          run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+          working-directory: repo
+        - name: Verify chart documentation
+          if: needs.filter.outputs.docs == 'true'
+          run: |
+            helm-docs
+            if ! git diff --quiet; then
+              git config user.name "GitHub Actions"
+              git config user.email "actions@github.com"
+              git add .
+              git commit -m "ci: Update Helm chart documentation"
+            fi
+          working-directory: repo
+        - name: Setup Helm tools
+          uses: ./repo/.github/actions/setup-helm-tools
+          working-directory: repo
+        - name: Helm lint
+          run: helm lint n8n --values n8n/values.yaml
+          working-directory: repo
+        - name: Helm unit tests
+          run: helm unittest n8n
+          working-directory: repo
+        - name: Helm template
+          run: helm template n8n
+          working-directory: repo
+        - name: Verify values schema
+          run: |
             if ! bash scripts/pre-commit-helm-schema.sh; then
               git config user.name "GitHub Actions"
               git config user.email "actions@github.com"
@@ -141,14 +144,12 @@ jobs:
             git add n8n/values.schema.json
             git commit -m "ci: Update Helm values schema"
           fi
+          working-directory: repo
 
   scan:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v2
-    defaults:
-      run:
-        working-directory: repo
     needs: [prepare, filter, helm-tools]
     if: needs.filter.outputs.n8n == "true"
     env:
@@ -163,43 +164,44 @@ jobs:
           mkdir repo
           tar -xzf repo.tar.gz -C repo
           ls -al repo
-      - name: Get chart version
-        id: chart
-        run: |
-          version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: Cache Trivy data
-        id: trivy-cache
-        uses: actions/cache@v3
+        - name: Get chart version
+          id: chart
+          run: |
+            version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
+            echo "version=$version" >> "$GITHUB_OUTPUT"
+          working-directory: repo
+        - name: Cache Trivy data
+          id: trivy-cache
+          uses: actions/cache@v3
+          working-directory: repo
         with:
           path: ${{ env.TRIVY_CACHE_DIR }}
           key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
           restore-keys: |
             trivy-${{ runner.os }}-
-      - name: Scan chart for vulnerabilities
-        uses: aquasecurity/trivy-action@0.31.0
-        with:
-          scan-type: fs
-          scan-ref: n8n
-          exit-code: 1
-          severity: HIGH
-          args: --ignorefile .trivyignore
-      - name: Scan container image for vulnerabilities
-        uses: aquasecurity/trivy-action@0.31.0
-        with:
-          scan-type: image
-          image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
-          exit-code: 1
-          severity: HIGH,CRITICAL
-          args: --ignorefile .trivyignore
+        - name: Scan chart for vulnerabilities
+          uses: aquasecurity/trivy-action@0.31.0
+          with:
+            scan-type: fs
+            scan-ref: n8n
+            exit-code: 1
+            severity: HIGH
+            args: --ignorefile .trivyignore
+          working-directory: repo
+        - name: Scan container image for vulnerabilities
+          uses: aquasecurity/trivy-action@0.31.0
+          with:
+            scan-type: image
+            image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
+            exit-code: 1
+            severity: HIGH,CRITICAL
+            args: --ignorefile .trivyignore
+          working-directory: repo
 
   install:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v2
-    defaults:
-      run:
-        working-directory: repo
     needs: [prepare, filter, helm-tools, lint]
     if: needs.filter.outputs.n8n == "true"
     strategy:
@@ -218,6 +220,7 @@ jobs:
           ls -al repo
       - name: Load node image
         run: docker load -i /kind-images/kind-node-${{ matrix.k8s }}.tar
+        working-directory: repo
       - name: Create kind cluster
         uses: helm/kind-action@v1.12.0
         with:
@@ -225,16 +228,22 @@ jobs:
           node_image: kindest/node:${{ matrix.k8s }}
       - name: Check cluster readiness
         run: kubectl get nodes && kubectl get pods --all-namespaces
+        working-directory: repo
       - name: Install chart
         run: helm install my-n8n ./n8n --wait --timeout 300s
+        working-directory: repo
       - name: Debug Helm installation
         if: failure()
         run: |
           kubectl describe pods -n default || true
           kubectl logs -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" -n default || true
+        working-directory: repo
       - name: Wait for pods
         run: kubectl wait --namespace default --for=condition=ready pod -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" --timeout=300s
+        working-directory: repo
       - name: Get pods
         run: kubectl get pods -n default
+        working-directory: repo
       - name: Delete release
         run: helm uninstall my-n8n
+        working-directory: repo
