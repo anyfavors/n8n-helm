@@ -125,7 +125,6 @@ jobs:
           working-directory: repo
         - name: Setup Helm tools
           uses: ./repo/.github/actions/setup-helm-tools
-          working-directory: repo
         - name: Helm lint
           run: helm lint n8n --values n8n/values.yaml
           working-directory: repo
@@ -173,12 +172,11 @@ jobs:
         - name: Cache Trivy data
           id: trivy-cache
           uses: actions/cache@v3
-          working-directory: repo
-        with:
-          path: ${{ env.TRIVY_CACHE_DIR }}
-          key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
-          restore-keys: |
-            trivy-${{ runner.os }}-
+          with:
+            path: ${{ env.TRIVY_CACHE_DIR }}
+            key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
+            restore-keys: |
+              trivy-${{ runner.os }}-
         - name: Scan chart for vulnerabilities
           uses: aquasecurity/trivy-action@0.31.0
           with:
@@ -187,7 +185,6 @@ jobs:
             exit-code: 1
             severity: HIGH
             args: --ignorefile .trivyignore
-          working-directory: repo
         - name: Scan container image for vulnerabilities
           uses: aquasecurity/trivy-action@0.31.0
           with:
@@ -196,7 +193,6 @@ jobs:
             exit-code: 1
             severity: HIGH,CRITICAL
             args: --ignorefile .trivyignore
-          working-directory: repo
 
   install:
     runs-on: ubuntu-latest

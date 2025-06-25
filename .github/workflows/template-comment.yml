@@ -78,26 +78,25 @@ jobs:
           mkdir repo
           tar -xzf repo.tar.gz -C repo
           ls -al repo
-      - name: Set Helm version
-        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
-        working-directory: repo
-      - name: Cache Helm plugins and helm-docs
-        uses: actions/cache@v3
-        working-directory: repo
-        with:
-          path: |
-            ${{ env.HOME }}/.local/share/helm/plugins
-            /usr/local/bin/helm-docs
+        - name: Set Helm version
+          run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+          working-directory: repo
+        - name: Cache Helm plugins and helm-docs
+          uses: actions/cache@v3
+          with:
+            path: |
+              ${{ env.HOME }}/.local/share/helm/plugins
+              /usr/local/bin/helm-docs
           key: helm-plugins-${{ env.HELM_VERSION }}
           restore-keys: |
             helm-plugins-
-      - name: Render chart
-        id: render
-        run: |
-          helm template n8n > template.txt
-          size=$(wc -c < template.txt)
-          echo "size=$size" >> "$GITHUB_OUTPUT"
-        working-directory: repo
+        - name: Render chart
+          id: render
+          run: |
+            helm template n8n > template.txt
+            size=$(wc -c < template.txt)
+            echo "size=$size" >> "$GITHUB_OUTPUT"
+          working-directory: repo
       - name: Upload template artifact
         if: steps.render.outputs.size > 65000
         uses: actions/upload-artifact@v4
@@ -106,7 +105,6 @@ jobs:
           path: template.txt
       - name: Comment with template
         uses: actions/github-script@v7
-        working-directory: repo
         with:
           script: |
             const fs = require('fs');

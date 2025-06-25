@@ -111,7 +111,6 @@ jobs:
         working-directory: repo
       - name: Setup Helm tools
         uses: ./repo/.github/actions/setup-helm-tools
-        working-directory: repo
       - name: Cache pre-commit env
         uses: actions/cache@v3
         with:
@@ -124,4 +123,3 @@ jobs:
         with:
           extra_args: --files $(if [ -n "${{ github.event.pull_request.base.sha }}" ]; then git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }}; else git ls-files; fi)
           cache: true
-        working-directory: repo
