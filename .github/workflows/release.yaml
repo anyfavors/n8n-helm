@@ -91,7 +91,7 @@ jobs:
         id: cr
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: n8n
+          charts_dir: repo/n8n
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

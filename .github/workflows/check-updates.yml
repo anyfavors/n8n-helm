@@ -2,8 +2,6 @@ name: Check Updates
 
 on:
   schedule:
-    - cron: '0 1 * * *'
-  workflow_dispatch:
 
 jobs:
   prepare:
@@ -51,9 +49,11 @@ jobs:
         run: |
           current=$(cat .github/helm-version.txt)
           echo "current=$current" >> "$GITHUB_OUTPUT"
+        working-directory: repo
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: echo "${{ steps.latest.outputs.latest }}" > .github/helm-version.txt
+        working-directory: repo
       - name: Create Pull Request
         if: steps.latest.outputs.latest != steps.current.outputs.current
         id: cpr
@@ -65,6 +65,7 @@ jobs:
           branch: "update-helm-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
+          path: repo
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v3
@@ -87,6 +88,7 @@ jobs:
           ls -al repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        working-directory: repo
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
         with:
@@ -97,7 +99,9 @@ jobs:
           restore-keys: |
             helm-plugins-
       - name: Setup Helm tools
-        uses: ./.github/actions/setup-helm-tools
+        uses: ./repo/.github/actions/setup-helm-tools
+        with:
+          chart_dir: repo/n8n
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Get latest n8n version
@@ -114,12 +118,14 @@ jobs:
         run: |
           current=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
           echo "current=$current" >> "$GITHUB_OUTPUT"
+        working-directory: repo
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: |
           sed -i -E "s/appVersion: \".*\"/appVersion: \"${{ steps.latest.outputs.latest }}\"/" n8n/Chart.yaml
           sed -i -E "s/tag: \".*\"/tag: \"${{ steps.latest.outputs.latest }}\"/" n8n/values.yaml
           helm-docs
+        working-directory: repo
       - name: Create Pull Request
         if: steps.latest.outputs.latest != steps.current.outputs.current
         id: cpr
@@ -131,6 +137,7 @@ jobs:
           branch: "update-n8n-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
+          path: repo
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v3
@@ -153,6 +160,7 @@ jobs:
           ls -al repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        working-directory: repo
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
         with:
@@ -163,7 +171,9 @@ jobs:
           restore-keys: |
             helm-plugins-
       - name: Setup Helm tools
-        uses: ./.github/actions/setup-helm-tools
+        uses: ./repo/.github/actions/setup-helm-tools
+        with:
+          chart_dir: repo/n8n
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Get latest PostgreSQL version
@@ -176,11 +186,13 @@ jobs:
         run: |
           current=$(grep -A2 'name: postgresql' n8n/Chart.yaml | grep version | awk '{print $2}')
           echo "current=$current" >> "$GITHUB_OUTPUT"
+        working-directory: repo
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: |
           sed -i -E "/name: postgresql/{n;s/version: .*/version: ${{ steps.latest.outputs.latest }}/;}" n8n/Chart.yaml
           helm-docs
+        working-directory: repo
       - name: Create Pull Request
         if: steps.latest.outputs.latest != steps.current.outputs.current
         id: cpr
@@ -192,6 +204,7 @@ jobs:
           branch: "update-postgresql-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
+          path: repo
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v3

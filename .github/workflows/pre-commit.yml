@@ -111,6 +111,8 @@ jobs:
         working-directory: repo
       - name: Setup Helm tools
         uses: ./repo/.github/actions/setup-helm-tools
+        with:
+          chart_dir: repo/n8n
       - name: Cache pre-commit env
         uses: actions/cache@v3
         with:

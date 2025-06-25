@@ -125,6 +125,8 @@ jobs:
           working-directory: repo
         - name: Setup Helm tools
           uses: ./repo/.github/actions/setup-helm-tools
+          with:
+            chart_dir: repo/n8n
         - name: Helm lint
           run: helm lint n8n --values n8n/values.yaml
           working-directory: repo

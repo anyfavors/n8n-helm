@@ -1,4 +1,9 @@
 name: Setup Helm Tools
+inputs:
+  chart_dir:
+    description: Path to the Helm chart
+    required: false
+    default: n8n
 runs:
   using: composite
   steps:
@@ -16,11 +21,11 @@ runs:
       id: charts-cache
       uses: actions/cache@v3
       with:
-        path: n8n/charts
-        key: charts-${{ hashFiles('n8n/Chart.lock', 'n8n/Chart.yaml') }}
+        path: ${{ inputs.chart_dir }}/charts
+        key: charts-${{ hashFiles(format('{0}/Chart.lock', inputs.chart_dir), format('{0}/Chart.yaml', inputs.chart_dir)) }}
         restore-keys: |
           charts-
     - name: Build chart dependencies
       if: steps.charts-cache.outputs.cache-hit != 'true'
-      run: helm dependency build n8n
+      run: helm dependency build ${{ inputs.chart_dir }}
       shell: bash
