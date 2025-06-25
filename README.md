@@ -7,6 +7,11 @@ See [n8n/README.md](n8n/README.md) for a quick start guide and common configurat
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 
+## Quick Links
+- [Chart README](n8n/README.md)
+- [Changelog](CHANGELOG.md)
+- [License](LICENSE)
+
 ## Installation
 
 Add the chart repository and install the release:
