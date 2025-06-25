@@ -20,7 +20,7 @@ jobs:
         run: |
           mkdir repo
           shopt -s dotglob
-          cp -r ${{ github.workspace }}/* repo/
+          find ${{ github.workspace }} -mindepth 1 -maxdepth 1 ! -name repo -exec cp -r {} repo/ \;
           cp -r ${{ github.workspace }}/.github repo/
       - uses: actions/upload-artifact@v4
         with:
