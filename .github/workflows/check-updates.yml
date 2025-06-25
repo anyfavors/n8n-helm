@@ -12,10 +12,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Prepare repo artifact directory
+        run: |
+          mkdir repo
+          shopt -s dotglob
+          rsync -a --exclude=repo ${{ github.workspace }}/ repo/
+          rm -rf repo/repo || true
       - uses: actions/upload-artifact@v4
         with:
           name: repo
-          path: ${{ github.workspace }}
+          path: repo
 
   helm:
     runs-on: ubuntu-latest
@@ -24,6 +30,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Get latest Helm version
         id: latest
         run: |
@@ -62,6 +69,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
@@ -122,6 +130,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
