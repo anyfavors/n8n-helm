@@ -44,6 +44,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Move repo contents to workspace
         run: |
           echo "Before moving:"

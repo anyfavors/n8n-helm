@@ -40,6 +40,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - id: filter
         uses: dorny/paths-filter@v2
         with:
@@ -58,6 +59,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Move repo contents to workspace
         run: |
           echo "Before moving:"
@@ -101,6 +103,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Verify chart documentation
@@ -146,6 +149,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Get chart version
         id: chart
         run: |
@@ -193,6 +197,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Load node image
         run: docker load -i /kind-images/kind-node-${{ matrix.k8s }}.tar
       - name: Create kind cluster

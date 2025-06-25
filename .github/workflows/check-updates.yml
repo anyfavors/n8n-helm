@@ -30,6 +30,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Get latest Helm version
         id: latest
         run: |
@@ -68,6 +69,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
@@ -128,6 +130,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+          path: repo
       - name: Set Helm version
         run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
       - name: Cache Helm plugins and helm-docs
