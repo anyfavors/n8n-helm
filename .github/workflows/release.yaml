@@ -44,6 +44,14 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: repo
+      - name: Move repo contents to workspace
+        run: |
+          if [ -d repo/repo ]; then
+            shopt -s dotglob
+            mv repo/repo/* repo/
+            mv repo/repo/.[!.]* repo/ || true
+            rmdir repo/repo
+          fi
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
