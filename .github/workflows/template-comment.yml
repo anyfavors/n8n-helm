@@ -54,7 +54,7 @@ jobs:
           ls -al repo
       - name: Build helm-tools image if missing
         env:
-          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v2
+          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v3
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -66,7 +66,7 @@ jobs:
 
   render:
     runs-on: ubuntu-latest
-    container: ghcr.io/anyfavors/helm-tools:v2
+    container: ghcr.io/anyfavors/helm-tools:v3
     needs: [prepare, helm-tools]
     steps:
       - uses: actions/download-artifact@v4
