@@ -7,6 +7,8 @@ ARG KIND_NODE_IMAGES="v1.26.15 v1.27.16 v1.28.15"
 RUN apt-get update && \
     apt-get install -y curl git ca-certificates jq python3 python3-pip skopeo && \
     rm -rf /var/lib/apt/lists/*
+# Provide the `python` command required by some tools
+RUN ln -sf python3 /usr/bin/python
 
 # Install pre-commit for linting
 RUN pip3 install --no-cache-dir pre-commit
