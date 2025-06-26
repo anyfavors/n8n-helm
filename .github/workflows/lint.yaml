@@ -236,7 +236,22 @@ jobs:
           wait: 120s
           node_image: kindest/node:${{ matrix.k8s }}
       - name: Check cluster readiness
-        run: kubectl get nodes && kubectl get pods --all-namespaces
+        run: |
+          for i in {1..5}; do
+            if kubectl get nodes && kubectl get pods --all-namespaces; then
+              break
+            fi
+            echo "Cluster not ready yet, retrying in 15s..." >&2
+            sleep 15
+            if [ "$i" -eq 5 ]; then
+              echo "Cluster failed to start" >&2
+              docker ps -a || true
+              kind get clusters || true
+              exit 1
+            fi
+          done
+          kubectl get nodes
+          kubectl get pods --all-namespaces
         working-directory: repo
       - name: Install chart
         run: helm install my-n8n ./n8n --wait --timeout 300s
