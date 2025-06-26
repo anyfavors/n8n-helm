@@ -165,36 +165,36 @@ jobs:
           mkdir repo
           tar -xzf repo.tar.gz -C repo
           ls -al repo
-        - name: Get chart version
-          id: chart
-          run: |
-            version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
-            echo "version=$version" >> "$GITHUB_OUTPUT"
-          working-directory: repo
-        - name: Cache Trivy data
-          id: trivy-cache
-          uses: actions/cache@v3
-          with:
-            path: ${{ env.TRIVY_CACHE_DIR }}
-            key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
-            restore-keys: |
-              trivy-${{ runner.os }}-
-        - name: Scan chart for vulnerabilities
-          uses: aquasecurity/trivy-action@0.31.0
-          with:
-            scan-type: fs
-            scan-ref: n8n
-            exit-code: 1
-            severity: HIGH
-            args: --ignorefile .trivyignore
-        - name: Scan container image for vulnerabilities
-          uses: aquasecurity/trivy-action@0.31.0
-          with:
-            scan-type: image
-            image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
-            exit-code: 1
-            severity: HIGH,CRITICAL
-            args: --ignorefile .trivyignore
+      - name: Get chart version
+        id: chart
+        run: |
+          version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+        working-directory: repo
+      - name: Cache Trivy data
+        id: trivy-cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.TRIVY_CACHE_DIR }}
+          key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
+          restore-keys: |
+            trivy-${{ runner.os }}-
+      - name: Scan chart for vulnerabilities
+        uses: aquasecurity/trivy-action@0.31.0
+        with:
+          scan-type: fs
+          scan-ref: n8n
+          exit-code: 1
+          severity: HIGH
+          args: --ignorefile .trivyignore
+      - name: Scan container image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.31.0
+        with:
+          scan-type: image
+          image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
+          exit-code: 1
+          severity: HIGH,CRITICAL
+          args: --ignorefile .trivyignore
 
   install:
     runs-on: ubuntu-latest
