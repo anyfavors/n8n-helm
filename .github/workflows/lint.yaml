@@ -109,43 +109,43 @@ jobs:
           mkdir repo
           tar -xzf repo.tar.gz -C repo
           ls -al repo
-        - name: Set Helm version
-          run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
-          working-directory: repo
-        - name: Verify chart documentation
-          if: needs.filter.outputs.docs == 'true'
-          run: |
-            helm-docs
-            if ! git diff --quiet; then
-              git config user.name "GitHub Actions"
-              git config user.email "actions@github.com"
-              git add .
-              git commit -m "ci: Update Helm chart documentation"
-            fi
-          working-directory: repo
-        - name: Setup Helm tools
-          uses: ./repo/.github/actions/setup-helm-tools
-          with:
-            chart_dir: repo/n8n
-        - name: Helm lint
-          run: helm lint n8n --values n8n/values.yaml
-          working-directory: repo
-        - name: Helm unit tests
-          run: helm unittest n8n
-          working-directory: repo
-        - name: Helm template
-          run: helm template n8n
-          working-directory: repo
-        - name: Verify values schema
-          run: |
-            if ! bash scripts/pre-commit-helm-schema.sh; then
-              git config user.name "GitHub Actions"
-              git config user.email "actions@github.com"
-              mv generated-values.schema.json n8n/values.schema.json
+      - name: Set Helm version
+        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        working-directory: repo
+      - name: Verify chart documentation
+        if: needs.filter.outputs.docs == 'true'
+        run: |
+          helm-docs
+          if ! git diff --quiet; then
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git add .
+            git commit -m "ci: Update Helm chart documentation"
+          fi
+        working-directory: repo
+      - name: Setup Helm tools
+        uses: ./repo/.github/actions/setup-helm-tools
+        with:
+          chart_dir: repo/n8n
+      - name: Helm lint
+        run: helm lint n8n --values n8n/values.yaml
+        working-directory: repo
+      - name: Helm unit tests
+        run: helm unittest n8n
+        working-directory: repo
+      - name: Helm template
+        run: helm template n8n
+        working-directory: repo
+      - name: Verify values schema
+        run: |
+          if ! bash scripts/pre-commit-helm-schema.sh; then
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            mv generated-values.schema.json n8n/values.schema.json
             git add n8n/values.schema.json
             git commit -m "ci: Update Helm values schema"
           fi
-          working-directory: repo
+        working-directory: repo
 
   scan:
     runs-on: ubuntu-latest
