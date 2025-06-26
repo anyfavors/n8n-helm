@@ -235,7 +235,14 @@ jobs:
         with:
           wait: 120s
           node_image: kindest/node:${{ matrix.k8s }}
+      - name: Debug Docker and Kind
+        run: |
+          docker ps -a
+          kind get clusters || true
+          docker info
+        working-directory: repo
       - name: Check cluster readiness
+        shell: bash
         run: |
           for i in {1..5}; do
             if kubectl get nodes && kubectl get pods --all-namespaces; then
