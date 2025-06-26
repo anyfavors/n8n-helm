@@ -199,7 +199,6 @@ jobs:
           scan-ref: .
           exit-code: 1
           severity: HIGH
-        working-directory: repo
       - name: Scan container image for vulnerabilities
         uses: aquasecurity/trivy-action@0.31.0
         with:
@@ -207,7 +206,6 @@ jobs:
           image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
           exit-code: 1
           severity: HIGH,CRITICAL
-        working-directory: repo
 
   install:
     runs-on: ubuntu-latest
