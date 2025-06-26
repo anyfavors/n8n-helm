@@ -196,10 +196,10 @@ jobs:
         uses: aquasecurity/trivy-action@0.31.0
         with:
           scan-type: fs
-          scan-ref: n8n
+          scan-ref: .
           exit-code: 1
           severity: HIGH
-          args: --ignorefile .trivyignore
+        working-directory: repo
       - name: Scan container image for vulnerabilities
         uses: aquasecurity/trivy-action@0.31.0
         with:
@@ -207,7 +207,7 @@ jobs:
           image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
           exit-code: 1
           severity: HIGH,CRITICAL
-          args: --ignorefile .trivyignore
+        working-directory: repo
 
   install:
     runs-on: ubuntu-latest
