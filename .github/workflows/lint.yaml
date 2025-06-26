@@ -154,7 +154,7 @@ jobs:
     needs: [prepare, filter, helm-tools]
     if: needs.filter.outputs.n8n == "true"
     env:
-      TRIVY_CACHE_DIR: ${{ env.HOME }}/.cache/trivy
+      TRIVY_CACHE_DIR: /tmp/trivy-cache
     steps:
       - uses: actions/download-artifact@v4
         with:
