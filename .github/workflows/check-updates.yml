@@ -2,7 +2,8 @@ name: Check Updates
 
 on:
   schedule:
-
+    - cron: '0 1 * * *'
+  workflow_dispatch:
 jobs:
   prepare:
     runs-on: ubuntu-latest
