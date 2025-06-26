@@ -79,7 +79,7 @@ jobs:
           ls -al repo
       - name: Build helm-tools image if missing
         env:
-          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v3
+          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -97,7 +97,7 @@ jobs:
     container:
       - name: Configure git safe directory
         run: git config --global --add safe.directory "$(realpath repo)"
-      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v3
+      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
     steps:
       - uses: actions/download-artifact@v4
         with:

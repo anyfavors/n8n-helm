@@ -85,7 +85,7 @@ jobs:
           ls -al repo
       - name: Build helm-tools image if missing
         env:
-          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v2
+          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "${{ secrets.GITHUB_TOKEN }}" | \
@@ -101,7 +101,7 @@ jobs:
     needs: [prepare, filter, helm-tools]
     if: ${{ needs.filter.outputs.n8n == 'true' }}
     # Use tagged helm-tools image
-    container: ghcr.io/anyfavors/helm-tools:v2
+    container: ghcr.io/anyfavors/helm-tools:v4
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -162,7 +162,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
-    container: ghcr.io/anyfavors/helm-tools:v2
+    container: ghcr.io/anyfavors/helm-tools:v4
     needs: [prepare, filter, helm-tools]
     if: ${{ needs.filter.outputs.n8n == 'true' }}
     env:
@@ -210,7 +210,7 @@ jobs:
   install:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
-    container: ghcr.io/anyfavors/helm-tools:v2
+    container: ghcr.io/anyfavors/helm-tools:v4
     needs: [prepare, filter, helm-tools, lint]
     if: ${{ needs.filter.outputs.n8n == 'true' }}
     strategy:
