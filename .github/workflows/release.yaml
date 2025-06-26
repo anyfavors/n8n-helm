@@ -1,6 +1,7 @@
+---
 name: Release Charts
 
-on:
+'on':
   push:
     branches:
       - main
@@ -61,8 +62,10 @@ jobs:
           IMAGE: ghcr.io/anyfavors/release-tools:v1
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker build -t "$IMAGE" -f repo/.github/docker/release-tools.Dockerfile repo
+            echo "${{ secrets.GITHUB_TOKEN }}" | \
+              docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker build -t "$IMAGE" \
+              -f repo/.github/docker/release-tools.Dockerfile repo
             docker push "$IMAGE"
           else
             echo "$IMAGE already exists"
@@ -134,7 +137,8 @@ jobs:
         env:
           OCI_REPO: ghcr.io/${{ github.repository_owner }}/charts
         run: |
-          helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          helm registry login ghcr.io \
+            -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
           chart=$(ls .cr-release-packages/n8n-*.tgz | head -n 1)
           helm push "$chart" "oci://$OCI_REPO"
         working-directory: repo
@@ -168,4 +172,3 @@ jobs:
         with:
           name: chart-packages
           path: .cr-release-packages/*.tgz
-

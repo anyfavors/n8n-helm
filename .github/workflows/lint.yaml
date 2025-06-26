@@ -1,6 +1,7 @@
+---
 name: Lint
 
-on:
+'on':
   push:
     branches:
       - main
@@ -87,8 +88,10 @@ jobs:
           IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v2
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker build -t "$IMAGE" -f repo/.github/docker/helm-tools.Dockerfile repo
+            echo "${{ secrets.GITHUB_TOKEN }}" | \
+              docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker build -t "$IMAGE" \
+              -f repo/.github/docker/helm-tools.Dockerfile repo
             docker push "$IMAGE"
           else
             echo "$IMAGE already exists"
@@ -110,7 +113,8 @@ jobs:
           tar -xzf repo.tar.gz -C repo
           ls -al repo
       - name: Set Helm version
-        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        run: |
+          echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
         working-directory: repo
       - name: Verify chart documentation
         if: needs.filter.outputs.docs == 'true'
@@ -168,7 +172,8 @@ jobs:
       - name: Get chart version
         id: chart
         run: |
-          version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
+          version=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' \
+            | tr -d '"')
           echo "version=$version" >> "$GITHUB_OUTPUT"
         working-directory: repo
       - name: Cache Trivy data
@@ -176,7 +181,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.TRIVY_CACHE_DIR }}
-          key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}
+          key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}  # yamllint disable-line rule:line-length
           restore-keys: |
             trivy-${{ runner.os }}-
       - name: Scan chart for vulnerabilities
@@ -234,10 +239,15 @@ jobs:
         if: failure()
         run: |
           kubectl describe pods -n default || true
-          kubectl logs -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" -n default || true
+          kubectl logs \
+            -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" \
+            -n default || true
         working-directory: repo
       - name: Wait for pods
-        run: kubectl wait --namespace default --for=condition=ready pod -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" --timeout=300s
+        run: |
+          kubectl wait --namespace default --for=condition=ready pod \
+            -l "app.kubernetes.io/name=n8n,app.kubernetes.io/instance=my-n8n" \
+            --timeout=300s
         working-directory: repo
       - name: Get pods
         run: kubectl get pods -n default
