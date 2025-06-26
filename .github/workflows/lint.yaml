@@ -209,8 +209,6 @@ jobs:
 
   install:
     runs-on: ubuntu-latest
-    # Use tagged helm-tools image
-    container: ghcr.io/anyfavors/helm-tools:v4
     needs: [prepare, filter, helm-tools, lint]
     if: ${{ needs.filter.outputs.n8n == 'true' }}
     strategy:
@@ -227,14 +225,10 @@ jobs:
           mkdir repo
           tar -xzf repo.tar.gz -C repo
           ls -al repo
-      - name: Load node image
-        run: docker load -i /kind-images/kind-node-${{ matrix.k8s }}.tar
-        working-directory: repo
       - name: Create kind cluster
         uses: helm/kind-action@v1.12.0
         with:
-          wait: 120s
-          node_image: kindest/node:${{ matrix.k8s }}
+          wait: 240s
       - name: Debug Docker and Kind
         run: |
           docker ps -a
