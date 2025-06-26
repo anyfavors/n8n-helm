@@ -131,6 +131,9 @@ jobs:
         uses: ./repo/.github/actions/setup-helm-tools
         with:
           chart_dir: repo/n8n
+      - name: Install helm-unittest plugin
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest
+        shell: bash
       - name: Helm lint
         run: helm lint n8n --values n8n/values.yaml
         working-directory: repo
