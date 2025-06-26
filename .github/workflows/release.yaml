@@ -36,12 +36,44 @@ jobs:
           name: repo
           path: repo.tar.gz
 
+  release-tools:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo
+          path: .
+      - name: Extract repo
+        run: |
+          mkdir repo
+          tar -xzf repo.tar.gz -C repo
+          ls -al repo
+      - name: Ensure repo context exists
+        run: |
+          if [ ! -d repo ]; then
+            echo "ERROR: repo directory not found!" >&2
+            exit 1
+          fi
+          ls -al repo
+      - name: Build release-tools image if missing
+        env:
+          IMAGE: ghcr.io/anyfavors/release-tools:v1
+        run: |
+          if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker build -t "$IMAGE" -f repo/.github/docker/release-tools.Dockerfile repo
+            docker push "$IMAGE"
+          else
+            echo "$IMAGE already exists"
+          fi
+
   release:
     runs-on: ubuntu-latest
     # Use tagged release-tools image
     container:
       image: ghcr.io/anyfavors/release-tools:v1
-    needs: prepare
+    needs: [prepare, release-tools]
     steps:
       - uses: actions/download-artifact@v4
         with:
