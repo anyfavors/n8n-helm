@@ -21,7 +21,7 @@ jobs:
         run: |
           mkdir repo
           shopt -s dotglob
-          rsync -a --exclude=repo ${{ github.workspace }}/ repo/
+          rsync -a --exclude=repo "${{ github.workspace }}/" repo/
           rm -rf repo/repo || true
           if [ ! -d repo/.git ]; then
             echo ".git directory missing!"
