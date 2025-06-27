@@ -25,7 +25,14 @@ runs:
         key: charts-${{ hashFiles(format('{0}/Chart.lock', inputs.chart_dir), format('{0}/Chart.yaml', inputs.chart_dir)) }}
         restore-keys: |
           charts-
-    - name: Build chart dependencies
-      if: steps.charts-cache.outputs.cache-hit != 'true'
-      run: helm dependency build ${{ inputs.chart_dir }}
-      shell: bash
+  - name: Build chart dependencies
+    if: steps.charts-cache.outputs.cache-hit != 'true'
+    run: helm dependency build ${{ inputs.chart_dir }}
+    shell: bash
+  - name: Ensure helm-schema-gen plugin
+    run: |
+      if ! helm plugin list | grep -qw schema-gen; then
+        helm plugin install \
+          https://github.com/karuppiah7890/helm-schema-gen.git
+      fi
+    shell: bash

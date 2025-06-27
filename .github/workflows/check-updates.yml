@@ -1,3 +1,4 @@
+---
 name: Check Updates
 
 on:
@@ -43,7 +44,10 @@ jobs:
       - name: Get latest Helm version
         id: latest
         run: |
-          latest=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
+          latest=$(
+            curl -s https://api.github.com/repos/helm/helm/releases/latest |
+              jq -r '.tag_name'
+          )
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
       - name: Get current Helm version
         id: current
@@ -53,16 +57,22 @@ jobs:
         working-directory: repo
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
-        run: echo "${{ steps.latest.outputs.latest }}" > .github/helm-version.txt
+        run: |
+          echo "${{ steps.latest.outputs.latest }}" > \
+            .github/helm-version.txt
         working-directory: repo
       - name: Create Pull Request
         if: steps.latest.outputs.latest != steps.current.outputs.current
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: update Helm to ${{ steps.latest.outputs.latest }}"
-          title: "chore: update Helm to ${{ steps.latest.outputs.latest }}"
-          body: "Automated update of Helm CLI version to ${{ steps.latest.outputs.latest }}."
+          commit-message: >
+            chore: update Helm to ${{ steps.latest.outputs.latest }}
+          title: >
+            chore: update Helm to ${{ steps.latest.outputs.latest }}
+          body: >
+            Automated update of Helm CLI version to
+            ${{ steps.latest.outputs.latest }}.
           branch: "update-helm-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
@@ -88,7 +98,8 @@ jobs:
           tar -xzf repo.tar.gz -C repo
           ls -al repo
       - name: Set Helm version
-        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        run: |
+          echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
         working-directory: repo
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
@@ -108,33 +119,50 @@ jobs:
       - name: Get latest n8n version
         id: latest
         run: |
-          latest=$(curl -s "https://hub.docker.com/v2/repositories/n8nio/n8n/tags?page_size=50" \
-            | jq -r '.results[].name' \
-            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
-            | sort -V \
-            | tail -n1)
+          URL="https://hub.docker.com/v2/repositories/n8nio/n8n/"
+          URL+="tags?page_size=50"
+          latest=$(
+            curl -s "$URL" |
+              jq -r '.results[].name' |
+              grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' |
+              sort -V |
+              tail -n1
+          )
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
       - name: Get chart version
         id: current
         run: |
-          current=$(grep '^appVersion:' n8n/Chart.yaml | awk '{print $2}' | tr -d '"')
+          current=$(
+            grep '^appVersion:' n8n/Chart.yaml |
+              awk '{print $2}' |
+              tr -d '"'
+          )
           echo "current=$current" >> "$GITHUB_OUTPUT"
         working-directory: repo
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: |
-          sed -i -E "s/appVersion: \".*\"/appVersion: \"${{ steps.latest.outputs.latest }}\"/" n8n/Chart.yaml
-          sed -i -E "s/tag: \".*\"/tag: \"${{ steps.latest.outputs.latest }}\"/" n8n/values.yaml
-          helm-docs
+            ver="${{ steps.latest.outputs.latest }}"
+            sed -i -E \
+              "s/appVersion: \".*\"/appVersion: \"$ver\"/" \
+              n8n/Chart.yaml
+            tag="${{ steps.latest.outputs.latest }}"
+            TAG_PATTERN="s/tag: \".*\"/tag: \"$tag\"/"
+            sed -i -E "$TAG_PATTERN" n8n/values.yaml
+            helm-docs
         working-directory: repo
       - name: Create Pull Request
         if: steps.latest.outputs.latest != steps.current.outputs.current
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: update n8n version to ${{ steps.latest.outputs.latest }}"
-          title: "chore: update n8n version to ${{ steps.latest.outputs.latest }}"
-          body: "Automated update of n8n image version to ${{ steps.latest.outputs.latest }}."
+          commit-message: >
+            chore: update n8n version to ${{ steps.latest.outputs.latest }}
+          title: >
+            chore: update n8n version to ${{ steps.latest.outputs.latest }}
+          body: >
+            Automated update of n8n image version to
+            ${{ steps.latest.outputs.latest }}.
           branch: "update-n8n-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
@@ -160,7 +188,8 @@ jobs:
           tar -xzf repo.tar.gz -C repo
           ls -al repo
       - name: Set Helm version
-        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        run: |
+          echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
         working-directory: repo
       - name: Cache Helm plugins and helm-docs
         uses: actions/cache@v3
@@ -180,18 +209,22 @@ jobs:
       - name: Get latest PostgreSQL version
         id: latest
         run: |
-          latest=$(helm search repo bitnami/postgresql --versions | awk 'NR==2{print $2}')
+          latest=$(helm search repo bitnami/postgresql --versions \
+            | awk 'NR==2{print $2}')
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
       - name: Get chart version
         id: current
         run: |
-          current=$(grep -A2 'name: postgresql' n8n/Chart.yaml | grep version | awk '{print $2}')
+          current=$(grep -A2 'name: postgresql' n8n/Chart.yaml \
+            | grep version | awk '{print $2}')
           echo "current=$current" >> "$GITHUB_OUTPUT"
         working-directory: repo
       - name: Update files
         if: steps.latest.outputs.latest != steps.current.outputs.current
         run: |
-          sed -i -E "/name: postgresql/{n;s/version: .*/version: ${{ steps.latest.outputs.latest }}/;}" n8n/Chart.yaml
+          ver="${{ steps.latest.outputs.latest }}"
+          pattern="/name: postgresql/{n;s/version: .*/version: $ver/;}"
+          sed -i -E "$pattern" n8n/Chart.yaml
           helm-docs
         working-directory: repo
       - name: Create Pull Request
@@ -199,9 +232,15 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: update postgresql chart version to ${{ steps.latest.outputs.latest }}"
-          title: "chore: update postgresql chart version to ${{ steps.latest.outputs.latest }}"
-          body: "Automated update of PostgreSQL chart dependency to ${{ steps.latest.outputs.latest }}."
+          commit-message: >
+            chore: update postgresql chart version to
+            ${{ steps.latest.outputs.latest }}
+          title: >
+            chore: update postgresql chart version to
+            ${{ steps.latest.outputs.latest }}
+          body: >
+            Automated update of PostgreSQL chart dependency to
+            ${{ steps.latest.outputs.latest }}.
           branch: "update-postgresql-${{ steps.latest.outputs.latest }}"
           delete-branch: true
           labels: automated
