@@ -132,12 +132,21 @@ jobs:
         with:
           chart_dir: repo/n8n
       - name: Install helm-unittest plugin
-        run: helm plugin install https://github.com/helm-unittest/helm-unittest
+        run: |
+          if ! helm plugin list | grep -qw unittest; then
+            helm plugin install https://github.com/helm-unittest/helm-unittest
+          else
+            echo "Helm plugin helm-unittest already installed, skipping."
+          fi
         shell: bash
       - name: Install helm-schema-gen plugin
         run: |
-          helm plugin install \
-            https://github.com/karuppiah7890/helm-schema-gen.git
+          if ! helm plugin list | grep -qw schema-gen; then
+            helm plugin install \
+              https://github.com/karuppiah7890/helm-schema-gen.git
+          else
+            echo "Helm plugin schema-gen already installed, skipping."
+          fi
         shell: bash
       - name: Helm lint
         run: helm lint n8n --values n8n/values.yaml
