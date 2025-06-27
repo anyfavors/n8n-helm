@@ -11,8 +11,9 @@ repos:
         entry: bash scripts/pre-commit-helm-schema.sh
         language: system
         pass_filenames: false
-  - repo: https://github.com/koalaman/shellcheck
-    rev: v0.9.0
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    # Use the shellcheck wrapper with pre-commit hooks
+    rev: v0.9.0.1
     hooks:
       - id: shellcheck
   - repo: https://github.com/adrienverge/yamllint

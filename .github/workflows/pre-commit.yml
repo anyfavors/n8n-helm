@@ -1,6 +1,7 @@
+---
 name: Pre-commit
 
-on:
+'on':
   push:
     branches:
       - main
@@ -79,11 +80,13 @@ jobs:
           ls -al repo
       - name: Build helm-tools image if missing
         env:
-          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v3
+          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker build -t "$IMAGE" -f repo/.github/docker/helm-tools.Dockerfile repo
+            echo "${{ secrets.GITHUB_TOKEN }}" | \
+              docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker build -t "$IMAGE" \
+              -f repo/.github/docker/helm-tools.Dockerfile repo
             docker push "$IMAGE"
           else
             echo "$IMAGE already exists"
@@ -95,10 +98,10 @@ jobs:
     if: needs.filter.outputs.n8n == 'true'
     # Use a tagged image to avoid pulling the floating `latest`
     container:
+      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
+    steps:
       - name: Configure git safe directory
         run: git config --global --add safe.directory "$(realpath repo)"
-      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v3
-    steps:
       - uses: actions/download-artifact@v4
         with:
           name: repo
@@ -109,7 +112,8 @@ jobs:
           tar -xzf repo.tar.gz -C repo
           ls -al repo
       - name: Set Helm version
-        run: echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
+        run: |
+          echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
         working-directory: repo
       - name: Setup Helm tools
         uses: ./repo/.github/actions/setup-helm-tools
@@ -119,14 +123,16 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.HOME }}/.cache/pre-commit
-          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}  # yamllint disable-line rule:line-length
           restore-keys: |
             pre-commit-${{ runner.os }}-
       - name: Run pre-commit
         run: |
           pre-commit run --files $(
             if [ -n "${{ github.event.pull_request.base.sha }}" ]; then
-              git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
+              git diff --name-only \
+                ${{ github.event.pull_request.base.sha }} \
+                ${{ github.sha }}
             else
               git ls-files
             fi
