@@ -50,7 +50,7 @@ jobs:
           tar -xzf repo.tar.gz -C repo
           ls -al repo
       - id: filter
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         with:
           working-directory: repo
           filters: |
@@ -121,7 +121,7 @@ jobs:
         with:
           chart_dir: repo/n8n
       - name: Cache pre-commit env
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.HOME }}/.cache/pre-commit
           key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}  # yamllint disable-line rule:line-length

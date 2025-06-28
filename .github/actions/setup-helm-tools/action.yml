@@ -10,7 +10,7 @@ runs:
   steps:
     - name: Cache Helm plugins and helm-docs
       id: plugins-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ${{ env.HOME }}/.local/share/helm/plugins
@@ -20,7 +20,7 @@ runs:
           helm-plugins-
     - name: Cache chart dependencies
       id: charts-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ inputs.chart_dir }}/charts
         key: >

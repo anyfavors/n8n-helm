@@ -53,7 +53,7 @@ jobs:
           tar -xzf repo.tar.gz -C repo
           ls -al repo
       - id: filter
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         with:
           working-directory: repo
           filters: |
@@ -196,7 +196,7 @@ jobs:
         working-directory: repo
       - name: Cache Trivy data
         id: trivy-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.TRIVY_CACHE_DIR }}
           key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}  # yamllint disable-line rule:line-length
