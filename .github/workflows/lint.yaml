@@ -55,6 +55,7 @@ jobs:
       - id: filter
         uses: dorny/paths-filter@v2
         with:
+          working-directory: repo
           filters: |
             n8n:
               - 'n8n/**'
