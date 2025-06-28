@@ -263,6 +263,9 @@ jobs:
           kubectl get nodes
           kubectl get pods --all-namespaces
         working-directory: repo
+      - name: Build Helm dependencies
+        run: helm dependency build ./n8n
+        working-directory: repo
       - name: Install chart
         run: helm install my-n8n ./n8n --wait --timeout 300s
         working-directory: repo
