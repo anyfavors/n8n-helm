@@ -7,18 +7,27 @@
   "automergeType": "pr",
   "packageRules": [
     {
-      "matchManagers": ["helm-requirements"],
-      "matchPackageNames": ["postgresql"],
+      "matchManagers": [
+        "helm-requirements"
+      ],
+      "matchPackageNames": [
+        "postgresql"
+      ],
       "groupName": "bitnami/postgresql"
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "groupName": "github-actions"
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["^\\.github/workflows/.*\\.ya?ml$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/"
+      ],
       "matchStrings": [
         "helm-docs/releases/download/v(?<currentValue>[0-9.]+)/helm-docs_[0-9.]+_Linux_x86_64.tar.gz"
       ],
