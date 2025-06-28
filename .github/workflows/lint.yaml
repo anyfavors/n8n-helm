@@ -24,7 +24,7 @@ jobs:
         run: |
           mkdir repo
           shopt -s dotglob
-          rsync -a --exclude=repo ${{ github.workspace }}/ repo/
+          rsync -a --exclude=repo "${{ github.workspace }}/" repo/
           rm -rf repo/repo || true
           if [ ! -d repo/.git ]; then
             echo ".git directory missing!"
@@ -85,7 +85,7 @@ jobs:
           ls -al repo
       - name: Build helm-tools image if missing
         env:
-          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
+          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v5
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "${{ secrets.GITHUB_TOKEN }}" | \
@@ -101,7 +101,7 @@ jobs:
     needs: [prepare, filter, helm-tools]
     if: ${{ needs.filter.outputs.n8n == 'true' }}
     # Use tagged helm-tools image
-    container: ghcr.io/anyfavors/helm-tools:v4
+    container: ghcr.io/anyfavors/helm-tools:v5
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -132,12 +132,21 @@ jobs:
         with:
           chart_dir: repo/n8n
       - name: Install helm-unittest plugin
-        run: helm plugin install https://github.com/helm-unittest/helm-unittest
+        run: |
+          if ! helm plugin list | grep -qw unittest; then
+            helm plugin install https://github.com/helm-unittest/helm-unittest
+          else
+            echo "Helm plugin helm-unittest already installed, skipping."
+          fi
         shell: bash
       - name: Install helm-schema-gen plugin
         run: |
-          helm plugin install \
-            https://github.com/karuppiah7890/helm-schema-gen.git
+          if ! helm plugin list | grep -qw schema-gen; then
+            helm plugin install \
+              https://github.com/karuppiah7890/helm-schema-gen.git
+          else
+            echo "Helm plugin schema-gen already installed, skipping."
+          fi
         shell: bash
       - name: Helm lint
         run: helm lint n8n --values n8n/values.yaml
@@ -162,7 +171,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     # Use tagged helm-tools image
-    container: ghcr.io/anyfavors/helm-tools:v4
+    container: ghcr.io/anyfavors/helm-tools:v5
     needs: [prepare, filter, helm-tools]
     if: ${{ needs.filter.outputs.n8n == 'true' }}
     env:
@@ -253,6 +262,9 @@ jobs:
           done
           kubectl get nodes
           kubectl get pods --all-namespaces
+        working-directory: repo
+      - name: Build Helm dependencies
+        run: helm dependency build ./n8n
         working-directory: repo
       - name: Install chart
         run: helm install my-n8n ./n8n --wait --timeout 300s

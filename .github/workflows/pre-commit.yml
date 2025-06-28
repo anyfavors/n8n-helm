@@ -22,7 +22,7 @@ jobs:
         run: |
           mkdir repo
           shopt -s dotglob
-          rsync -a --exclude=repo ${{ github.workspace }}/ repo/
+          rsync -a --exclude=repo "${{ github.workspace }}/" repo/
           rm -rf repo/repo || true
           if [ ! -d repo/.git ]; then
             echo ".git directory missing!"
@@ -80,7 +80,7 @@ jobs:
           ls -al repo
       - name: Build helm-tools image if missing
         env:
-          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
+          IMAGE: ghcr.io/${{ github.repository_owner }}/helm-tools:v5
         run: |
           if ! docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "${{ secrets.GITHUB_TOKEN }}" | \
@@ -98,7 +98,7 @@ jobs:
     if: needs.filter.outputs.n8n == 'true'
     # Use a tagged image to avoid pulling the floating `latest`
     container:
-      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v4
+      image: ghcr.io/${{ github.repository_owner }}/helm-tools:v5
     steps:
       - name: Configure git safe directory
         run: git config --global --add safe.directory "$(realpath repo)"
