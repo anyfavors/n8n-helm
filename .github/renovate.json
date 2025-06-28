@@ -5,10 +5,9 @@
   ],
   "automerge": true,
   "automergeType": "pr",
-  "deleteBranchAfterMerge": true,
   "packageRules": [
     {
-      "matchManagers": ["helm"],
+      "matchManagers": ["helm-requirements"],
       "matchPackageNames": ["postgresql"],
       "groupName": "bitnami/postgresql"
     },
