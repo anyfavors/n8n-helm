@@ -62,6 +62,7 @@ jobs:
             docs:
               - 'n8n/templates/**'
               - 'n8n/values.yaml'
+        working-directory: repo
 
   helm-tools:
     runs-on: ubuntu-latest

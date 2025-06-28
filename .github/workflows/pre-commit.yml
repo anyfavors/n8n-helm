@@ -57,6 +57,7 @@ jobs:
               - 'n8n/**'
               - '!n8n/README.md'
               - '!n8n/docs/**'
+        working-directory: repo
 
   helm-tools:
     runs-on: ubuntu-latest
