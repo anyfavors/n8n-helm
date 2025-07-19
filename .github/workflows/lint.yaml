@@ -203,14 +203,14 @@ jobs:
           restore-keys: |
             trivy-${{ runner.os }}-
       - name: Scan chart for vulnerabilities
-        uses: aquasecurity/trivy-action@0.31.0
+        uses: aquasecurity/trivy-action@0.32.0
         with:
           scan-type: fs
           scan-ref: .
           exit-code: 1
           severity: HIGH
       - name: Scan container image for vulnerabilities
-        uses: aquasecurity/trivy-action@0.31.0
+        uses: aquasecurity/trivy-action@0.32.0
         with:
           scan-type: image
           image-ref: n8nio/n8n:${{ steps.chart.outputs.version }}
