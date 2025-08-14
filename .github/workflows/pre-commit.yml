@@ -15,7 +15,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Prepare repo artifact
@@ -40,7 +40,7 @@ jobs:
     outputs:
       n8n: ${{ steps.filter.outputs.n8n }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: repo
           path: .
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: repo
           path: .
@@ -103,7 +103,7 @@ jobs:
     steps:
       - name: Configure git safe directory
         run: git config --global --add safe.directory "$(realpath repo)"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: repo
           path: .
