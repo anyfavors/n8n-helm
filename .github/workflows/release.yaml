@@ -18,7 +18,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Prepare repo artifact
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: repo
           path: .
@@ -78,7 +78,7 @@ jobs:
       image: ghcr.io/anyfavors/release-tools:v1
     needs: [prepare, release-tools]
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: repo
           path: .
