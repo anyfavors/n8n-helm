@@ -17,7 +17,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Prepare repo artifact
@@ -31,7 +31,7 @@ jobs:
             exit 1
           fi
           tar -czf repo.tar.gz -C repo .
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: repo
           path: repo.tar.gz
@@ -43,7 +43,7 @@ jobs:
       n8n: ${{ steps.filter.outputs.n8n }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .
@@ -104,7 +104,7 @@ jobs:
     # Use tagged helm-tools image
     container: ghcr.io/anyfavors/helm-tools:v5
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .
@@ -178,7 +178,7 @@ jobs:
     env:
       TRIVY_CACHE_DIR: /tmp/trivy-cache
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .
@@ -196,7 +196,7 @@ jobs:
         working-directory: repo
       - name: Cache Trivy data
         id: trivy-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.TRIVY_CACHE_DIR }}
           key: trivy-${{ runner.os }}-${{ hashFiles('.github/workflows/lint.yaml') }}  # yamllint disable-line rule:line-length
@@ -226,7 +226,7 @@ jobs:
         k8s:
           - v1.28.15
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .

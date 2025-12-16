@@ -14,7 +14,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Prepare repo artifact
@@ -28,7 +28,7 @@ jobs:
             exit 1
           fi
           tar -czf repo.tar.gz -C repo .
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: repo
           path: repo.tar.gz
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .
@@ -72,7 +72,7 @@ jobs:
     container: ghcr.io/anyfavors/helm-tools:v5
     needs: [prepare, helm-tools]
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: repo
           path: .
@@ -86,7 +86,7 @@ jobs:
           echo "HELM_VERSION=$(cat .github/helm-version.txt)" >> "$GITHUB_ENV"
         working-directory: repo
       - name: Cache Helm plugins and helm-docs
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ${{ env.HOME }}/.local/share/helm/plugins
@@ -103,12 +103,12 @@ jobs:
         working-directory: repo
       - name: Upload template artifact
         if: steps.render.outputs.size > 65000
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: helm-template
           path: template.txt
       - name: Comment with template
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
